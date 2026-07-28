@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treino Academia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+        }
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 { font-size: 24px; margin-bottom: 20px; }
+        .progress-bar { 
+            background: #333; 
+            height: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: #4CAF50;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .day-box {
+            background: #2a2a2a;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+        .day-header {
+            background: #333;
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .day-header:hover { background: #3a3a3a; }
+        .day-title { font-weight: bold; font-size: 16px; }
+        .day-focus { font-size: 12px; color: #aaa; }
+        .exercise {
+            border-top: 1px solid #444;
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .exercise:hover { background: #333; }
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #666;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+            cursor: pointer;
+        }
+        .checkbox.checked {
+            background: #4CAF50;
+            border-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+        .exercise-info { flex: 1; }
+        .exercise-name { font-weight: bold; font-size: 14px; }
+        .exercise-sets { font-size: 12px; color: #aaa; }
+        .exercise-details {
+            display: none;
+            background: #1a1a1a;
+            padding: 15px;
+            border-top: 1px solid #444;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .exercise-details.show { display: block; }
+        .detail-section { margin-bottom: 15px; }
+        .detail-title { font-weight: bold; color: #4CAF50; margin-bottom: 8px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💪 Seu Treino</h1>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div id="workoutContainer"></div>
+    </div>
+
+    <script>
+        const workouts = [
+            {
+                day: "Segunda",
+                focus: "Peito & Tríceps",
+                exercises: [
+                    {
+                        name: "Supino Reto",
+                        sets: "4 x 6-8",
+                        desc: "Deite-se no banco com pés apoiados. Pegue a barra acima da largura dos ombros. Abaixe até o peito. Suba explosivamente.",
+                        steps: "1. Sente firme no banco\n2. Pegue barra além da largura\n3. Levante acima do peito\n4. Abaixe lentamente até peito\n5. Pause 1 segundo\n6. Empurre explosivamente\n7. Repita 6-8 vezes",
+                        tips: "✓ Cotovelos a 45°\n✓ Respire corretamente\n✓ Controle sempre",
+                        avoid: "✗ Não dar quique\n✗ Não abrir cotovelos demais\n✗ Não trancar"
+                    },
+                    {
+                        name: "Crucifixo no Cabo",
+                        sets: "3 x 10-12",
+                        desc: "Em pé no centro. Pegue as alças com braços abertos. Puxe em movimento de abraço.",
+                        steps: "1. Posicione-se no centro\n2. Pegue as alças abertas\n3. Cotovelos flexionados\n4. Puxe em movimento de abraço\n5. Aproxime na frente\n6. Pause 1 segundo\n7. Retorne controlado",
+                        tips: "✓ Controle total\n✓ Foco na contração\n✓ Movimento fluido",
+                        avoid: "✗ Sem impulso\n✗ Sem deixar cair"
+                    },
+                    {
+                        name: "Tríceps na Corda",
+                        sets: "3 x 12-15",
+                        desc: "Pegue a corda na altura da cabeça. Cotovelos fixos. Puxe para baixo.",
+                        steps: "1. Pegue a corda\n2. Altura da cabeça\n3. Cotovelos fixos\n4. Puxe para baixo\n5. Separe as pontas\n6. Pause 1 segundo\n7. Retorne controlado",
+                        tips: "✓ Apenas antebraços\n✓ Controle na volta\n✓ Sinta o tríceps",
+                        avoid: "✗ Não balançar\n✗ Cotovelos fixos"
+                    }
+                ]
+            },
+            {
+                day: "Terça",
+                focus: "Costas & Bíceps",
+                exercises: [
+                    {
+                        name: "Puxada Frontal",
+                        sets: "4 x 6-8",
+                        desc: "Sente com coxas fixadas. Pegue a barra acima dos ombros. Puxe até o peito.",
+                        steps: "1. Sente com coxas presas\n2. Pegue barra além da largura\n3. Palmas para frente\n4. Expire ao puxar\n5. Puxe ao peito\n6. Cotovelos para baixo\n7. Pause 1 segundo",
+                        tips: "✓ Sinta as costas\n✓ Controle a volta\n✓ Leve ao peito",
+                        avoid: "✗ Não jogar corpo\n✗ Sem cair rápido"
+                    },
+                    {
+                        name: "Remada com Barra",
+                        sets: "4 x 8-10",
+                        desc: "Incline-se 30-45°. Joelhos flexionados. Pegue a barra. Puxe ao abdômen.",
+                        steps: "1. Pé sob a barra\n2. Joelhos flexionados\n3. Incline costas retas\n4. Pegue barra\n5. Puxe ao abdômen\n6. Cotovelos próximos\n7. Pause 1-2 segundos",
+                        tips: "✓ Costas RETAS\n✓ Não deixar cair\n✓ Cotovelos próximos",
+                        avoid: "✗ Sem arredondar costas\n✗ Sem balançar"
+                    },
+                    {
+                        name: "Rosca Direta",
+                        sets: "3 x 8-10",
+                        desc: "Em pé. Pegue a barra com palmas para frente. Cotovelos fixos. Levante.",
+                        steps: "1. Fique em pé\n2. Pegue palmas para frente\n3. Cotovelos fixos\n4. Flexione cotovelos\n5. Suba antebraços\n6. Levante até ombros\n7. Pause 1 segundo",
+                        tips: "✓ Sem balanço\n✓ Apenas braços\n✓ Movimento puro",
+                        avoid: "✗ Sem impulso\n✗ Cotovelos fixos"
+                    }
+                ]
+            },
+            {
+                day: "Quarta",
+                focus: "Perna",
+                exercises: [
+                    {
+                        name: "Agachamento",
+                        sets: "4 x 6-8",
+                        desc: "Barra nos ombros. Pés largura ombros. Abaixe até 90°. Suba explosivamente.",
+                        steps: "1. Barra nos ombros\n2. Pés largura ombros\n3. Peito para frente\n4. Abaixe dobrando\n5. Até 90 graus\n6. Suba explosivo\n7. Quase esticado",
+                        tips: "✓ Joelhos alinhados\n✓ Olhe frente\n✓ Suba com força",
+                        avoid: "✗ Joelhos não caem\n✗ Costas retas"
+                    },
+                    {
+                        name: "Leg Press",
+                        sets: "3 x 10-12",
+                        desc: "Sente na máquina. Pés na plataforma. Abaixe flexionando.",
+                        steps: "1. Sente na máquina\n2. Pés na plataforma\n3. Largura além ombros\n4. Abaixe dobrando\n5. Até 90 graus\n6. Pause 1 segundo\n7. Suba empurrando",
+                        tips: "✓ Empurre calcanhar\n✓ Controlado sempre\n✓ Sinta as pernas",
+                        avoid: "✗ Joelhos não caem\n✗ Sem descer demais"
+                    },
+                    {
+                        name: "Extensora",
+                        sets: "3 x 12-15",
+                        desc: "Sente com costas apoiadas. Estenda completamente.",
+                        steps: "1. Sente apoiado\n2. Pés sob rolete\n3. Estenda completamente\n4. Levante rolete\n5. Pause 1-2 seg\n6. Abaixe controlado\n7. Não toque chão",
+                        tips: "✓ Foco quadríceps\n✓ Pausa importante\n✓ Lento e controlado",
+                        avoid: "✗ Sem impulso\n✗ Sem bater"
+                    }
+                ]
+            },
+            {
+                day: "Quinta",
+                focus: "Ombro & Leve",
+                exercises: [
+                    {
+                        name: "Desenvolvimento",
+                        sets: "4 x 8-10",
+                        desc: "Sente ou fique em pé. Halteres na altura ombros. Suba acima da cabeça.",
+                        steps: "1. Sente ou de pé\n2. Haltere cada mão\n3. Altura ombros\n4. Palmas para frente\n5. Suba halteres\n6. Estenda completamente\n7. Pause 1 segundo",
+                        tips: "✓ Suba explosivamente\n✓ Abaixe controlado\n✓ Sinta ombro",
+                        avoid: "✗ Sem arcar costas\n✗ Peso moderado"
+                    },
+                    {
+                        name: "Elevação Lateral",
+                        sets: "3 x 12-15",
+                        desc: "Em pé com halteres. Levante lateralmente até ombros.",
+                        steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos flexionados\n4. Levante para lados\n5. Até ombros\n6. Pause 1 segundo\n7. Abaixe lentamente",
+                        tips: "✓ Lento e controlado\n✓ Sinta alongamento\n✓ Peso moderado",
+                        avoid: "✗ Sem jogar\n✗ Sem deixar cair"
+                    },
+                    {
+                        name: "Puxada Leve",
+                        sets: "2 x 8-10",
+                        desc: "Puxada com 50-70% peso. Recuperação ativa.",
+                        steps: "1. Use peso LEVE\n2. Mesma técnica\n3. Forma perfeita\n4. Puxe ao peito\n5. Movimento fluido\n6. Recuperação ativa",
+                        tips: "✓ Recuperação\n✓ Fluxo de sangue\n✓ Forma perfeita",
+                        avoid: "✗ Peso leve\n✗ Sem treinar pesado"
+                    }
+                ]
+            },
+            {
+                day: "Sexta",
+                focus: "Cardio HIIT + Core",
+                exercises: [
+                    {
+                        name: "Aquecimento",
+                        sets: "1 x 5 min",
+                        desc: "Corrida, bicicleta ou corda em ritmo moderado.",
+                        steps: "1. Escolha exercício\n2. Ritmo moderado\n3. Prepare o corpo\n4. Eleve frequência\n5. 5 minutos totais\n6. Sem ir forte\n7. Pronto para HIIT",
+                        tips: "✓ Aqueça bem\n✓ Ritmo moderado\n✓ Prepare articulações",
+                        avoid: "✗ Sem pular forte\n✗ Sem sair intenso"
+                    },
+                    {
+                        name: "HIIT",
+                        sets: "8 x (30s máx/30s rec)",
+                        desc: "30s máxima intensidade + 30s recuperação. Repita 20-30 min.",
+                        steps: "1. 30s MÁXIMO\n2. Dê tudo\n3. 30s recuperação leve\n4. Respire\n5. Alterne exercícios\n6. Repita 20-30 min\n7. Termine exausto",
+                        tips: "✓ Mais intenso = mais gordura\n✓ Máximo esforço\n✓ Recuperação leve",
+                        avoid: "✗ Sem pular intensidade\n✗ Recuperação leve"
+                    },
+                    {
+                        name: "Prancha",
+                        sets: "3 x 30-60 seg",
+                        desc: "Corpo reto. Cotovelos sob ombros. Contraia abdômen.",
+                        steps: "1. Deite-se de bruços\n2. Cotovelos sob ombros\n3. Levante corpo\n4. Apoie cotovelos/pés\n5. Linha reta\n6. Contraia abdômen\n7. Mantenha respiração",
+                        tips: "✓ Qualidade > quantidade\n✓ Contraia CORE\n✓ Respiração constante",
+                        avoid: "✗ Sem deixar cair\n✗ Sem prender respiração"
+                    }
+                ]
+            }
+        ];
+
+        function render() {
+            const container = document.getElementById('workoutContainer');
+            container.innerHTML = '';
+
+            workouts.forEach((day, dayIdx) => {
+                const dayBox = document.createElement('div');
+                dayBox.className = 'day-box';
+                
+                const header = document.createElement('div');
+                header.className = 'day-header';
+                header.onclick = () => toggleDay(dayIdx);
+                header.innerHTML = `
+                    <div>
+                        <div class="day-title">${day.day}</div>
+                        <div class="day-focus">${day.focus}</div>
+                    </div>
+                    <div>
+                        <span id="counter${dayIdx}">0/${day.exercises.length}</span>
+                        <span style="margin-left: 10px;">▼</span>
+                    </div>
+                `;
+                dayBox.appendChild(header);
+
+                const content = document.createElement('div');
+                content.id = `day${dayIdx}`;
+                content.className = 'hidden';
+
+                day.exercises.forEach((ex, exIdx) => {
+                    const exercise = document.createElement('div');
+                    exercise.className = 'exercise';
+                    exercise.onclick = () => toggleExercise(dayIdx, exIdx);
+
+                    const checkbox = document.createElement('div');
+                    checkbox.className = 'checkbox';
+                    checkbox.id = `check${dayIdx}-${exIdx}`;
+                    checkbox.onclick = (e) => {
+                        e.stopPropagation();
+                        toggleCheck(dayIdx, exIdx);
+                    };
+                    checkbox.innerHTML = '';
+
+                    const info = document.createElement('div');
+                    info.className = 'exercise-info';
+                    info.innerHTML = `
+                        <div class="exercise-name">${ex.name}</div>
+                        <div class="exercise-sets">${ex.sets}</div>
+                    `;
+
+                    exercise.appendChild(checkbox);
+                    exercise.appendChild(info);
+
+                    const details = document.createElement('div');
+                    details.className = 'exercise-details';
+                    details.id = `details${dayIdx}-${exIdx}`;
+                    details.innerHTML = `
+                        <div class="detail-section">
+                            <div class="detail-title">📖 Como Fazer:</div>
+                            <div>${ex.desc}</div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="detail-title">🔢 Passo a Passo:</div>
+                            <div style="white-space: pre-wrap;">${ex.steps}</div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="detail-title">💡 Dicas:</div>
+                            <div style="white-space: pre-wrap;">${ex.tips}</div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="detail-title">⚠️ Evite:</div>
+                            <div style="white-space: pre-wrap;">${ex.avoid}</div>
+                        </div>
+                    `;
+
+                    content.appendChild(exercise);
+                    content.appendChild(details);
+                });
+
+                dayBox.appendChild(content);
+                container.appendChild(dayBox);
+            });
+
+            updateProgress();
+        }
+
+        function toggleDay(idx) {
+            const el = document.getElementById(`day${idx}`);
+            el.classList.toggle('hidden');
+        }
+
+        function toggleExercise(dayIdx, exIdx) {
+            const el = document.getElementById(`details${dayIdx}-${exIdx}`);
+            el.classList.toggle('show');
+        }
+
+        function toggleCheck(dayIdx, exIdx) {
+            const el = document.getElementById(`check${dayIdx}-${exIdx}`);
+            el.classList.toggle('checked');
+            if (el.classList.contains('checked')) {
+                el.innerHTML = '✓';
+            } else {
+                el.innerHTML = '';
+            }
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let total = 0, checked = 0;
+            document.querySelectorAll('.checkbox').forEach(box => {
+                total++;
+                if (box.classList.contains('checked')) checked++;
+            });
+            const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+            document.getElementById('progressFill').style.width = percent + '%';
+        }
+
+        render();
+    </script>
+</body>
+</html>
