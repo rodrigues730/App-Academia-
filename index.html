@@ -86,6 +86,23 @@
         .exercise-details.show { display: block; }
         .detail-section { margin-bottom: 15px; }
         .detail-title { font-weight: bold; color: #4CAF50; margin-bottom: 8px; }
+        .video-btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .video-btn:hover { background: #cc0000; }
         .hidden { display: none; }
     </style>
 </head>
@@ -108,6 +125,7 @@
                     {
                         name: "Supino Reto",
                         sets: "4 x 6-8",
+                        video: "https://www.youtube.com/results?search_query=supino+reto+barra+forma+correta",
                         desc: "Deite-se no banco com pés apoiados. Pegue a barra acima da largura dos ombros. Abaixe até o peito. Suba explosivamente.",
                         steps: "1. Sente firme no banco\n2. Pegue barra além da largura\n3. Levante acima do peito\n4. Abaixe lentamente até peito\n5. Pause 1 segundo\n6. Empurre explosivamente\n7. Repita 6-8 vezes",
                         tips: "✓ Cotovelos a 45°\n✓ Respire corretamente\n✓ Controle sempre",
@@ -116,6 +134,7 @@
                     {
                         name: "Crucifixo no Cabo",
                         sets: "3 x 10-12",
+                        video: "https://www.youtube.com/results?search_query=crucifixo+no+cabo+peito+forma+correta",
                         desc: "Em pé no centro. Pegue as alças com braços abertos. Puxe em movimento de abraço.",
                         steps: "1. Posicione-se no centro\n2. Pegue as alças abertas\n3. Cotovelos flexionados\n4. Puxe em movimento de abraço\n5. Aproxime na frente\n6. Pause 1 segundo\n7. Retorne controlado",
                         tips: "✓ Controle total\n✓ Foco na contração\n✓ Movimento fluido",
@@ -124,6 +143,7 @@
                     {
                         name: "Tríceps na Corda",
                         sets: "3 x 12-15",
+                        video: "https://www.youtube.com/results?search_query=tríceps+corda+forma+correta",
                         desc: "Pegue a corda na altura da cabeça. Cotovelos fixos. Puxe para baixo.",
                         steps: "1. Pegue a corda\n2. Altura da cabeça\n3. Cotovelos fixos\n4. Puxe para baixo\n5. Separe as pontas\n6. Pause 1 segundo\n7. Retorne controlado",
                         tips: "✓ Apenas antebraços\n✓ Controle na volta\n✓ Sinta o tríceps",
@@ -138,6 +158,7 @@
                     {
                         name: "Puxada Frontal",
                         sets: "4 x 6-8",
+                        video: "https://www.youtube.com/results?search_query=puxada+frontal+lat+pulldown+forma+correta",
                         desc: "Sente com coxas fixadas. Pegue a barra acima dos ombros. Puxe até o peito.",
                         steps: "1. Sente com coxas presas\n2. Pegue barra além da largura\n3. Palmas para frente\n4. Expire ao puxar\n5. Puxe ao peito\n6. Cotovelos para baixo\n7. Pause 1 segundo",
                         tips: "✓ Sinta as costas\n✓ Controle a volta\n✓ Leve ao peito",
@@ -146,6 +167,7 @@
                     {
                         name: "Remada com Barra",
                         sets: "4 x 8-10",
+                        video: "https://www.youtube.com/results?search_query=remada+com+barra+bent+over+row+forma+correta",
                         desc: "Incline-se 30-45°. Joelhos flexionados. Pegue a barra. Puxe ao abdômen.",
                         steps: "1. Pé sob a barra\n2. Joelhos flexionados\n3. Incline costas retas\n4. Pegue barra\n5. Puxe ao abdômen\n6. Cotovelos próximos\n7. Pause 1-2 segundos",
                         tips: "✓ Costas RETAS\n✓ Não deixar cair\n✓ Cotovelos próximos",
@@ -154,6 +176,7 @@
                     {
                         name: "Rosca Direta",
                         sets: "3 x 8-10",
+                        video: "https://www.youtube.com/results?search_query=rosca+direta+barra+biceps+forma+correta",
                         desc: "Em pé. Pegue a barra com palmas para frente. Cotovelos fixos. Levante.",
                         steps: "1. Fique em pé\n2. Pegue palmas para frente\n3. Cotovelos fixos\n4. Flexione cotovelos\n5. Suba antebraços\n6. Levante até ombros\n7. Pause 1 segundo",
                         tips: "✓ Sem balanço\n✓ Apenas braços\n✓ Movimento puro",
@@ -168,6 +191,7 @@
                     {
                         name: "Agachamento",
                         sets: "4 x 6-8",
+                        video: "https://www.youtube.com/results?search_query=agachamento+squat+barra+forma+correta",
                         desc: "Barra nos ombros. Pés largura ombros. Abaixe até 90°. Suba explosivamente.",
                         steps: "1. Barra nos ombros\n2. Pés largura ombros\n3. Peito para frente\n4. Abaixe dobrando\n5. Até 90 graus\n6. Suba explosivo\n7. Quase esticado",
                         tips: "✓ Joelhos alinhados\n✓ Olhe frente\n✓ Suba com força",
@@ -176,6 +200,7 @@
                     {
                         name: "Leg Press",
                         sets: "3 x 10-12",
+                        video: "https://www.youtube.com/results?search_query=leg+press+perna+forma+correta",
                         desc: "Sente na máquina. Pés na plataforma. Abaixe flexionando.",
                         steps: "1. Sente na máquina\n2. Pés na plataforma\n3. Largura além ombros\n4. Abaixe dobrando\n5. Até 90 graus\n6. Pause 1 segundo\n7. Suba empurrando",
                         tips: "✓ Empurre calcanhar\n✓ Controlado sempre\n✓ Sinta as pernas",
@@ -184,6 +209,7 @@
                     {
                         name: "Extensora",
                         sets: "3 x 12-15",
+                        video: "https://www.youtube.com/results?search_query=extensora+perna+quadriceps+forma+correta",
                         desc: "Sente com costas apoiadas. Estenda completamente.",
                         steps: "1. Sente apoiado\n2. Pés sob rolete\n3. Estenda completamente\n4. Levante rolete\n5. Pause 1-2 seg\n6. Abaixe controlado\n7. Não toque chão",
                         tips: "✓ Foco quadríceps\n✓ Pausa importante\n✓ Lento e controlado",
@@ -198,6 +224,7 @@
                     {
                         name: "Desenvolvimento",
                         sets: "4 x 8-10",
+                        video: "https://www.youtube.com/results?search_query=desenvolvimento+ombro+halteres+forma+correta",
                         desc: "Sente ou fique em pé. Halteres na altura ombros. Suba acima da cabeça.",
                         steps: "1. Sente ou de pé\n2. Haltere cada mão\n3. Altura ombros\n4. Palmas para frente\n5. Suba halteres\n6. Estenda completamente\n7. Pause 1 segundo",
                         tips: "✓ Suba explosivamente\n✓ Abaixe controlado\n✓ Sinta ombro",
@@ -206,6 +233,7 @@
                     {
                         name: "Elevação Lateral",
                         sets: "3 x 12-15",
+                        video: "https://www.youtube.com/results?search_query=elevação+lateral+ombro+halteres+forma+correta",
                         desc: "Em pé com halteres. Levante lateralmente até ombros.",
                         steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos flexionados\n4. Levante para lados\n5. Até ombros\n6. Pause 1 segundo\n7. Abaixe lentamente",
                         tips: "✓ Lento e controlado\n✓ Sinta alongamento\n✓ Peso moderado",
@@ -214,6 +242,7 @@
                     {
                         name: "Puxada Leve",
                         sets: "2 x 8-10",
+                        video: "https://www.youtube.com/results?search_query=puxada+frontal+forma+correta",
                         desc: "Puxada com 50-70% peso. Recuperação ativa.",
                         steps: "1. Use peso LEVE\n2. Mesma técnica\n3. Forma perfeita\n4. Puxe ao peito\n5. Movimento fluido\n6. Recuperação ativa",
                         tips: "✓ Recuperação\n✓ Fluxo de sangue\n✓ Forma perfeita",
@@ -228,6 +257,7 @@
                     {
                         name: "Aquecimento",
                         sets: "1 x 5 min",
+                        video: "https://www.youtube.com/results?search_query=aquecimento+cardio+corrida+forma+correta",
                         desc: "Corrida, bicicleta ou corda em ritmo moderado.",
                         steps: "1. Escolha exercício\n2. Ritmo moderado\n3. Prepare o corpo\n4. Eleve frequência\n5. 5 minutos totais\n6. Sem ir forte\n7. Pronto para HIIT",
                         tips: "✓ Aqueça bem\n✓ Ritmo moderado\n✓ Prepare articulações",
@@ -236,6 +266,7 @@
                     {
                         name: "HIIT",
                         sets: "8 x (30s máx/30s rec)",
+                        video: "https://www.youtube.com/results?search_query=HIIT+treino+intenso+forma+correta",
                         desc: "30s máxima intensidade + 30s recuperação. Repita 20-30 min.",
                         steps: "1. 30s MÁXIMO\n2. Dê tudo\n3. 30s recuperação leve\n4. Respire\n5. Alterne exercícios\n6. Repita 20-30 min\n7. Termine exausto",
                         tips: "✓ Mais intenso = mais gordura\n✓ Máximo esforço\n✓ Recuperação leve",
@@ -244,6 +275,7 @@
                     {
                         name: "Prancha",
                         sets: "3 x 30-60 seg",
+                        video: "https://www.youtube.com/results?search_query=prancha+plank+core+forma+correta",
                         desc: "Corpo reto. Cotovelos sob ombros. Contraia abdômen.",
                         steps: "1. Deite-se de bruços\n2. Cotovelos sob ombros\n3. Levante corpo\n4. Apoie cotovelos/pés\n5. Linha reta\n6. Contraia abdômen\n7. Mantenha respiração",
                         tips: "✓ Qualidade > quantidade\n✓ Contraia CORE\n✓ Respiração constante",
@@ -308,6 +340,10 @@
                     details.className = 'exercise-details';
                     details.id = `details${dayIdx}-${exIdx}`;
                     details.innerHTML = `
+                        <button class="video-btn" onclick="window.open('${ex.video}', '_blank')">
+                            📹 Ver Vídeo YouTube
+                        </button>
+                        
                         <div class="detail-section">
                             <div class="detail-title">📖 Como Fazer:</div>
                             <div>${ex.desc}</div>
