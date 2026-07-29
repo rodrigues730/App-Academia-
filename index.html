@@ -79,11 +79,11 @@
         .rest-timer {
             background: #ff9800;
             color: white;
-            padding: 10px 15px;
+            padding: 15px;
             border-radius: 6px;
             text-align: center;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 18px;
             margin-bottom: 10px;
             display: none;
         }
@@ -129,22 +129,21 @@
             cursor: pointer;
             display: flex;
             gap: 10px;
-            align-items: flex-start;
+            align-items: center;
             position: relative;
+            transition: background 0.2s;
         }
         .exercise:hover { background: #333; }
+        .exercise.expand-details { background: #1f1f1f; }
         .exercise-time {
-            position: absolute;
-            top: 12px;
-            right: 40px;
+            margin-left: auto;
             font-size: 11px;
             color: #4CAF50;
             font-weight: bold;
+            min-width: 50px;
+            text-align: right;
         }
         .exercise-delete {
-            position: absolute;
-            top: 12px;
-            right: 15px;
             background: #f44336;
             color: white;
             border: none;
@@ -154,19 +153,25 @@
             cursor: pointer;
             font-size: 12px;
             font-weight: bold;
+            margin-left: 5px;
         }
         .exercise-delete:hover { background: #da190b; }
         .checkbox {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             border: 2px solid #666;
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            margin-top: 2px;
             cursor: pointer;
+            font-size: 14px;
+            background: #333;
+            transition: all 0.2s;
+        }
+        .checkbox:hover {
+            border-color: #4CAF50;
         }
         .checkbox.checked {
             background: #4CAF50;
@@ -174,7 +179,10 @@
             color: white;
             font-weight: bold;
         }
-        .exercise-info { flex: 1; }
+        .exercise-info { 
+            flex: 1;
+            cursor: pointer;
+        }
         .exercise-name { font-weight: bold; font-size: 14px; }
         .exercise-sets { font-size: 12px; color: #aaa; }
         .exercise-details {
@@ -248,57 +256,6 @@
             font-size: 16px;
         }
         .modal-content button:hover { background: #45a049; }
-        .add-exercise-form {
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 10px;
-            border: 1px solid #444;
-        }
-        .form-group {
-            margin-bottom: 12px;
-            text-align: left;
-        }
-        .form-group label {
-            font-weight: bold;
-            font-size: 12px;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            background: #333;
-            border: 1px solid #444;
-            border-radius: 4px;
-            color: #fff;
-            font-size: 12px;
-            box-sizing: border-box;
-        }
-        .form-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .form-buttons button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .btn-save {
-            background: #4CAF50;
-            color: white;
-        }
-        .btn-save:hover { background: #45a049; }
-        .btn-cancel {
-            background: #666;
-            color: white;
-        }
-        .btn-cancel:hover { background: #555; }
     </style>
 </head>
 <body>
@@ -341,7 +298,8 @@
         let timerInterval = null;
         let restTimerInterval = null;
         let isWorkoutActive = false;
-        let exerciseTimes = {}; // {dayIdx-exIdx: {startTime, duration}}
+        let exerciseTimes = {};
+        let checkedExercises = {};
 
         const defaultWorkouts = [
             {
@@ -373,38 +331,38 @@
                     { name: "Agachamento", sets: "4 x 6-8", video: "https://www.youtube.com/results?search_query=agachamento+squat+barra+forma+correta", desc: "Barra nos ombros. Pés largura ombros. Abaixe até 90°. Suba explosivamente.", steps: "1. Barra nos ombros\n2. Pés largura ombros\n3. Peito para frente\n4. Abaixe dobrando\n5. Até 90 graus\n6. Suba explosivo\n7. Quase esticado", tips: "✓ Joelhos alinhados\n✓ Olhe frente\n✓ Suba com força", avoid: "✗ Joelhos não caem\n✗ Costas retas" },
                     { name: "Leg Press", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=leg+press+perna+forma+correta", desc: "Sente na máquina. Pés na plataforma. Abaixe flexionando.", steps: "1. Sente na máquina\n2. Pés na plataforma\n3. Largura além ombros\n4. Abaixe dobrando\n5. Até 90 graus\n6. Pause 1 segundo\n7. Suba empurrando", tips: "✓ Empurre calcanhar\n✓ Controlado sempre\n✓ Sinta as pernas", avoid: "✗ Joelhos não caem\n✗ Sem descer demais" },
                     { name: "Extensora", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=extensora+perna+quadriceps+forma+correta", desc: "Sente com costas apoiadas. Estenda completamente.", steps: "1. Sente apoiado\n2. Pés sob rolete\n3. Estenda completamente\n4. Levante rolete\n5. Pause 1-2 seg\n6. Abaixe controlado\n7. Não toque chão", tips: "✓ Foco quadríceps\n✓ Pausa importante\n✓ Lento e controlado", avoid: "✗ Sem impulso\n✗ Sem bater" },
-                    { name: "Cadeira Adutora (Perna Interna)", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=cadeira+adutora+perna+interna+forma+correta", desc: "Sente na máquina. Pernas abertas. Aperte as pernas juntando-as.", steps: "1. Sente na máquina\n2. Pernas bem abertas\n3. Aperte as pernas\n4. Junte totalmente\n5. Pause 1 segundo\n6. Abra controladamente\n7. Volte à posição inicial", tips: "✓ Trabalha perna interna\n✓ Movimento controlado\n✓ Foco na contração", avoid: "✗ Sem impulso\n✗ Sem abrir demais" },
-                    { name: "Rosca de Perna (Posterior)", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=rosca+de+perna+hamstring+forma+correta", desc: "Deitado de bruços. Pés sob rolete. Flexione levantando.", steps: "1. Deite-se de bruços\n2. Pés sob rolete\n3. Flexione joelhos\n4. Levante rolete\n5. Até formar 90°\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha posterior coxa\n✓ Pausa importante\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem levantar quadril" }
+                    { name: "Cadeira Adutora", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=cadeira+adutora+perna+forma+correta", desc: "Sente na máquina. Pernas abertas. Aperte as pernas.", steps: "1. Sente na máquina\n2. Pernas bem abertas\n3. Aperte as pernas\n4. Junte totalmente\n5. Pause 1 segundo\n6. Abra controladamente\n7. Volte à posição", tips: "✓ Trabalha perna interna\n✓ Movimento controlado\n✓ Foco na contração", avoid: "✗ Sem impulso\n✗ Sem abrir demais" },
+                    { name: "Rosca de Perna", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=rosca+de+perna+forma+correta", desc: "Deitado de bruços. Pés sob rolete. Flexione levantando.", steps: "1. Deite-se de bruços\n2. Pés sob rolete\n3. Flexione joelhos\n4. Levante rolete\n5. Até formar 90°\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha posterior coxa\n✓ Pausa importante\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem levantar quadril" }
                 ]
             },
             {
                 day: "Quinta",
                 focus: "Ombro & Braço",
                 exercises: [
-                    { name: "Desenvolvimento", sets: "4 x 8-10", video: "https://www.youtube.com/results?search_query=desenvolvimento+ombro+halteres+forma+correta", desc: "Sente ou fique em pé. Halteres na altura ombros. Suba acima da cabeça.", steps: "1. Sente ou de pé\n2. Haltere cada mão\n3. Altura ombros\n4. Palmas para frente\n5. Suba halteres\n6. Estenda completamente\n7. Pause 1 segundo", tips: "✓ Suba explosivamente\n✓ Abaixe controlado\n✓ Sinta ombro", avoid: "✗ Sem arcar costas\n✗ Peso moderado" },
-                    { name: "Elevação Lateral", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=elevação+lateral+ombro+halteres+forma+correta", desc: "Em pé com halteres. Levante lateralmente até ombros.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos flexionados\n4. Levante para lados\n5. Até ombros\n6. Pause 1 segundo\n7. Abaixe lentamente", tips: "✓ Lento e controlado\n✓ Sinta alongamento\n✓ Peso moderado", avoid: "✗ Sem jogar\n✗ Sem deixar cair" },
+                    { name: "Desenvolvimento", sets: "4 x 8-10", video: "https://www.youtube.com/results?search_query=desenvolvimento+ombro+forma+correta", desc: "Sente ou fique em pé. Halteres na altura ombros. Suba acima.", steps: "1. Sente ou de pé\n2. Haltere cada mão\n3. Altura ombros\n4. Palmas para frente\n5. Suba halteres\n6. Estenda completamente\n7. Pause 1 segundo", tips: "✓ Suba explosivamente\n✓ Abaixe controlado\n✓ Sinta ombro", avoid: "✗ Sem arcar costas\n✗ Peso moderado" },
+                    { name: "Elevação Lateral", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=elevação+lateral+ombro+forma+correta", desc: "Em pé com halteres. Levante lateralmente até ombros.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos flexionados\n4. Levante para lados\n5. Até ombros\n6. Pause 1 segundo\n7. Abaixe lentamente", tips: "✓ Lento e controlado\n✓ Sinta alongamento\n✓ Peso moderado", avoid: "✗ Sem jogar\n✗ Sem deixar cair" },
                     { name: "Elevação Frontal", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=elevação+frontal+ombro+forma+correta", desc: "De pé com halteres. Levante para frente até altura ombros.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos ligeiramente flexionados\n4. Levante para frente\n5. Até altura ombros\n6. Pause 1 segundo\n7. Abaixe lentamente", tips: "✓ Trabalha ombro frontal\n✓ Movimento lento\n✓ Controlado sempre", avoid: "✗ Sem impulso\n✗ Peso moderado" },
-                    { name: "Encolhimento de Ombros (Shrug)", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=encolhimento+ombro+shrug+forma+correta", desc: "De pé com halteres. Encolha ombros levantando até orelhas. Abaixe.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Braços estendidos\n4. Encolha ombros\n5. Levante até orelhas\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha trapézio\n✓ Movimento vertical\n✓ Peso moderado", avoid: "✗ Sem usar impulso\n✗ Peso moderado" },
-                    { name: "Rosca Inversa (Barra)", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=rosca+inversa+barra+antebraço+forma+correta", desc: "De pé com barra. Palmas viradas para baixo. Levante até ombros.", steps: "1. Fique em pé\n2. Pegue barra\n3. Palmas para baixo\n4. Cotovelos fixos\n5. Flexione cotovelos\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Trabalha antebraço\n✓ Sem balanço\n✓ Movimento controlado", avoid: "✗ Sem impulso\n✗ Cotovelos fixos" }
+                    { name: "Shrug", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=shrug+ombro+forma+correta", desc: "De pé com halteres. Encolha ombros levantando até orelhas.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Braços estendidos\n4. Encolha ombros\n5. Levante até orelhas\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha trapézio\n✓ Movimento vertical\n✓ Peso moderado", avoid: "✗ Sem usar impulso\n✗ Peso moderado" },
+                    { name: "Rosca Inversa", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=rosca+inversa+barra+forma+correta", desc: "De pé com barra. Palmas viradas para baixo. Levante até ombros.", steps: "1. Fique em pé\n2. Pegue barra\n3. Palmas para baixo\n4. Cotovelos fixos\n5. Flexione cotovelos\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Trabalha antebraço\n✓ Sem balanço\n✓ Movimento controlado", avoid: "✗ Sem impulso\n✗ Cotovelos fixos" }
                 ]
             },
             {
                 day: "Sexta",
                 focus: "Cardio HIIT + Core",
                 exercises: [
-                    { name: "Aquecimento", sets: "1 x 5 min", video: "https://www.youtube.com/results?search_query=aquecimento+cardio+corrida+forma+correta", desc: "Corrida, bicicleta ou corda em ritmo moderado.", steps: "1. Escolha exercício\n2. Ritmo moderado\n3. Prepare o corpo\n4. Eleve frequência\n5. 5 minutos totais\n6. Sem ir forte\n7. Pronto para HIIT", tips: "✓ Aqueça bem\n✓ Ritmo moderado\n✓ Prepare articulações", avoid: "✗ Sem pular forte\n✗ Sem sair intenso" },
-                    { name: "HIIT", sets: "8 x (30s máx/30s rec)", video: "https://www.youtube.com/results?search_query=HIIT+treino+intenso+forma+correta", desc: "30s máxima intensidade + 30s recuperação. Repita 20-30 min.", steps: "1. 30s MÁXIMO\n2. Dê tudo\n3. 30s recuperação leve\n4. Respire\n5. Alterne exercícios\n6. Repita 20-30 min\n7. Termine exausto", tips: "✓ Mais intenso = mais gordura\n✓ Máximo esforço\n✓ Recuperação leve", avoid: "✗ Sem pular intensidade\n✗ Recuperação leve" },
-                    { name: "Prancha", sets: "3 x 30-60 seg", video: "https://www.youtube.com/results?search_query=prancha+plank+core+forma+correta", desc: "Corpo reto. Cotovelos sob ombros. Contraia abdômen.", steps: "1. Deite-se de bruços\n2. Cotovelos sob ombros\n3. Levante corpo\n4. Apoie cotovelos/pés\n5. Linha reta\n6. Contraia abdômen\n7. Mantenha respiração", tips: "✓ Qualidade > quantidade\n✓ Contraia CORE\n✓ Respiração constante", avoid: "✗ Sem deixar cair\n✗ Sem prender respiração" },
-                    { name: "Abdominal Dinâmico", sets: "3 x 15-20", video: "https://www.youtube.com/results?search_query=abdominal+dinâmico+forma+correta", desc: "Deitado de costas. Joelhos flexionados. Levante o tronco com contração.", steps: "1. Deite de costas\n2. Joelhos flexionados\n3. Pés apoiados\n4. Coloque mãos atrás cabeça\n5. Levante tronco\n6. Máxima contração\n7. Abaixe controlado", tips: "✓ Contração máxima\n✓ Movimento lento\n✓ Foco no abdômen", avoid: "✗ Sem puxar pescoço\n✗ Sem impulso" },
-                    { name: "Mountain Climbers", sets: "3 x 20-30 seg", video: "https://www.youtube.com/results?search_query=mountain+climbers+cardio+forma+correta", desc: "Posição de flexão. Alterne trazendo joelhos ao peito rápido.", steps: "1. Posição de flexão\n2. Corpo reto\n3. Traga joelho esquerdo\n4. Retorne rápido\n5. Traga joelho direito\n6. Mantenha ritmo\n7. 20-30 segundos", tips: "✓ Movimento rápido\n✓ Cardio + core\n✓ Máximo esforço", avoid: "✗ Sem deixar quadril cair\n✗ Sem manter corpo reto" }
+                    { name: "Aquecimento", sets: "1 x 5 min", video: "https://www.youtube.com/results?search_query=aquecimento+cardio+forma+correta", desc: "Corrida, bicicleta ou corda em ritmo moderado.", steps: "1. Escolha exercício\n2. Ritmo moderado\n3. Prepare corpo\n4. Eleve frequência\n5. 5 minutos\n6. Sem ir forte\n7. Pronto para HIIT", tips: "✓ Aqueça bem\n✓ Ritmo moderado\n✓ Prepare articulações", avoid: "✗ Sem pular forte\n✗ Sem sair intenso" },
+                    { name: "HIIT", sets: "8 x 30s", video: "https://www.youtube.com/results?search_query=HIIT+cardio+forma+correta", desc: "30s máxima intensidade + 30s recuperação. Repita.", steps: "1. 30s MÁXIMO\n2. Dê tudo\n3. 30s recuperação\n4. Respire\n5. Alterne exercícios\n6. Repita ciclos\n7. Termine intenso", tips: "✓ Mais intenso = resultado\n✓ Máximo esforço\n✓ Recuperação leve", avoid: "✗ Sem pular intensidade\n✗ Recuperação leve" },
+                    { name: "Prancha", sets: "3 x 30-60s", video: "https://www.youtube.com/results?search_query=prancha+plank+forma+correta", desc: "Corpo reto. Cotovelos sob ombros. Contraia abdômen.", steps: "1. Deite de bruços\n2. Cotovelos sob ombros\n3. Levante corpo\n4. Apoie cotovelos/pés\n5. Linha reta\n6. Contraia abdômen\n7. Mantenha respiração", tips: "✓ Qualidade > quantidade\n✓ Contraia CORE\n✓ Respiração constante", avoid: "✗ Sem deixar cair\n✗ Sem prender respiração" },
+                    { name: "Abdominal", sets: "3 x 15-20", video: "https://www.youtube.com/results?search_query=abdominal+dinâmico+forma+correta", desc: "Deitado de costas. Joelhos flexionados. Levante o tronco.", steps: "1. Deite de costas\n2. Joelhos flexionados\n3. Pés apoiados\n4. Mãos atrás cabeça\n5. Levante tronco\n6. Máxima contração\n7. Abaixe controlado", tips: "✓ Contração máxima\n✓ Movimento lento\n✓ Foco abdômen", avoid: "✗ Sem puxar pescoço\n✗ Sem impulso" },
+                    { name: "Mountain Climbers", sets: "3 x 20s", video: "https://www.youtube.com/results?search_query=mountain+climbers+forma+correta", desc: "Posição de flexão. Alterne trazendo joelhos ao peito rápido.", steps: "1. Posição de flexão\n2. Corpo reto\n3. Traga joelho esquerdo\n4. Retorne rápido\n5. Joelho direito\n6. Mantenha ritmo\n7. 20-30 segundos", tips: "✓ Movimento rápido\n✓ Cardio + core\n✓ Máximo esforço", avoid: "✗ Sem deixar quadril cair\n✗ Sem manter corpo reto" }
                 ]
             }
         ];
 
-        // Recuperar estado do localStorage
         function loadState() {
             const saved = localStorage.getItem('workouts');
             const savedTimes = localStorage.getItem('exerciseTimes');
+            const savedChecked = localStorage.getItem('checkedExercises');
             if (saved) {
                 window.workouts = JSON.parse(saved);
             } else {
@@ -412,6 +370,9 @@
             }
             if (savedTimes) {
                 exerciseTimes = JSON.parse(savedTimes);
+            }
+            if (savedChecked) {
+                checkedExercises = JSON.parse(savedChecked);
             }
             const savedStartTime = localStorage.getItem('workoutStartTime');
             if (savedStartTime) {
@@ -423,13 +384,12 @@
             }
         }
 
-        // Salvar estado no localStorage
         function saveState() {
             localStorage.setItem('workouts', JSON.stringify(window.workouts));
             localStorage.setItem('exerciseTimes', JSON.stringify(exerciseTimes));
+            localStorage.setItem('checkedExercises', JSON.stringify(checkedExercises));
         }
 
-        // Iniciar treino
         function startWorkout() {
             if (!isWorkoutActive) {
                 workoutStartTime = Date.now();
@@ -441,13 +401,11 @@
             }
         }
 
-        // Iniciar temporizador
         function startTimer() {
             if (timerInterval) clearInterval(timerInterval);
             timerInterval = setInterval(updateTimer, 100);
         }
 
-        // Atualizar temporizador
         function updateTimer() {
             if (!workoutStartTime || !isWorkoutActive) return;
             const elapsed = Date.now() - workoutStartTime;
@@ -459,7 +417,6 @@
             document.getElementById('timerDisplay').textContent = display;
         }
 
-        // Encerrar treino
         function endWorkout() {
             if (!isWorkoutActive) return;
             clearInterval(timerInterval);
@@ -476,12 +433,10 @@
             resetWorkout();
         }
 
-        // Fechar modal
         function closeModal() {
             document.getElementById('finishModal').classList.remove('show');
         }
 
-        // Resetar treino
         function resetWorkout() {
             workoutStartTime = null;
             isWorkoutActive = false;
@@ -490,48 +445,61 @@
             document.getElementById('timerDisplay').textContent = '00:00:00';
         }
 
-        // Temporizador de descanso
         function startRestTimer() {
             if (restTimerInterval) clearInterval(restTimerInterval);
             let restSeconds = 60;
             const restEl = document.getElementById('restTimer');
             restEl.classList.add('active');
+            restEl.textContent = `⏳ Descanso: ${restSeconds}s`;
+            
             restTimerInterval = setInterval(() => {
-                if (restSeconds > 0) {
+                restSeconds--;
+                if (restSeconds >= 0) {
                     restEl.textContent = `⏳ Descanso: ${restSeconds}s`;
-                    restSeconds--;
-                } else {
+                }
+                if (restSeconds < 0) {
                     clearInterval(restTimerInterval);
                     restEl.classList.remove('active');
                 }
             }, 1000);
         }
 
-        // Marcar exercício
         function toggleCheck(dayIdx, exIdx) {
             const key = `${dayIdx}-${exIdx}`;
-            const el = document.getElementById(`check${key}`);
             
-            if (!el.classList.contains('checked')) {
+            if (!checkedExercises[key]) {
                 // Marcar como concluído
-                exerciseTimes[key] = { startTime: Date.now(), duration: 0 };
-                el.classList.add('checked');
-                el.innerHTML = '✓';
+                checkedExercises[key] = true;
+                exerciseTimes[key] = Date.now();
                 startRestTimer();
             } else {
                 // Desmarcar
-                if (exerciseTimes[key]) {
-                    exerciseTimes[key].duration = Date.now() - exerciseTimes[key].startTime;
-                }
-                el.classList.remove('checked');
-                el.innerHTML = '';
+                delete checkedExercises[key];
             }
+            
             saveState();
+            updateCheckboxes();
             updateProgress();
-            render();
         }
 
-        // Deletar exercício
+        function updateCheckboxes() {
+            for (let dayIdx = 0; dayIdx < window.workouts.length; dayIdx++) {
+                for (let exIdx = 0; exIdx < window.workouts[dayIdx].exercises.length; exIdx++) {
+                    const key = `${dayIdx}-${exIdx}`;
+                    const checkbox = document.getElementById(`check${key}`);
+                    if (checkbox) {
+                        if (checkedExercises[key]) {
+                            checkbox.classList.add('checked');
+                            checkbox.innerHTML = '✓';
+                        } else {
+                            checkbox.classList.remove('checked');
+                            checkbox.innerHTML = '';
+                        }
+                    }
+                }
+            }
+        }
+
         function deleteExercise(dayIdx, exIdx) {
             if (confirm('Tem certeza que quer deletar este exercício?')) {
                 window.workouts[dayIdx].exercises.splice(exIdx, 1);
@@ -540,7 +508,6 @@
             }
         }
 
-        // Adicionar exercício
         function addExercise(dayIdx) {
             const name = prompt('Nome do exercício:');
             if (!name) return;
@@ -562,16 +529,14 @@
             render();
         }
 
-        // Obter tempo formatado
         function formatTime(ms) {
             if (!ms) return '';
-            const totalSeconds = Math.floor(ms / 1000);
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            return `${minutes}m ${seconds}s`;
+            const seconds = Math.floor((Date.now() - ms) / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes}m ${secs}s`;
         }
 
-        // Renderizar
         function render() {
             const container = document.getElementById('workoutContainer');
             container.innerHTML = '';
@@ -602,13 +567,11 @@
                 day.exercises.forEach((ex, exIdx) => {
                     const key = `${dayIdx}-${exIdx}`;
                     const timeData = exerciseTimes[key];
-                    const duration = timeData ? (timeData.duration || (Date.now() - timeData.startTime)) : 0;
-                    const timeDisplay = formatTime(duration);
+                    const timeDisplay = timeData ? formatTime(timeData) : '';
 
                     const exercise = document.createElement('div');
                     exercise.className = 'exercise';
-                    exercise.onclick = () => toggleExercise(dayIdx, exIdx);
-
+                    
                     const checkbox = document.createElement('div');
                     checkbox.className = 'checkbox';
                     checkbox.id = `check${key}`;
@@ -616,20 +579,24 @@
                         e.stopPropagation();
                         toggleCheck(dayIdx, exIdx);
                     };
-                    checkbox.innerHTML = '';
+
+                    if (checkedExercises[key]) {
+                        checkbox.classList.add('checked');
+                        checkbox.innerHTML = '✓';
+                    }
 
                     const info = document.createElement('div');
                     info.className = 'exercise-info';
+                    info.onclick = () => toggleExercise(dayIdx, exIdx);
                     info.innerHTML = `
                         <div class="exercise-name">${ex.name}</div>
                         <div class="exercise-sets">${ex.sets}</div>
                     `;
 
+                    const timeSpan = document.createElement('div');
+                    timeSpan.className = 'exercise-time';
                     if (timeDisplay) {
-                        const timeSpan = document.createElement('div');
-                        timeSpan.className = 'exercise-time';
                         timeSpan.textContent = `⏱️ ${timeDisplay}`;
-                        exercise.appendChild(timeSpan);
                     }
 
                     const deleteBtn = document.createElement('button');
@@ -639,10 +606,13 @@
                         e.stopPropagation();
                         deleteExercise(dayIdx, exIdx);
                     };
-                    exercise.appendChild(deleteBtn);
 
                     exercise.appendChild(checkbox);
                     exercise.appendChild(info);
+                    if (timeDisplay) {
+                        exercise.appendChild(timeSpan);
+                    }
+                    exercise.appendChild(deleteBtn);
 
                     const details = document.createElement('div');
                     details.className = 'exercise-details';
@@ -677,6 +647,7 @@
                 container.appendChild(dayBox);
             });
 
+            updateCheckboxes();
             updateProgress();
         }
 
@@ -692,15 +663,17 @@
 
         function updateProgress() {
             let total = 0, checked = 0;
-            document.querySelectorAll('.checkbox').forEach(box => {
-                total++;
-                if (box.classList.contains('checked')) checked++;
-            });
+            for (let dayIdx = 0; dayIdx < window.workouts.length; dayIdx++) {
+                for (let exIdx = 0; exIdx < window.workouts[dayIdx].exercises.length; exIdx++) {
+                    total++;
+                    const key = `${dayIdx}-${exIdx}`;
+                    if (checkedExercises[key]) checked++;
+                }
+            }
             const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
             document.getElementById('progressFill').style.width = percent + '%';
         }
 
-        // Inicializar
         loadState();
         render();
     </script>
