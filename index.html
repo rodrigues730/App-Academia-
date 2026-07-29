@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academia Pro - Seu Treino</title>
+    <title>Academia Pro - Eduardo</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -17,7 +17,7 @@
 
         /* LOGIN */
         .login-screen { display: none; }
-        .login-screen.show { display: block; }
+        .login-screen.show { display: block; padding-top: 40px; }
         .login-title { font-size: 36px; text-align: center; margin-bottom: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .profiles-list { display: grid; gap: 12px; margin-bottom: 20px; }
         .profile-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s; display: flex; justify-content: space-between; align-items: center; }
@@ -84,10 +84,12 @@
         .workout-details { display: none; background: #1a1a2e; padding: 15px; }
         .workout-details.show { display: block; }
 
-        .exercise-item { background: #2a2a3e; padding: 12px; border-radius: 6px; margin-bottom: 12px; border-left: 4px solid #667eea; }
-        .exercise-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .exercise-item-name { font-weight: bold; color: #667eea; }
-        .exercise-item-type { font-size: 11px; background: rgba(102,126,234,0.3); padding: 4px 8px; border-radius: 4px; color: #667eea; }
+        .exercise-item { background: #2a2a3e; padding: 12px; border-radius: 6px; margin-bottom: 12px; border-left: 4px solid #667eea; display: grid; grid-template-columns: 80px 1fr; gap: 12px; }
+        .exercise-image { width: 80px; height: 80px; background: #1a1a2e; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .exercise-image svg { width: 100%; height: 100%; }
+        .exercise-item-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .exercise-item-name { font-weight: bold; color: #667eea; margin-bottom: 5px; }
+        .exercise-item-type { font-size: 11px; background: rgba(102,126,234,0.3); padding: 4px 8px; border-radius: 4px; color: #667eea; display: inline-block; margin-bottom: 8px; }
         .exercise-item-actions { display: flex; gap: 8px; }
         .btn-check { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
         .btn-check.done { background: #4CAF50; }
@@ -113,7 +115,8 @@
 
         .exercises-list { display: grid; gap: 15px; max-height: 70vh; overflow-y: auto; }
         .exercise-card { background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%); padding: 15px; border-radius: 8px; border: 1px solid #444; display: grid; grid-template-columns: 100px 1fr; gap: 12px; }
-        .exercise-image { width: 100px; height: 100px; background: #2a2a3e; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+        .exercise-image-card { width: 100px; height: 100px; background: #2a2a3e; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .exercise-image-card svg { width: 100%; height: 100%; }
         .exercise-info { display: flex; flex-direction: column; }
         .exercise-name { font-weight: bold; font-size: 14px; color: #667eea; margin-bottom: 5px; }
         .exercise-type { display: inline-block; background: rgba(102,126,234,0.2); color: #667eea; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-bottom: 8px; width: fit-content; }
@@ -286,13 +289,13 @@
 
         function getExerciseImage(bodyPart) {
             const images = {
-                chest: '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="#667eea" opacity="0.5"/><line x1="30" y1="40" x2="70" y2="40" stroke="#667eea" stroke-width="3"/><line x1="30" y1="50" x2="70" y2="50" stroke="#667eea" stroke-width="3"/><line x1="30" y1="60" x2="70" y2="60" stroke="#667eea" stroke-width="3"/></svg>',
-                back: '<svg viewBox="0 0 100 100"><rect x="20" y="30" width="60" height="50" fill="none" stroke="#667eea" stroke-width="3"/><line x1="50" y1="30" x2="50" y2="80" stroke="#667eea" stroke-width="2"/><line x1="35" y1="45" x2="65" y2="45" stroke="#667eea" stroke-width="2"/><line x1="35" y1="60" x2="65" y2="60" stroke="#667eea" stroke-width="2"/></svg>',
-                biceps: '<svg viewBox="0 0 100 100"><path d="M 30 70 Q 30 40 50 30 Q 70 40 70 70" fill="none" stroke="#667eea" stroke-width="3"/><circle cx="35" cy="60" r="8" fill="#667eea"/><circle cx="65" cy="60" r="8" fill="#667eea"/></svg>',
-                triceps: '<svg viewBox="0 0 100 100"><path d="M 25 35 L 75 60 L 25 85" fill="none" stroke="#667eea" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="50" r="6" fill="#667eea"/><circle cx="55" cy="65" r="6" fill="#667eea"/></svg>',
-                shoulders: '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="25" fill="none" stroke="#667eea" stroke-width="3"/><circle cx="30" cy="50" r="6" fill="#667eea"/><circle cx="70" cy="50" r="6" fill="#667eea"/><line x1="50" y1="25" x2="50" y2="75" stroke="#667eea" stroke-width="2"/></svg>',
-                legs: '<svg viewBox="0 0 100 100"><line x1="40" y1="40" x2="40" y2="80" stroke="#667eea" stroke-width="4"/><line x1="60" y1="40" x2="60" y2="80" stroke="#667eea" stroke-width="4"/><circle cx="35" cy="35" r="8" fill="#667eea"/><circle cx="65" cy="35" r="8" fill="#667eea"/></svg>',
-                core: '<svg viewBox="0 0 100 100"><rect x="30" y="35" width="40" height="30" fill="none" stroke="#667eea" stroke-width="3"/><circle cx="50" cy="50" r="8" fill="#667eea"/><line x1="40" y1="50" x2="60" y2="50" stroke="#667eea" stroke-width="2"/></svg>'
+                chest: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#667eea;stop-opacity:0.8" /><stop offset="100%" style="stop-color:#764ba2;stop-opacity:0.8" /></linearGradient></defs><circle cx="50" cy="50" r="40" fill="url(#grad)"/><line x1="30" y1="35" x2="70" y2="35" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="30" y1="50" x2="70" y2="50" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="30" y1="65" x2="70" y2="65" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>',
+                back: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#667eea;stop-opacity:0.8" /><stop offset="100%" style="stop-color:#764ba2;stop-opacity:0.8" /></linearGradient></defs><circle cx="50" cy="50" r="40" fill="url(#grad2)"/><line x1="50" y1="25" x2="50" y2="75" stroke="white" stroke-width="2.5"/><path d="M 35 40 L 50 50 L 35 60" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M 65 40 L 50 50 L 65 60" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
+                biceps: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#667eea;stop-opacity:0.8" /><stop offset="100%" style="stop-color:#764ba2;stop-opacity:0.8" /></linearGradient></defs><circle cx="50" cy="50" r="40" fill="url(#grad3)"/><path d="M 30 70 Q 25 50 40 35 Q 55 45 60 70" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="38" cy="58" r="5" fill="white"/></svg>',
+                triceps: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#667eea;stop-opacity:0.8" /><stop offset="100%" style="stop-color:#764ba2;stop-opacity:0.8" /></linearGradient></defs><circle cx="50" cy="50" r="40" fill="url(#grad4)"/><path d="M 25 40 L 60 50 L 25 70" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="42" cy="55" r="5" fill="white"/></svg>',
+                shoulders: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#667eea;stop-opacity:0.8" /><stop offset="100%" style="stop-color:#764ba2;stop-opacity:0.8" /></linearGradient></defs><circle cx="50" cy="50" r="40" fill="url(#grad5)"/><circle cx="35" cy="50" r="6" fill="white"/><circle cx="50" cy="35" r="6" fill="white"/><circle cx="65" cy="50" r="6" fill="white"/><line x1="35" y1="50" x2="65" y2="50" stroke="white" stroke-width="2"/></svg>',
+                legs: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad6" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#667eea;stop-opacity:0.8" /><stop offset="100%" style="stop-color:#764ba2;stop-opacity:0.8" /></linearGradient></defs><circle cx="50" cy="50" r="40" fill="url(#grad6)"/><line x1="38" y1="35" x2="38" y2="75" stroke="white" stroke-width="3.5" stroke-linecap="round"/><line x1="62" y1="35" x2="62" y2="75" stroke="white" stroke-width="3.5" stroke-linecap="round"/><circle cx="35" cy="30" r="4.5" fill="white"/><circle cx="65" cy="30" r="4.5" fill="white"/></svg>',
+                core: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="grad7" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#667eea;stop-opacity:0.8" /><stop offset="100%" style="stop-color:#764ba2;stop-opacity:0.8" /></linearGradient></defs><circle cx="50" cy="50" r="40" fill="url(#grad7)"/><rect x="32" y="38" width="36" height="28" rx="4" fill="none" stroke="white" stroke-width="2.5"/><line x1="50" y1="38" x2="50" y2="66" stroke="white" stroke-width="2"/><circle cx="50" cy="52" r="4" fill="white"/></svg>'
             };
             return images[bodyPart] || images.chest;
         }
@@ -328,6 +331,30 @@
                 profileData[p] = saved ? JSON.parse(saved) : { workouts: [], checkedExercises: {}, history: [] };
             });
             
+            // Se não tem perfil Eduardo, cria com workout pré-carregado
+            if (!profiles.includes('Eduardo')) {
+                profiles.push('Eduardo');
+                profileData['Eduardo'] = {
+                    workouts: [{
+                        name: '💪 Barriga + Músculos (Objetivo)',
+                        exercises: [
+                            exercises[0],  // Supino Reto
+                            exercises[6],  // Remada Barra
+                            exercises[20], // Desenvolvimento
+                            exercises[25], // Agachamento
+                            exercises[30], // Prancha
+                            exercises[32], // Abdominal
+                            exercises[10], // Rosca Direta
+                            exercises[16]  // Tríceps Corda
+                        ]
+                    }],
+                    checkedExercises: {},
+                    history: []
+                };
+                localStorage.setItem('profiles', JSON.stringify(profiles));
+                localStorage.setItem('prof_Eduardo', JSON.stringify(profileData['Eduardo']));
+            }
+            
             renderProfilesScreen();
         }
 
@@ -342,7 +369,7 @@
             profiles.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'profile-card';
-                card.innerHTML = `<div class="profile-name">👤 ${p}</div><button class="btn-delete-profile" onclick="deleteProfile('${p}')">🗑️ Remover</button>`;
+                card.innerHTML = `<div class="profile-name">👤 ${p}${p === 'Eduardo' ? ' ⭐' : ''}</div><button class="btn-delete-profile" onclick="deleteProfile('${p}')">🗑️ Remover</button>`;
                 card.onclick = (e) => { if(e.target.className !== 'btn-delete-profile') selectProfile(p); };
                 cont.appendChild(card);
             });
@@ -501,20 +528,53 @@
                 w.exercises.forEach((ex, exidx) => {
                     const key = `${widx}-${exidx}`;
                     const isChecked = data.checkedExercises[key];
-                    det.innerHTML += `
-                        <div class="exercise-item">
-                            <div class="exercise-item-header">
-                                <div>
-                                    <div class="exercise-item-name">${ex.name}</div>
-                                    <div class="exercise-item-type">${ex.type}</div>
-                                </div>
-                                <div class="exercise-item-actions">
-                                    <button class="btn-check ${isChecked ? 'done' : ''}" onclick="toggleCheck(${widx}, ${exidx})">${isChecked ? '✓' : '○'}</button>
-                                    <button class="btn-remove" onclick="removeExerciseFromWorkout(${widx}, ${exidx})">✕</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'exercise-item';
+                    
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'exercise-image';
+                    imgDiv.innerHTML = getExerciseImage(ex.bodyPart);
+                    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.style.display = 'flex';
+                    contentDiv.style.flexDirection = 'column';
+                    
+                    const nameDiv = document.createElement('div');
+                    nameDiv.className = 'exercise-item-name';
+                    nameDiv.textContent = ex.name;
+                    
+                    const typeDiv = document.createElement('div');
+                    typeDiv.className = 'exercise-item-type';
+                    typeDiv.textContent = ex.type;
+                    
+                    const headerDiv = document.createElement('div');
+                    headerDiv.className = 'exercise-item-header';
+                    headerDiv.style.marginBottom = '8px';
+                    
+                    const actionsDiv = document.createElement('div');
+                    actionsDiv.className = 'exercise-item-actions';
+                    
+                    const checkBtn = document.createElement('button');
+                    checkBtn.className = `btn-check ${isChecked ? 'done' : ''}`;
+                    checkBtn.textContent = isChecked ? '✓' : '○';
+                    checkBtn.onclick = () => toggleCheck(widx, exidx);
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'btn-remove';
+                    removeBtn.textContent = '✕';
+                    removeBtn.onclick = () => removeExerciseFromWorkout(widx, exidx);
+                    
+                    actionsDiv.appendChild(checkBtn);
+                    actionsDiv.appendChild(removeBtn);
+                    
+                    contentDiv.appendChild(nameDiv);
+                    contentDiv.appendChild(typeDiv);
+                    contentDiv.appendChild(actionsDiv);
+                    
+                    itemDiv.appendChild(imgDiv);
+                    itemDiv.appendChild(contentDiv);
+                    det.appendChild(itemDiv);
                 });
 
                 const deleteBtn = document.createElement('button');
@@ -613,17 +673,39 @@
                 const isAdded = selectedExercises.find(s => s.id === ex.id);
                 const card = document.createElement('div');
                 card.className = 'exercise-card';
-                card.innerHTML = `
-                    <div class="exercise-image">${getExerciseImage(ex.bodyPart)}</div>
-                    <div class="exercise-info">
-                        <div class="exercise-name">${ex.name}</div>
-                        <div class="exercise-type">${ex.type}</div>
-                        <div class="exercise-meta">${ex.equipment}</div>
-                        <button class="add-btn ${isAdded ? 'added' : ''}" onclick="adicionarExercicio(${ex.id}, '${ex.name}', ${JSON.stringify(ex).replace(/"/g, '&quot;')})" ${isAdded ? 'disabled' : ''}>
-                            ${isAdded ? '✓ Adicionado' : '+ Adicionar'}
-                        </button>
-                    </div>
-                `;
+                
+                const imgDiv = document.createElement('div');
+                imgDiv.className = 'exercise-image-card';
+                imgDiv.innerHTML = getExerciseImage(ex.bodyPart);
+                
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'exercise-info';
+                
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'exercise-name';
+                nameDiv.textContent = ex.name;
+                
+                const typeDiv = document.createElement('div');
+                typeDiv.className = 'exercise-type';
+                typeDiv.textContent = ex.type;
+                
+                const metaDiv = document.createElement('div');
+                metaDiv.className = 'exercise-meta';
+                metaDiv.textContent = ex.equipment;
+                
+                const addBtn = document.createElement('button');
+                addBtn.className = `add-btn ${isAdded ? 'added' : ''}`;
+                addBtn.textContent = isAdded ? '✓ Adicionado' : '+ Adicionar';
+                addBtn.disabled = isAdded;
+                addBtn.onclick = () => adicionarExercicio(ex.id, ex.name, ex);
+                
+                infoDiv.appendChild(nameDiv);
+                infoDiv.appendChild(typeDiv);
+                infoDiv.appendChild(metaDiv);
+                infoDiv.appendChild(addBtn);
+                
+                card.appendChild(imgDiv);
+                card.appendChild(infoDiv);
                 cont.appendChild(card);
             });
         }
