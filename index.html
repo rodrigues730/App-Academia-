@@ -11,6 +11,7 @@
             background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
             color: #fff;
             padding: 20px;
+            padding-top: 80px;
         }
         .container { max-width: 650px; margin: 0 auto; }
 
@@ -51,7 +52,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* TIMER */
+        /* TIMER PRINCIPAL */
         .timer-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
         .timer-display { font-size: 48px; font-weight: bold; margin-bottom: 15px; font-family: 'Courier New'; }
         .timer-buttons { display: flex; gap: 10px; justify-content: center; }
@@ -62,6 +63,16 @@
 
         .progress-bar { background: #333; height: 20px; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
         .progress-fill { background: linear-gradient(90deg, #4CAF50, #45a049); height: 100%; width: 0%; transition: width 0.3s; }
+
+        /* REST TIMER FLUTUANTE */
+        .rest-timer-floating { display: none; position: fixed; top: 20px; left: 20px; right: 20px; background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%); padding: 16px 20px; border-radius: 8px; z-index: 999; box-shadow: 0 8px 32px rgba(76, 175, 80, 0.4); }
+        .rest-timer-floating.show { display: flex; align-items: center; justify-content: space-between; }
+        .rest-timer-info { display: flex; align-items: center; gap: 15px; flex: 1; }
+        .rest-timer-icon { font-size: 24px; }
+        .rest-timer-text { display: flex; flex-direction: column; align-items: flex-start; }
+        .rest-timer-label { font-size: 12px; opacity: 0.9; }
+        .rest-timer-time { font-size: 24px; font-weight: bold; font-family: 'Courier New'; }
+        .rest-timer-close { background: rgba(255,255,255,0.3); border: none; color: white; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
 
         /* WORKOUT CARD */
         .workout-card { background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%); margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; overflow: hidden; }
@@ -82,15 +93,6 @@
         .btn-check.done { background: #4CAF50; }
         .btn-remove { background: #f44336; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
         .btn-delete-workout { background: #f44336; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-top: 12px; width: 100%; }
-
-        /* REST TIMER MODAL */
-        .rest-timer-modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; }
-        .rest-timer-modal.show { display: flex; }
-        .rest-timer-content { text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 12px; }
-        .rest-timer-title { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
-        .rest-timer-display { font-size: 72px; font-weight: bold; margin-bottom: 20px; font-family: 'Courier New'; color: #4CAF50; }
-        .rest-timer-desc { font-size: 16px; opacity: 0.9; }
-        .btn-skip-rest { background: #4CAF50; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 20px; }
 
         /* HISTÓRICO */
         .history-stats { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -135,6 +137,18 @@
 
     <!-- APP -->
     <div id="appScreen" class="app-screen">
+        <!-- REST TIMER FLUTUANTE -->
+        <div id="restTimerFloating" class="rest-timer-floating">
+            <div class="rest-timer-info">
+                <div class="rest-timer-icon">⏱️</div>
+                <div class="rest-timer-text">
+                    <div class="rest-timer-label">Tempo de Descanso</div>
+                    <div class="rest-timer-time" id="restTimerDisplay">60</div>
+                </div>
+            </div>
+            <button class="rest-timer-close" onclick="skipRestTimer()">✕</button>
+        </div>
+
         <div class="container">
             <h1 style="font-size: 24px; margin-bottom: 20px; color: #667eea;">💪 Seu Treino</h1>
             
@@ -220,18 +234,8 @@
         </div>
     </div>
 
-    <!-- REST TIMER -->
-    <div id="restTimerModal" class="rest-timer-modal">
-        <div class="rest-timer-content">
-            <div class="rest-timer-title">⏱️ Tempo de Descanso</div>
-            <div class="rest-timer-display" id="restTimerDisplay">60</div>
-            <div class="rest-timer-desc">Recupere para o próximo exercício</div>
-            <button class="btn-skip-rest" onclick="skipRestTimer()">Pular</button>
-        </div>
-    </div>
-
     <script>
-        // BANCO DE EXERCÍCIOS COM IMAGENS SVG
+        // BANCO DE EXERCÍCIOS
         const exerciseCategories = {
             chest: "🔴 Peito",
             back: "🟠 Costas",
@@ -248,37 +252,31 @@
             {id:3, name:"Crucifixo Polia", bodyPart:"chest", equipment:"cable", type:"🔴 Peito", targetMuscles:["Pectorais"]},
             {id:4, name:"Flexão", bodyPart:"chest", equipment:"bodyweight", type:"🔴 Peito", targetMuscles:["Pectorais"]},
             {id:5, name:"Supino Máquina", bodyPart:"chest", equipment:"machine", type:"🔴 Peito", targetMuscles:["Pectorais"]},
-            
             {id:6, name:"Puxada Frontal", bodyPart:"back", equipment:"cable", type:"🟠 Costas", targetMuscles:["Costas"]},
             {id:7, name:"Remada Barra", bodyPart:"back", equipment:"barbell", type:"🟠 Costas", targetMuscles:["Costas"]},
             {id:8, name:"Remada Unilateral", bodyPart:"back", equipment:"dumbbell", type:"🟠 Costas", targetMuscles:["Costas"]},
             {id:9, name:"Barra Fixa", bodyPart:"back", equipment:"bodyweight", type:"🟠 Costas", targetMuscles:["Costas"]},
             {id:10, name:"Remada Máquina", bodyPart:"back", equipment:"machine", type:"🟠 Costas", targetMuscles:["Costas"]},
-
             {id:11, name:"Rosca Direta", bodyPart:"biceps", equipment:"barbell", type:"🟡 Bíceps", targetMuscles:["Bíceps"]},
             {id:12, name:"Rosca Martelo", bodyPart:"biceps", equipment:"dumbbell", type:"🟡 Bíceps", targetMuscles:["Bíceps"]},
             {id:13, name:"Rosca Inversa", bodyPart:"biceps", equipment:"barbell", type:"🟡 Bíceps", targetMuscles:["Antebraço"]},
             {id:14, name:"Rosca Scott", bodyPart:"biceps", equipment:"barbell", type:"🟡 Bíceps", targetMuscles:["Bíceps"]},
             {id:15, name:"Rosca Máquina", bodyPart:"biceps", equipment:"machine", type:"🟡 Bíceps", targetMuscles:["Bíceps"]},
-
             {id:16, name:"Tríceps Corda", bodyPart:"triceps", equipment:"cable", type:"🟢 Tríceps", targetMuscles:["Tríceps"]},
             {id:17, name:"Extensão Tríceps", bodyPart:"triceps", equipment:"dumbbell", type:"🟢 Tríceps", targetMuscles:["Tríceps"]},
             {id:18, name:"Mergulho Banco", bodyPart:"triceps", equipment:"bodyweight", type:"🟢 Tríceps", targetMuscles:["Tríceps"]},
             {id:19, name:"Tríceps Máquina", bodyPart:"triceps", equipment:"machine", type:"🟢 Tríceps", targetMuscles:["Tríceps"]},
             {id:20, name:"Flexão Declinada", bodyPart:"triceps", equipment:"bodyweight", type:"🟢 Tríceps", targetMuscles:["Tríceps"]},
-
             {id:21, name:"Desenvolvimento", bodyPart:"shoulders", equipment:"dumbbell", type:"🔵 Ombros", targetMuscles:["Ombros"]},
             {id:22, name:"Elevação Lateral", bodyPart:"shoulders", equipment:"dumbbell", type:"🔵 Ombros", targetMuscles:["Deltóides"]},
             {id:23, name:"Elevação Frontal", bodyPart:"shoulders", equipment:"dumbbell", type:"🔵 Ombros", targetMuscles:["Deltóides"]},
             {id:24, name:"Shrug", bodyPart:"shoulders", equipment:"dumbbell", type:"🔵 Ombros", targetMuscles:["Trapézio"]},
             {id:25, name:"Ombro Máquina", bodyPart:"shoulders", equipment:"machine", type:"🔵 Ombros", targetMuscles:["Ombros"]},
-
             {id:26, name:"Agachamento", bodyPart:"legs", equipment:"barbell", type:"🟣 Pernas", targetMuscles:["Quadríceps"]},
             {id:27, name:"Leg Press", bodyPart:"legs", equipment:"machine", type:"🟣 Pernas", targetMuscles:["Quadríceps"]},
             {id:28, name:"Extensora", bodyPart:"legs", equipment:"machine", type:"🟣 Pernas", targetMuscles:["Quadríceps"]},
             {id:29, name:"Rosca Perna", bodyPart:"legs", equipment:"machine", type:"🟣 Pernas", targetMuscles:["Posterior"]},
             {id:30, name:"Cadeira Adutora", bodyPart:"legs", equipment:"machine", type:"🟣 Pernas", targetMuscles:["Adutores"]},
-
             {id:31, name:"Prancha", bodyPart:"core", equipment:"bodyweight", type:"⚪ Core", targetMuscles:["Core"]},
             {id:32, name:"Abdominal", bodyPart:"core", equipment:"bodyweight", type:"⚪ Core", targetMuscles:["Abdômen"]},
             {id:33, name:"Crunch", bodyPart:"core", equipment:"bodyweight", type:"⚪ Core", targetMuscles:["Abdômen"]},
@@ -449,7 +447,7 @@
 
         function startRestTimer() {
             let time = 60;
-            document.getElementById('restTimerModal').classList.add('show');
+            document.getElementById('restTimerFloating').classList.add('show');
             document.getElementById('restTimerDisplay').textContent = time;
             clearInterval(restTimerInterval);
             restTimerInterval = setInterval(() => {
@@ -457,14 +455,14 @@
                 document.getElementById('restTimerDisplay').textContent = time;
                 if (time <= 0) {
                     clearInterval(restTimerInterval);
-                    document.getElementById('restTimerModal').classList.remove('show');
+                    document.getElementById('restTimerFloating').classList.remove('show');
                 }
             }, 1000);
         }
 
         function skipRestTimer() {
             clearInterval(restTimerInterval);
-            document.getElementById('restTimerModal').classList.remove('show');
+            document.getElementById('restTimerFloating').classList.remove('show');
         }
 
         function toggleDetails(idx) {
