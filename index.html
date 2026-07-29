@@ -7,19 +7,55 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: Arial, sans-serif;
-            background: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0f0f;
             color: #fff;
             padding: 20px;
         }
         .container { max-width: 600px; margin: 0 auto; }
-        h1 { font-size: 24px; margin-bottom: 10px; }
+        h1 { font-size: 24px; margin-bottom: 20px; text-align: center; }
+        
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            color: #4CAF50;
+            border-bottom-color: #4CAF50;
+        }
+        .tab-btn:hover {
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* TIMER SECTION */
         .timer-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 20px;
             text-align: center;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
         }
         .timer-display {
             font-size: 48px;
@@ -46,6 +82,7 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 13px;
+            transition: all 0.3s;
         }
         .btn-start:hover { background: #45a049; }
         .btn-end {
@@ -57,12 +94,14 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 13px;
+            transition: all 0.3s;
         }
         .btn-end:hover { background: #da190b; }
         .btn-end:disabled {
             background: #ccc;
             cursor: not-allowed;
         }
+
         .progress-bar { 
             background: #333; 
             height: 20px; 
@@ -76,6 +115,7 @@
             width: 0%;
             transition: width 0.3s;
         }
+
         .rest-timer {
             background: #ff9800;
             color: white;
@@ -87,10 +127,13 @@
             margin-bottom: 10px;
             display: none;
             font-family: 'Courier New', monospace;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
         }
         .rest-timer.active {
             display: block;
         }
+
+        /* DAY BOX */
         .day-box {
             background: #2a2a2a;
             margin-bottom: 15px;
@@ -124,6 +167,7 @@
             font-weight: bold;
         }
         .btn-add:hover { background: #0b7dda; }
+
         .exercise {
             border-top: 1px solid #444;
             padding: 12px 15px;
@@ -149,6 +193,7 @@
             font-weight: bold;
         }
         .exercise-delete:hover { background: #da190b; }
+
         .checkbox {
             width: 24px;
             height: 24px;
@@ -172,12 +217,14 @@
             color: white;
             font-weight: bold;
         }
+
         .exercise-info { 
             flex: 1;
             cursor: pointer;
         }
         .exercise-name { font-weight: bold; font-size: 14px; }
         .exercise-sets { font-size: 12px; color: #aaa; }
+
         .exercise-details {
             display: none;
             background: #1a1a1a;
@@ -187,8 +234,10 @@
             line-height: 1.6;
         }
         .exercise-details.show { display: block; }
+
         .detail-section { margin-bottom: 15px; }
         .detail-title { font-weight: bold; color: #4CAF50; margin-bottom: 8px; }
+
         .video-btn {
             background: #ff0000;
             color: white;
@@ -206,7 +255,107 @@
             gap: 10px;
         }
         .video-btn:hover { background: #cc0000; }
+
         .hidden { display: none; }
+
+        /* HISTÓRICO CARDS */
+        .history-stats {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #ddd;
+        }
+
+        .history-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .history-card {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #4CAF50;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .history-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(76, 175, 80, 0.2);
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: #4CAF50;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .history-day {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .history-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .history-info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .history-icon {
+            font-size: 16px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #aaa;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -249,31 +398,61 @@
             font-size: 16px;
         }
         .modal-content button:hover { background: #45a049; }
+        .modal-timer {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>💪 Seu Treino</h1>
         
-        <!-- Timer Section -->
-        <div class="timer-section">
-            <div class="timer-label">⏱️ Tempo Total de Academia</div>
-            <div class="timer-display" id="timerDisplay">00:00:00</div>
-            <div class="timer-buttons">
-                <button class="btn-start" id="btnStart" onclick="startWorkout()">▶️ Iniciar</button>
-                <button class="btn-end" id="btnEnd" onclick="endWorkout()" disabled>🛑 Encerrar</button>
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('workout')">📅 Treino</button>
+            <button class="tab-btn" onclick="switchTab('history')">📊 Histórico</button>
+        </div>
+
+        <!-- TAB TREINO -->
+        <div id="workout" class="tab-content active">
+            <!-- Timer Section -->
+            <div class="timer-section">
+                <div class="timer-label">⏱️ Tempo Total de Academia</div>
+                <div class="timer-display" id="timerDisplay">00:00:00</div>
+                <div class="timer-buttons">
+                    <button class="btn-start" id="btnStart" onclick="startWorkout()">▶️ Iniciar</button>
+                    <button class="btn-end" id="btnEnd" onclick="endWorkout()" disabled>🛑 Encerrar</button>
+                </div>
             </div>
+
+            <!-- Rest Timer -->
+            <div class="rest-timer" id="restTimer"></div>
+
+            <!-- Progress -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div id="workoutContainer"></div>
         </div>
 
-        <!-- Rest Timer -->
-        <div class="rest-timer" id="restTimer"></div>
+        <!-- TAB HISTÓRICO -->
+        <div id="history" class="tab-content">
+            <div class="history-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalWorkouts">0</div>
+                    <div class="stat-label">Treinos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalHours">0h</div>
+                    <div class="stat-label">Tempo Total</div>
+                </div>
+            </div>
 
-        <!-- Progress -->
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+            <div id="historyCards" class="history-cards"></div>
         </div>
-
-        <div id="workoutContainer"></div>
     </div>
 
     <!-- Modal de Conclusão -->
@@ -282,7 +461,8 @@
             <h2>🎉 Treino Concluído!</h2>
             <p id="finalTime" style="font-size: 24px; font-weight: bold; color: #4CAF50;"></p>
             <p>Parabéns! Você treinou muito bem! 💪</p>
-            <button onclick="closeModal()">Novo Treino</button>
+            <button onclick="closeModal()">✓ Nova Jornada</button>
+            <div class="modal-timer" id="modalTimer">Fechando em 3s...</div>
         </div>
     </div>
 
@@ -292,6 +472,8 @@
         let restTimerInterval = null;
         let isWorkoutActive = false;
         let checkedExercises = {};
+        let workoutHistory = [];
+        let modalCloseTimer = null;
 
         const defaultWorkouts = [
             {
@@ -354,6 +536,8 @@
         function loadState() {
             const saved = localStorage.getItem('workouts');
             const savedChecked = localStorage.getItem('checkedExercises');
+            const savedHistory = localStorage.getItem('workoutHistory');
+            
             if (saved) {
                 window.workouts = JSON.parse(saved);
             } else {
@@ -362,6 +546,10 @@
             if (savedChecked) {
                 checkedExercises = JSON.parse(savedChecked);
             }
+            if (savedHistory) {
+                workoutHistory = JSON.parse(savedHistory);
+            }
+            
             const savedStartTime = localStorage.getItem('workoutStartTime');
             if (savedStartTime) {
                 workoutStartTime = parseInt(savedStartTime);
@@ -375,6 +563,19 @@
         function saveState() {
             localStorage.setItem('workouts', JSON.stringify(window.workouts));
             localStorage.setItem('checkedExercises', JSON.stringify(checkedExercises));
+            localStorage.setItem('workoutHistory', JSON.stringify(workoutHistory));
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tab === 'history') {
+                renderHistory();
+            }
         }
 
         function startWorkout() {
@@ -408,19 +609,56 @@
             if (!isWorkoutActive) return;
             clearInterval(timerInterval);
             isWorkoutActive = false;
+            
             const elapsed = Date.now() - workoutStartTime;
             const totalSeconds = Math.floor(elapsed / 1000);
             const hours = Math.floor(totalSeconds / 3600);
             const minutes = Math.floor((totalSeconds % 3600) / 60);
             const seconds = totalSeconds % 60;
             const display = String(hours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+            
+            // Salvar no histórico
+            const completedCount = Object.keys(checkedExercises).length;
+            const totalExercises = window.workouts.reduce((sum, day) => sum + day.exercises.length, 0);
+            
+            workoutHistory.push({
+                date: new Date().toISOString(),
+                totalTime: elapsed,
+                completed: completedCount,
+                total: totalExercises
+            });
+            
+            saveState();
+            
             document.getElementById('finalTime').textContent = display;
             document.getElementById('finishModal').classList.add('show');
             localStorage.removeItem('workoutStartTime');
+            
+            // Limpar checkedExercises para nova jornada
+            checkedExercises = {};
+            render();
+            
+            // Fechar modal automaticamente após 3 segundos
+            let countDown = 3;
+            document.getElementById('modalTimer').textContent = `Fechando em ${countDown}s...`;
+            
+            modalCloseTimer = setInterval(() => {
+                countDown--;
+                if (countDown > 0) {
+                    document.getElementById('modalTimer').textContent = `Fechando em ${countDown}s...`;
+                } else {
+                    clearInterval(modalCloseTimer);
+                    closeModal();
+                }
+            }, 1000);
+            
             resetWorkout();
         }
 
         function closeModal() {
+            if (modalCloseTimer) {
+                clearInterval(modalCloseTimer);
+            }
             document.getElementById('finishModal').classList.remove('show');
         }
 
@@ -455,13 +693,11 @@
             const el = document.getElementById(`check${key}`);
             
             if (!el.classList.contains('checked')) {
-                // Marcar como concluído - COMEÇA TIMER 60s
                 el.classList.add('checked');
                 el.innerHTML = '✓';
                 checkedExercises[key] = true;
                 startRestTimer();
             } else {
-                // Desmarcar
                 el.classList.remove('checked');
                 el.innerHTML = '';
                 delete checkedExercises[key];
@@ -600,6 +836,66 @@
             });
 
             updateProgress();
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('historyCards');
+            
+            // Calcular estatísticas
+            const totalWorkouts = workoutHistory.length;
+            let totalMilliseconds = 0;
+            workoutHistory.forEach(w => {
+                totalMilliseconds += w.totalTime;
+            });
+            
+            const totalHours = Math.floor(totalMilliseconds / (1000 * 60 * 60));
+            
+            document.getElementById('totalWorkouts').textContent = totalWorkouts;
+            document.getElementById('totalHours').textContent = totalHours > 0 ? totalHours + 'h' : '<1h';
+
+            if (workoutHistory.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <p>Nenhum treino registrado ainda.</p>
+                        <p style="font-size: 12px; margin-top: 10px;">Comece seu primeiro treino!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            
+            // Ordenar por data (mais recente primeiro)
+            const sorted = [...workoutHistory].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            sorted.forEach(workout => {
+                const date = new Date(workout.date);
+                const dayName = date.toLocaleDateString('pt-BR', { weekday: 'long' });
+                const dateStr = date.toLocaleDateString('pt-BR');
+                
+                const hours = Math.floor(workout.totalTime / (1000 * 60 * 60));
+                const minutes = Math.floor((workout.totalTime % (1000 * 60 * 60)) / (1000 * 60));
+                const timeStr = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+                
+                const card = document.createElement('div');
+                card.className = 'history-card';
+                card.innerHTML = `
+                    <div class="history-date">${dateStr}</div>
+                    <div class="history-day">${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</div>
+                    <div class="history-info">
+                        <div class="history-info-item">
+                            <span class="history-icon">⏱️</span>
+                            <span>${timeStr}</span>
+                        </div>
+                        <div class="history-info-item">
+                            <span class="history-icon">✓</span>
+                            <span>${workout.completed}/${workout.total} exercícios</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
         function toggleDay(idx) {
