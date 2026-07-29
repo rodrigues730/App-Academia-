@@ -14,7 +14,182 @@
         }
         .container { max-width: 600px; margin: 0 auto; }
         h1 { font-size: 24px; margin-bottom: 20px; text-align: center; }
-        
+
+        /* LOGIN SCREEN */
+        .login-screen {
+            display: none;
+        }
+        .login-screen.show {
+            display: block;
+        }
+        .login-title {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4CAF50;
+        }
+        .profiles-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .profile-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+            border-color: #4CAF50;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+        .profile-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .profile-info {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .btn-new-profile {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-new-profile:hover {
+            background: #45a049;
+        }
+
+        /* NEW PROFILE MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow-y: auto;
+        }
+        .modal.show { display: block; }
+        .modal-content {
+            background-color: #2a2a2a;
+            margin: 20% auto;
+            padding: 30px;
+            border: 1px solid #444;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+        }
+        .modal-content h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+        }
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        .btn-confirm {
+            flex: 1;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-confirm:hover { background: #45a049; }
+        .btn-cancel {
+            flex: 1;
+            background: #555;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-cancel:hover { background: #666; }
+
+        /* APP SCREEN */
+        .app-screen {
+            display: none;
+        }
+        .app-screen.show {
+            display: block;
+        }
+
+        /* HEADER */
+        .app-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+        .profile-display {
+            text-align: left;
+        }
+        .profile-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .profile-name-header {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .btn-switch-profile {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .btn-switch-profile:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
         /* TABS */
         .tabs {
             display: flex;
@@ -37,9 +212,7 @@
             color: #4CAF50;
             border-bottom-color: #4CAF50;
         }
-        .tab-btn:hover {
-            color: #fff;
-        }
+        .tab-btn:hover { color: #fff; }
 
         .tab-content {
             display: none;
@@ -82,7 +255,6 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.3s;
         }
         .btn-start:hover { background: #45a049; }
         .btn-end {
@@ -94,13 +266,9 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.3s;
         }
         .btn-end:hover { background: #da190b; }
-        .btn-end:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
+        .btn-end:disabled { background: #ccc; cursor: not-allowed; }
 
         .progress-bar { 
             background: #333; 
@@ -129,9 +297,7 @@
             font-family: 'Courier New', monospace;
             box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
         }
-        .rest-timer.active {
-            display: block;
-        }
+        .rest-timer.active { display: block; }
 
         /* DAY BOX */
         .day-box {
@@ -208,9 +374,7 @@
             background: #333;
             transition: all 0.2s;
         }
-        .checkbox:hover {
-            border-color: #4CAF50;
-        }
+        .checkbox:hover { border-color: #4CAF50; }
         .checkbox.checked {
             background: #4CAF50;
             border-color: #4CAF50;
@@ -249,16 +413,12 @@
             cursor: pointer;
             width: 100%;
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
         .video-btn:hover { background: #cc0000; }
 
         .hidden { display: none; }
 
-        /* HISTÓRICO CARDS */
+        /* HISTÓRICO */
         .history-stats {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
@@ -269,22 +429,18 @@
             gap: 15px;
             box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
         }
-
         .stat-card {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 8px;
             text-align: center;
-            backdrop-filter: blur(10px);
         }
-
         .stat-number {
             font-size: 28px;
             font-weight: bold;
             color: #4CAF50;
             margin-bottom: 5px;
         }
-
         .stat-label {
             font-size: 12px;
             color: #ddd;
@@ -295,7 +451,6 @@
             grid-template-columns: 1fr;
             gap: 15px;
         }
-
         .history-card {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             padding: 20px;
@@ -304,27 +459,22 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             transition: all 0.3s;
         }
-
         .history-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 35px rgba(76, 175, 80, 0.2);
         }
-
         .history-date {
             font-size: 12px;
             color: #4CAF50;
             font-weight: 600;
             margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
-
         .history-day {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 10px;
         }
-
         .history-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -333,16 +483,11 @@
             padding-top: 12px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .history-info-item {
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 13px;
-        }
-
-        .history-icon {
-            font-size: 16px;
         }
 
         .empty-state {
@@ -351,118 +496,218 @@
             color: #aaa;
         }
 
-        .empty-state-icon {
-            font-size: 48px;
+        /* EXERCISE SELECTOR */
+        .exercise-selector {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .exercise-option {
+            background: #333;
+            padding: 15px;
             margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid #444;
+            transition: all 0.3s;
+        }
+        .exercise-option:hover {
+            border-color: #4CAF50;
+            background: #3a3a3a;
+        }
+        .exercise-option-name {
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+        .exercise-option-desc {
+            font-size: 12px;
+            color: #aaa;
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            overflow-y: auto;
-        }
-        .modal.show { display: block; }
-        .modal-content {
-            background-color: #2a2a2a;
-            margin: 10% auto;
-            padding: 30px;
-            border: 1px solid #444;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-        }
-        .modal-content h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
+        .match-indicator {
+            font-size: 12px;
             color: #4CAF50;
+            margin-top: 10px;
+            font-weight: bold;
         }
-        .modal-content p {
-            font-size: 16px;
-            margin-bottom: 30px;
-        }
-        .modal-content button {
-            background: #4CAF50;
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 4px;
             color: white;
+            font-family: inherit;
+            font-size: 13px;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 10px;
             border: none;
-            padding: 12px 30px;
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 13px;
         }
-        .modal-content button:hover { background: #45a049; }
-        .modal-timer {
-            font-size: 12px;
-            color: #aaa;
-            margin-top: 15px;
+        .modal-btn-confirm {
+            background: #4CAF50;
+            color: white;
         }
+        .modal-btn-confirm:hover { background: #45a049; }
+        .modal-btn-cancel {
+            background: #555;
+            color: white;
+        }
+        .modal-btn-cancel:hover { background: #666; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>💪 Seu Treino</h1>
-        
-        <!-- TABS -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('workout')">📅 Treino</button>
-            <button class="tab-btn" onclick="switchTab('history')">📊 Histórico</button>
-        </div>
-
-        <!-- TAB TREINO -->
-        <div id="workout" class="tab-content active">
-            <!-- Timer Section -->
-            <div class="timer-section">
-                <div class="timer-label">⏱️ Tempo Total de Academia</div>
-                <div class="timer-display" id="timerDisplay">00:00:00</div>
-                <div class="timer-buttons">
-                    <button class="btn-start" id="btnStart" onclick="startWorkout()">▶️ Iniciar</button>
-                    <button class="btn-end" id="btnEnd" onclick="endWorkout()" disabled>🛑 Encerrar</button>
-                </div>
-            </div>
-
-            <!-- Rest Timer -->
-            <div class="rest-timer" id="restTimer"></div>
-
-            <!-- Progress -->
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-
-            <div id="workoutContainer"></div>
-        </div>
-
-        <!-- TAB HISTÓRICO -->
-        <div id="history" class="tab-content">
-            <div class="history-stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalWorkouts">0</div>
-                    <div class="stat-label">Treinos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalHours">0h</div>
-                    <div class="stat-label">Tempo Total</div>
-                </div>
-            </div>
-
-            <div id="historyCards" class="history-cards"></div>
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="login-screen show">
+        <div class="container">
+            <div class="login-title">💪 Academia</div>
+            <div class="profiles-list" id="profilesList"></div>
+            <button class="btn-new-profile" onclick="openNewProfileModal()">➕ Novo Perfil</button>
         </div>
     </div>
 
-    <!-- Modal de Conclusão -->
+    <!-- APP SCREEN -->
+    <div id="appScreen" class="app-screen">
+        <div class="container">
+            <h1>💪 Seu Treino</h1>
+            
+            <!-- HEADER COM PERFIL -->
+            <div class="app-header">
+                <div class="profile-display">
+                    <div class="profile-label">👤 Perfil</div>
+                    <div class="profile-name-header" id="currentProfileName"></div>
+                </div>
+                <button class="btn-switch-profile" onclick="switchProfile()">Trocar Perfil</button>
+            </div>
+
+            <!-- TABS -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('workout')">📅 Treino</button>
+                <button class="tab-btn" onclick="switchTab('history')">📊 Histórico</button>
+            </div>
+
+            <!-- TAB TREINO -->
+            <div id="workout" class="tab-content active">
+                <div class="timer-section">
+                    <div class="timer-label">⏱️ Tempo Total de Academia</div>
+                    <div class="timer-display" id="timerDisplay">00:00:00</div>
+                    <div class="timer-buttons">
+                        <button class="btn-start" id="btnStart" onclick="startWorkout()">▶️ Iniciar</button>
+                        <button class="btn-end" id="btnEnd" onclick="endWorkout()" disabled>🛑 Encerrar</button>
+                    </div>
+                </div>
+
+                <div class="rest-timer" id="restTimer"></div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div id="workoutContainer"></div>
+            </div>
+
+            <!-- TAB HISTÓRICO -->
+            <div id="history" class="tab-content">
+                <div class="history-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalWorkouts">0</div>
+                        <div class="stat-label">Treinos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalHours">0h</div>
+                        <div class="stat-label">Tempo Total</div>
+                    </div>
+                </div>
+
+                <div id="historyCards" class="history-cards"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NOVO PERFIL -->
+    <div id="newProfileModal" class="modal">
+        <div class="modal-content">
+            <h2>➕ Novo Perfil</h2>
+            <div class="form-group">
+                <label>Nome do Perfil *</label>
+                <input type="text" id="newProfileName" placeholder="Ex: João, Maria, etc">
+            </div>
+            <div class="form-buttons">
+                <button class="btn-confirm" onclick="createProfile()">✓ Criar</button>
+                <button class="btn-cancel" onclick="closeNewProfileModal()">✕ Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ADICIONAR EXERCÍCIO -->
+    <div id="addExerciseModal" class="modal">
+        <div class="modal-content" style="max-width: 500px; max-height: 80vh; overflow-y: auto;">
+            <h2>➕ Novo Exercício</h2>
+            
+            <div class="form-group">
+                <label>Nome do Exercício *</label>
+                <input type="text" id="exerciseName" placeholder="Ex: Supino Reto" oninput="searchExercises()">
+                <div id="matchIndicator" class="match-indicator"></div>
+            </div>
+
+            <div id="exerciseMatches" class="exercise-selector hidden"></div>
+
+            <div class="form-group">
+                <label>Séries x Reps *</label>
+                <input type="text" id="exerciseSets" placeholder="Ex: 3 x 10">
+            </div>
+
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea id="exerciseDesc" placeholder="Como fazer o exercício"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Passo a Passo</label>
+                <textarea id="exerciseSteps" placeholder="1. Passo 1&#10;2. Passo 2"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Dicas</label>
+                <textarea id="exerciseTips" placeholder="✓ Dica 1&#10;✓ Dica 2"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Evite</label>
+                <textarea id="exerciseAvoid" placeholder="✗ Evite 1&#10;✗ Evite 2"></textarea>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-confirm" onclick="confirmAddExercise()">✓ Adicionar</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeAddModal()">✕ Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONCLUSÃO -->
     <div id="finishModal" class="modal">
         <div class="modal-content">
             <h2>🎉 Treino Concluído!</h2>
             <p id="finalTime" style="font-size: 24px; font-weight: bold; color: #4CAF50;"></p>
             <p>Parabéns! Você treinou muito bem! 💪</p>
-            <button onclick="closeModal()">✓ Nova Jornada</button>
-            <div class="modal-timer" id="modalTimer">Fechando em 3s...</div>
+            <button class="btn-confirm" onclick="closeFinishModal()" style="width: 100%;">✓ Nova Jornada</button>
+            <div class="match-indicator" id="modalTimer">Fechando em 3s...</div>
         </div>
     </div>
 
@@ -471,9 +716,47 @@
         let timerInterval = null;
         let restTimerInterval = null;
         let isWorkoutActive = false;
-        let checkedExercises = {};
-        let workoutHistory = [];
         let modalCloseTimer = null;
+        let currentAddingDayIdx = null;
+        let selectedExerciseFromBank = null;
+        let currentProfile = null;
+
+        // Dados do usuário por perfil
+        let profiles = [];
+        let workouts = {};
+        let checkedExercises = {};
+        let customExercises = {};
+        let workoutHistory = {};
+
+        const exerciseBank = [
+            { name: "Supino Reto", desc: "Deite-se no banco com pés apoiados. Pegue a barra acima da largura dos ombros. Abaixe até o peito. Suba explosivamente.", steps: "1. Sente firme no banco\n2. Pegue barra além da largura\n3. Levante acima do peito\n4. Abaixe lentamente até peito\n5. Pause 1 segundo\n6. Empurre explosivamente\n7. Repita 6-8 vezes", tips: "✓ Cotovelos a 45°\n✓ Respire corretamente\n✓ Controle sempre", avoid: "✗ Não dar quique\n✗ Não abrir cotovelos demais\n✗ Não trancar", video: "https://www.youtube.com/results?search_query=supino+reto+barra+forma+correta" },
+            { name: "Supino Inclinado", desc: "Banco inclinado a 45°. Pegue a barra acima da largura. Abaixe até o peito superior. Suba explosivamente.", steps: "1. Ajuste banco a 45°\n2. Sente firme\n3. Pegue barra acima largura\n4. Abaixe controladamente\n5. Até peito superior\n6. Pause 1 segundo\n7. Suba explosivo", tips: "✓ Trabalha peito superior\n✓ Cotovelos 45°\n✓ Movimento controlado", avoid: "✗ Não deixar banco cair\n✗ Sem impulso\n✗ Não trancar", video: "https://www.youtube.com/results?search_query=supino+inclinado+peito+forma+correta" },
+            { name: "Crucifixo no Cabo", desc: "Em pé no centro. Pegue as alças com braços abertos. Puxe em movimento de abraço.", steps: "1. Posicione-se no centro\n2. Pegue as alças abertas\n3. Cotovelos flexionados\n4. Puxe em movimento de abraço\n5. Aproxime na frente\n6. Pause 1 segundo\n7. Retorne controlado", tips: "✓ Controle total\n✓ Foco na contração\n✓ Movimento fluido", avoid: "✗ Sem impulso\n✗ Sem deixar cair", video: "https://www.youtube.com/results?search_query=crucifixo+no+cabo+peito+forma+correta" },
+            { name: "Tríceps na Corda", desc: "Pegue a corda na altura da cabeça. Cotovelos fixos. Puxe para baixo.", steps: "1. Pegue a corda\n2. Altura da cabeça\n3. Cotovelos fixos\n4. Puxe para baixo\n5. Separe as pontas\n6. Pause 1 segundo\n7. Retorne controlado", tips: "✓ Apenas antebraços\n✓ Controle na volta\n✓ Sinta o tríceps", avoid: "✗ Não balançar\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=tríceps+corda+forma+correta" },
+            { name: "Extensão de Tríceps", desc: "De pé ou sentado. Segure haltere acima da cabeça. Abaixe dobrando cotovelos. Suba sem mover ombros.", steps: "1. Fique de pé ou sente\n2. Haltere acima cabeça\n3. Cotovelos ligeiramente flexionados\n4. Abaixe dobrando cotovelos\n5. Traga à nuca\n6. Pause 1 segundo\n7. Suba extensível", tips: "✓ Ombros fixos\n✓ Movimento controlado\n✓ Sinta o tríceps", avoid: "✗ Não balançar\n✗ Ombros não mexem", video: "https://www.youtube.com/results?search_query=extensão+tríceps+haltere+forma+correta" },
+            { name: "Puxada Frontal", desc: "Sente com coxas fixadas. Pegue a barra acima dos ombros. Puxe até o peito.", steps: "1. Sente com coxas presas\n2. Pegue barra além da largura\n3. Palmas para frente\n4. Expire ao puxar\n5. Puxe ao peito\n6. Cotovelos para baixo\n7. Pause 1 segundo", tips: "✓ Sinta as costas\n✓ Controle a volta\n✓ Leve ao peito", avoid: "✗ Não jogar corpo\n✗ Sem cair rápido", video: "https://www.youtube.com/results?search_query=puxada+frontal+lat+pulldown+forma+correta" },
+            { name: "Remada com Barra", desc: "Incline-se 30-45°. Joelhos flexionados. Pegue a barra. Puxe ao abdômen.", steps: "1. Pé sob a barra\n2. Joelhos flexionados\n3. Incline costas retas\n4. Pegue barra\n5. Puxe ao abdômen\n6. Cotovelos próximos\n7. Pause 1-2 segundos", tips: "✓ Costas RETAS\n✓ Não deixar cair\n✓ Cotovelos próximos", avoid: "✗ Sem arredondar costas\n✗ Sem balançar", video: "https://www.youtube.com/results?search_query=remada+com+barra+bent+over+row+forma+correta" },
+            { name: "Rosca Direta", desc: "Em pé. Pegue a barra com palmas para frente. Cotovelos fixos. Levante.", steps: "1. Fique em pé\n2. Pegue palmas para frente\n3. Cotovelos fixos\n4. Flexione cotovelos\n5. Suba antebraços\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Sem balanço\n✓ Apenas braços\n✓ Movimento puro", avoid: "✗ Sem impulso\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+direta+barra+biceps+forma+correta" },
+            { name: "Rosca Martelo", desc: "De pé com halteres. Palmas viradas uma para a outra. Flexione cotovelos. Levante até ombros.", steps: "1. Fique em pé\n2. Haltere em cada mão\n3. Palmas viradas interior\n4. Cotovelos fixos\n5. Flexione cotovelos\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Trabalha bíceps e braquial\n✓ Palmas para interior\n✓ Movimento controlado", avoid: "✗ Sem balanço\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+martelo+halteres+biceps+forma+correta" },
+            { name: "Puxada Inversa", desc: "Sente em banco. Pegue barra acima. Puxe sobre o peito em movimento de arco. Traz à cintura.", steps: "1. Sente no banco\n2. Pegue barra acima\n3. Braços quase esticados\n4. Puxe barra sobre você\n5. Traz à cintura\n6. Sinta alongamento costas\n7. Retorne controlado", tips: "✓ Trabalha costas e peito\n✓ Sinta alongamento\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem usar perna", video: "https://www.youtube.com/results?search_query=pullover+costas+forma+correta" },
+            { name: "Agachamento", desc: "Barra nos ombros. Pés largura ombros. Abaixe até 90°. Suba explosivamente.", steps: "1. Barra nos ombros\n2. Pés largura ombros\n3. Peito para frente\n4. Abaixe dobrando\n5. Até 90 graus\n6. Suba explosivo\n7. Quase esticado", tips: "✓ Joelhos alinhados\n✓ Olhe frente\n✓ Suba com força", avoid: "✗ Joelhos não caem\n✗ Costas retas", video: "https://www.youtube.com/results?search_query=agachamento+squat+barra+forma+correta" },
+            { name: "Leg Press", desc: "Sente na máquina. Pés na plataforma. Abaixe flexionando.", steps: "1. Sente na máquina\n2. Pés na plataforma\n3. Largura além ombros\n4. Abaixe dobrando\n5. Até 90 graus\n6. Pause 1 segundo\n7. Suba empurrando", tips: "✓ Empurre calcanhar\n✓ Controlado sempre\n✓ Sinta as pernas", avoid: "✗ Joelhos não caem\n✗ Sem descer demais", video: "https://www.youtube.com/results?search_query=leg+press+perna+forma+correta" },
+            { name: "Extensora", desc: "Sente com costas apoiadas. Estenda completamente.", steps: "1. Sente apoiado\n2. Pés sob rolete\n3. Estenda completamente\n4. Levante rolete\n5. Pause 1-2 seg\n6. Abaixe controlado\n7. Não toque chão", tips: "✓ Foco quadríceps\n✓ Pausa importante\n✓ Lento e controlado", avoid: "✗ Sem impulso\n✗ Sem bater", video: "https://www.youtube.com/results?search_query=extensora+perna+quadriceps+forma+correta" },
+            { name: "Cadeira Adutora", desc: "Sente na máquina. Pernas abertas. Aperte as pernas juntando-as.", steps: "1. Sente na máquina\n2. Pernas bem abertas\n3. Aperte as pernas\n4. Junte totalmente\n5. Pause 1 segundo\n6. Abra controladamente\n7. Volte à posição inicial", tips: "✓ Trabalha perna interna\n✓ Movimento controlado\n✓ Foco na contração", avoid: "✗ Sem impulso\n✗ Sem abrir demais", video: "https://www.youtube.com/results?search_query=cadeira+adutora+perna+interna+forma+correta" },
+            { name: "Rosca de Perna", desc: "Deitado de bruços. Pés sob rolete. Flexione levantando.", steps: "1. Deite-se de bruços\n2. Pés sob rolete\n3. Flexione joelhos\n4. Levante rolete\n5. Até formar 90°\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha posterior coxa\n✓ Pausa importante\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem levantar quadril", video: "https://www.youtube.com/results?search_query=rosca+de+perna+hamstring+forma+correta" },
+            { name: "Desenvolvimento", desc: "Sente ou fique em pé. Halteres na altura ombros. Suba acima da cabeça.", steps: "1. Sente ou de pé\n2. Haltere cada mão\n3. Altura ombros\n4. Palmas para frente\n5. Suba halteres\n6. Estenda completamente\n7. Pause 1 segundo", tips: "✓ Suba explosivamente\n✓ Abaixe controlado\n✓ Sinta ombro", avoid: "✗ Sem arcar costas\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=desenvolvimento+ombro+halteres+forma+correta" },
+            { name: "Elevação Lateral", desc: "Em pé com halteres. Levante lateralmente até ombros.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos flexionados\n4. Levante para lados\n5. Até ombros\n6. Pause 1 segundo\n7. Abaixe lentamente", tips: "✓ Lento e controlado\n✓ Sinta alongamento\n✓ Peso moderado", avoid: "✗ Sem jogar\n✗ Sem deixar cair", video: "https://www.youtube.com/results?search_query=elevação+lateral+ombro+halteres+forma+correta" },
+            { name: "Elevação Frontal", desc: "De pé com halteres. Levante para frente até altura ombros.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos ligeiramente flexionados\n4. Levante para frente\n5. Até altura ombros\n6. Pause 1 segundo\n7. Abaixe lentamente", tips: "✓ Trabalha ombro frontal\n✓ Movimento lento\n✓ Controlado sempre", avoid: "✗ Sem impulso\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=elevação+frontal+ombro+forma+correta" },
+            { name: "Shrug", desc: "De pé com halteres. Encolha ombros levantando até orelhas. Abaixe.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Braços estendidos\n4. Encolha ombros\n5. Levante até orelhas\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha trapézio\n✓ Movimento vertical\n✓ Peso moderado", avoid: "✗ Sem usar impulso\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=encolhimento+ombro+shrug+forma+correta" },
+            { name: "Rosca Inversa", desc: "De pé com barra. Palmas viradas para baixo. Levante até ombros.", steps: "1. Fique em pé\n2. Pegue barra\n3. Palmas para baixo\n4. Cotovelos fixos\n5. Flexione cotovelos\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Trabalha antebraço\n✓ Sem balanço\n✓ Movimento controlado", avoid: "✗ Sem impulso\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+inversa+barra+antebraço+forma+correta" },
+            { name: "Aquecimento", desc: "Corrida, bicicleta ou corda em ritmo moderado.", steps: "1. Escolha exercício\n2. Ritmo moderado\n3. Prepare o corpo\n4. Eleve frequência\n5. 5 minutos totais\n6. Sem ir forte\n7. Pronto para HIIT", tips: "✓ Aqueça bem\n✓ Ritmo moderado\n✓ Prepare articulações", avoid: "✗ Sem pular forte\n✗ Sem sair intenso", video: "https://www.youtube.com/results?search_query=aquecimento+cardio+corrida+forma+correta" },
+            { name: "HIIT", desc: "30s máxima intensidade + 30s recuperação. Repita 20-30 min.", steps: "1. 30s MÁXIMO\n2. Dê tudo\n3. 30s recuperação leve\n4. Respire\n5. Alterne exercícios\n6. Repita 20-30 min\n7. Termine exausto", tips: "✓ Mais intenso = mais gordura\n✓ Máximo esforço\n✓ Recuperação leve", avoid: "✗ Sem pular intensidade\n✗ Recuperação leve", video: "https://www.youtube.com/results?search_query=HIIT+treino+intenso+forma+correta" },
+            { name: "Prancha", desc: "Corpo reto. Cotovelos sob ombros. Contraia abdômen.", steps: "1. Deite-se de bruços\n2. Cotovelos sob ombros\n3. Levante corpo\n4. Apoie cotovelos/pés\n5. Linha reta\n6. Contraia abdômen\n7. Mantenha respiração", tips: "✓ Qualidade > quantidade\n✓ Contraia CORE\n✓ Respiração constante", avoid: "✗ Sem deixar cair\n✗ Sem prender respiração", video: "https://www.youtube.com/results?search_query=prancha+plank+core+forma+correta" },
+            { name: "Abdominal Dinâmico", desc: "Deitado de costas. Joelhos flexionados. Levante o tronco com contração.", steps: "1. Deite de costas\n2. Joelhos flexionados\n3. Pés apoiados\n4. Coloque mãos atrás cabeça\n5. Levante tronco\n6. Máxima contração\n7. Abaixe controlado", tips: "✓ Contração máxima\n✓ Movimento lento\n✓ Foco no abdômen", avoid: "✗ Sem puxar pescoço\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=abdominal+dinâmico+forma+correta" },
+            { name: "Mountain Climbers", desc: "Posição de flexão. Alterne trazendo joelhos ao peito rápido.", steps: "1. Posição de flexão\n2. Corpo reto\n3. Traga joelho esquerdo\n4. Retorne rápido\n5. Traga joelho direito\n6. Mantenha ritmo\n7. 20-30 segundos", tips: "✓ Movimento rápido\n✓ Cardio + core\n✓ Máximo esforço", avoid: "✗ Sem deixar quadril cair\n✗ Sem manter corpo reto", video: "https://www.youtube.com/results?search_query=mountain+climbers+cardio+forma+correta" },
+            { name: "Flexão", desc: "Corpo reto. Mãos abaixo dos ombros. Abaixe até peito tocar chão. Suba.", steps: "1. Posição de flexão\n2. Mãos abaixo ombros\n3. Corpo reto\n4. Abaixe lentamente\n5. Peito ao chão\n6. Suba explosivo\n7. Repita", tips: "✓ Corpo sempre reto\n✓ Cotovelos 45°\n✓ Movimento completo", avoid: "✗ Sem deixar quadril cair\n✗ Sem cair rápido demais", video: "https://www.youtube.com/results?search_query=flexão+push+up+forma+correta" },
+            { name: "Pullup", desc: "Pendurado na barra. Suba puxando até queixo acima da barra.", steps: "1. Pegue barra\n2. Braços estendidos\n3. Palmas para frente\n4. Puxe para suba\n5. Queixo acima\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Movimento completo\n✓ Controle na descida\n✓ Sinta as costas", avoid: "✗ Sem balançar\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=pullup+barra+forma+correta" }
+        ];
 
         const defaultWorkouts = [
             {
@@ -484,7 +767,7 @@
                     { name: "Supino Inclinado", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=supino+inclinado+peito+forma+correta", desc: "Banco inclinado a 45°. Pegue a barra acima da largura. Abaixe até o peito superior. Suba explosivamente.", steps: "1. Ajuste banco a 45°\n2. Sente firme\n3. Pegue barra acima largura\n4. Abaixe controladamente\n5. Até peito superior\n6. Pause 1 segundo\n7. Suba explosivo", tips: "✓ Trabalha peito superior\n✓ Cotovelos 45°\n✓ Movimento controlado", avoid: "✗ Não deixar banco cair\n✗ Sem impulso\n✗ Não trancar" },
                     { name: "Crucifixo no Cabo", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=crucifixo+no+cabo+peito+forma+correta", desc: "Em pé no centro. Pegue as alças com braços abertos. Puxe em movimento de abraço.", steps: "1. Posicione-se no centro\n2. Pegue as alças abertas\n3. Cotovelos flexionados\n4. Puxe em movimento de abraço\n5. Aproxime na frente\n6. Pause 1 segundo\n7. Retorne controlado", tips: "✓ Controle total\n✓ Foco na contração\n✓ Movimento fluido", avoid: "✗ Sem impulso\n✗ Sem deixar cair" },
                     { name: "Tríceps na Corda", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=tríceps+corda+forma+correta", desc: "Pegue a corda na altura da cabeça. Cotovelos fixos. Puxe para baixo.", steps: "1. Pegue a corda\n2. Altura da cabeça\n3. Cotovelos fixos\n4. Puxe para baixo\n5. Separe as pontas\n6. Pause 1 segundo\n7. Retorne controlado", tips: "✓ Apenas antebraços\n✓ Controle na volta\n✓ Sinta o tríceps", avoid: "✗ Não balançar\n✗ Cotovelos fixos" },
-                    { name: "Extensão de Tríceps (Haltere)", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=extensão+tríceps+haltere+forma+correta", desc: "De pé ou sentado. Segure haltere acima da cabeça. Abaixe dobrando cotovelos. Suba sem mover ombros.", steps: "1. Fique de pé ou sente\n2. Haltere acima cabeça\n3. Cotovelos ligeiramente flexionados\n4. Abaixe dobrando cotovelos\n5. Traga à nuca\n6. Pause 1 segundo\n7. Suba extensível", tips: "✓ Ombros fixos\n✓ Movimento controlado\n✓ Sinta o tríceps", avoid: "✗ Não balançar\n✗ Ombros não mexem" }
+                    { name: "Extensão de Tríceps", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=extensão+tríceps+haltere+forma+correta", desc: "De pé ou sentado. Segure haltere acima da cabeça. Abaixe dobrando cotovelos. Suba sem mover ombros.", steps: "1. Fique de pé ou sente\n2. Haltere acima cabeça\n3. Cotovelos ligeiramente flexionados\n4. Abaixe dobrando cotovelos\n5. Traga à nuca\n6. Pause 1 segundo\n7. Suba extensível", tips: "✓ Ombros fixos\n✓ Movimento controlado\n✓ Sinta o tríceps", avoid: "✗ Não balançar\n✗ Ombros não mexem" }
                 ]
             },
             {
@@ -495,7 +778,7 @@
                     { name: "Remada com Barra", sets: "4 x 8-10", video: "https://www.youtube.com/results?search_query=remada+com+barra+bent+over+row+forma+correta", desc: "Incline-se 30-45°. Joelhos flexionados. Pegue a barra. Puxe ao abdômen.", steps: "1. Pé sob a barra\n2. Joelhos flexionados\n3. Incline costas retas\n4. Pegue barra\n5. Puxe ao abdômen\n6. Cotovelos próximos\n7. Pause 1-2 segundos", tips: "✓ Costas RETAS\n✓ Não deixar cair\n✓ Cotovelos próximos", avoid: "✗ Sem arredondar costas\n✗ Sem balançar" },
                     { name: "Rosca Direta", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=rosca+direta+barra+biceps+forma+correta", desc: "Em pé. Pegue a barra com palmas para frente. Cotovelos fixos. Levante.", steps: "1. Fique em pé\n2. Pegue palmas para frente\n3. Cotovelos fixos\n4. Flexione cotovelos\n5. Suba antebraços\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Sem balanço\n✓ Apenas braços\n✓ Movimento puro", avoid: "✗ Sem impulso\n✗ Cotovelos fixos" },
                     { name: "Rosca Martelo", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=rosca+martelo+halteres+biceps+forma+correta", desc: "De pé com halteres. Palmas viradas uma para a outra. Flexione cotovelos. Levante até ombros.", steps: "1. Fique em pé\n2. Haltere em cada mão\n3. Palmas viradas interior\n4. Cotovelos fixos\n5. Flexione cotovelos\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Trabalha bíceps e braquial\n✓ Palmas para interior\n✓ Movimento controlado", avoid: "✗ Sem balanço\n✗ Cotovelos fixos" },
-                    { name: "Puxada Inversa (Pullover)", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=pullover+costas+forma+correta", desc: "Sente em banco. Pegue barra acima. Puxe sobre o peito em movimento de arco. Traz à cintura.", steps: "1. Sente no banco\n2. Pegue barra acima\n3. Braços quase esticados\n4. Puxe barra sobre você\n5. Traz à cintura\n6. Sinta alongamento costas\n7. Retorne controlado", tips: "✓ Trabalha costas e peito\n✓ Sinta alongamento\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem usar perna" }
+                    { name: "Puxada Inversa", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=pullover+costas+forma+correta", desc: "Sente em banco. Pegue barra acima. Puxe sobre o peito em movimento de arco. Traz à cintura.", steps: "1. Sente no banco\n2. Pegue barra acima\n3. Braços quase esticados\n4. Puxe barra sobre você\n5. Traz à cintura\n6. Sinta alongamento costas\n7. Retorne controlado", tips: "✓ Trabalha costas e peito\n✓ Sinta alongamento\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem usar perna" }
                 ]
             },
             {
@@ -505,8 +788,8 @@
                     { name: "Agachamento", sets: "4 x 6-8", video: "https://www.youtube.com/results?search_query=agachamento+squat+barra+forma+correta", desc: "Barra nos ombros. Pés largura ombros. Abaixe até 90°. Suba explosivamente.", steps: "1. Barra nos ombros\n2. Pés largura ombros\n3. Peito para frente\n4. Abaixe dobrando\n5. Até 90 graus\n6. Suba explosivo\n7. Quase esticado", tips: "✓ Joelhos alinhados\n✓ Olhe frente\n✓ Suba com força", avoid: "✗ Joelhos não caem\n✗ Costas retas" },
                     { name: "Leg Press", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=leg+press+perna+forma+correta", desc: "Sente na máquina. Pés na plataforma. Abaixe flexionando.", steps: "1. Sente na máquina\n2. Pés na plataforma\n3. Largura além ombros\n4. Abaixe dobrando\n5. Até 90 graus\n6. Pause 1 segundo\n7. Suba empurrando", tips: "✓ Empurre calcanhar\n✓ Controlado sempre\n✓ Sinta as pernas", avoid: "✗ Joelhos não caem\n✗ Sem descer demais" },
                     { name: "Extensora", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=extensora+perna+quadriceps+forma+correta", desc: "Sente com costas apoiadas. Estenda completamente.", steps: "1. Sente apoiado\n2. Pés sob rolete\n3. Estenda completamente\n4. Levante rolete\n5. Pause 1-2 seg\n6. Abaixe controlado\n7. Não toque chão", tips: "✓ Foco quadríceps\n✓ Pausa importante\n✓ Lento e controlado", avoid: "✗ Sem impulso\n✗ Sem bater" },
-                    { name: "Cadeira Adutora (Perna Interna)", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=cadeira+adutora+perna+interna+forma+correta", desc: "Sente na máquina. Pernas abertas. Aperte as pernas juntando-as.", steps: "1. Sente na máquina\n2. Pernas bem abertas\n3. Aperte as pernas\n4. Junte totalmente\n5. Pause 1 segundo\n6. Abra controladamente\n7. Volte à posição inicial", tips: "✓ Trabalha perna interna\n✓ Movimento controlado\n✓ Foco na contração", avoid: "✗ Sem impulso\n✗ Sem abrir demais" },
-                    { name: "Rosca de Perna (Posterior)", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=rosca+de+perna+hamstring+forma+correta", desc: "Deitado de bruços. Pés sob rolete. Flexione levantando.", steps: "1. Deite-se de bruços\n2. Pés sob rolete\n3. Flexione joelhos\n4. Levante rolete\n5. Até formar 90°\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha posterior coxa\n✓ Pausa importante\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem levantar quadril" }
+                    { name: "Cadeira Adutora", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=cadeira+adutora+perna+interna+forma+correta", desc: "Sente na máquina. Pernas abertas. Aperte as pernas juntando-as.", steps: "1. Sente na máquina\n2. Pernas bem abertas\n3. Aperte as pernas\n4. Junte totalmente\n5. Pause 1 segundo\n6. Abra controladamente\n7. Volte à posição inicial", tips: "✓ Trabalha perna interna\n✓ Movimento controlado\n✓ Foco na contração", avoid: "✗ Sem impulso\n✗ Sem abrir demais" },
+                    { name: "Rosca de Perna", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=rosca+de+perna+hamstring+forma+correta", desc: "Deitado de bruços. Pés sob rolete. Flexione levantando.", steps: "1. Deite-se de bruços\n2. Pés sob rolete\n3. Flexione joelhos\n4. Levante rolete\n5. Até formar 90°\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha posterior coxa\n✓ Pausa importante\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem levantar quadril" }
                 ]
             },
             {
@@ -516,8 +799,8 @@
                     { name: "Desenvolvimento", sets: "4 x 8-10", video: "https://www.youtube.com/results?search_query=desenvolvimento+ombro+halteres+forma+correta", desc: "Sente ou fique em pé. Halteres na altura ombros. Suba acima da cabeça.", steps: "1. Sente ou de pé\n2. Haltere cada mão\n3. Altura ombros\n4. Palmas para frente\n5. Suba halteres\n6. Estenda completamente\n7. Pause 1 segundo", tips: "✓ Suba explosivamente\n✓ Abaixe controlado\n✓ Sinta ombro", avoid: "✗ Sem arcar costas\n✗ Peso moderado" },
                     { name: "Elevação Lateral", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=elevação+lateral+ombro+halteres+forma+correta", desc: "Em pé com halteres. Levante lateralmente até ombros.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos flexionados\n4. Levante para lados\n5. Até ombros\n6. Pause 1 segundo\n7. Abaixe lentamente", tips: "✓ Lento e controlado\n✓ Sinta alongamento\n✓ Peso moderado", avoid: "✗ Sem jogar\n✗ Sem deixar cair" },
                     { name: "Elevação Frontal", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=elevação+frontal+ombro+forma+correta", desc: "De pé com halteres. Levante para frente até altura ombros.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos ligeiramente flexionados\n4. Levante para frente\n5. Até altura ombros\n6. Pause 1 segundo\n7. Abaixe lentamente", tips: "✓ Trabalha ombro frontal\n✓ Movimento lento\n✓ Controlado sempre", avoid: "✗ Sem impulso\n✗ Peso moderado" },
-                    { name: "Encolhimento de Ombros (Shrug)", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=encolhimento+ombro+shrug+forma+correta", desc: "De pé com halteres. Encolha ombros levantando até orelhas. Abaixe.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Braços estendidos\n4. Encolha ombros\n5. Levante até orelhas\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha trapézio\n✓ Movimento vertical\n✓ Peso moderado", avoid: "✗ Sem usar impulso\n✗ Peso moderado" },
-                    { name: "Rosca Inversa (Barra)", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=rosca+inversa+barra+antebraço+forma+correta", desc: "De pé com barra. Palmas viradas para baixo. Levante até ombros.", steps: "1. Fique em pé\n2. Pegue barra\n3. Palmas para baixo\n4. Cotovelos fixos\n5. Flexione cotovelos\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Trabalha antebraço\n✓ Sem balanço\n✓ Movimento controlado", avoid: "✗ Sem impulso\n✗ Cotovelos fixos" }
+                    { name: "Shrug", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=encolhimento+ombro+shrug+forma+correta", desc: "De pé com halteres. Encolha ombros levantando até orelhas. Abaixe.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Braços estendidos\n4. Encolha ombros\n5. Levante até orelhas\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha trapézio\n✓ Movimento vertical\n✓ Peso moderado", avoid: "✗ Sem usar impulso\n✗ Peso moderado" },
+                    { name: "Rosca Inversa", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=rosca+inversa+barra+antebraço+forma+correta", desc: "De pé com barra. Palmas viradas para baixo. Levante até ombros.", steps: "1. Fique em pé\n2. Pegue barra\n3. Palmas para baixo\n4. Cotovelos fixos\n5. Flexione cotovelos\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Trabalha antebraço\n✓ Sem balanço\n✓ Movimento controlado", avoid: "✗ Sem impulso\n✗ Cotovelos fixos" }
                 ]
             },
             {
@@ -533,39 +816,118 @@
             }
         ];
 
-        function loadState() {
-            const saved = localStorage.getItem('workouts');
-            const savedChecked = localStorage.getItem('checkedExercises');
-            const savedHistory = localStorage.getItem('workoutHistory');
+        // ===== PROFILE MANAGEMENT =====
+        function loadData() {
+            const savedProfiles = localStorage.getItem('profiles');
+            const current = localStorage.getItem('currentProfile');
             
-            if (saved) {
-                window.workouts = JSON.parse(saved);
-            } else {
-                window.workouts = JSON.parse(JSON.stringify(defaultWorkouts));
+            if (savedProfiles) {
+                profiles = JSON.parse(savedProfiles);
             }
-            if (savedChecked) {
-                checkedExercises = JSON.parse(savedChecked);
-            }
-            if (savedHistory) {
-                workoutHistory = JSON.parse(savedHistory);
+            if (current) {
+                currentProfile = current;
             }
             
-            const savedStartTime = localStorage.getItem('workoutStartTime');
-            if (savedStartTime) {
-                workoutStartTime = parseInt(savedStartTime);
-                isWorkoutActive = true;
-                document.getElementById('btnStart').disabled = true;
-                document.getElementById('btnEnd').disabled = false;
-                startTimer();
+            renderProfilesScreen();
+        }
+
+        function renderProfilesScreen() {
+            const container = document.getElementById('profilesList');
+            container.innerHTML = '';
+            
+            if (profiles.length === 0) {
+                document.getElementById('loginScreen').classList.add('show');
+                document.getElementById('appScreen').classList.remove('show');
+                return;
             }
+            
+            profiles.forEach(profile => {
+                const card = document.createElement('div');
+                card.className = 'profile-card';
+                card.innerHTML = `
+                    <div class="profile-name">👤 ${profile}</div>
+                    <div class="profile-info">Clique para entrar</div>
+                `;
+                card.onclick = () => selectProfile(profile);
+                container.appendChild(card);
+            });
         }
 
-        function saveState() {
-            localStorage.setItem('workouts', JSON.stringify(window.workouts));
-            localStorage.setItem('checkedExercises', JSON.stringify(checkedExercises));
-            localStorage.setItem('workoutHistory', JSON.stringify(workoutHistory));
+        function selectProfile(profileName) {
+            currentProfile = profileName;
+            localStorage.setItem('currentProfile', profileName);
+            loadProfileData();
+            showAppScreen();
         }
 
+        function loadProfileData() {
+            const prefix = `profile_${currentProfile}_`;
+            
+            const savedWorkouts = localStorage.getItem(prefix + 'workouts');
+            workouts[currentProfile] = savedWorkouts ? JSON.parse(savedWorkouts) : JSON.parse(JSON.stringify(defaultWorkouts));
+            
+            const savedChecked = localStorage.getItem(prefix + 'checkedExercises');
+            checkedExercises[currentProfile] = savedChecked ? JSON.parse(savedChecked) : {};
+            
+            const savedCustom = localStorage.getItem(prefix + 'customExercises');
+            customExercises[currentProfile] = savedCustom ? JSON.parse(savedCustom) : [];
+            
+            const savedHistory = localStorage.getItem(prefix + 'workoutHistory');
+            workoutHistory[currentProfile] = savedHistory ? JSON.parse(savedHistory) : [];
+        }
+
+        function saveProfileData() {
+            const prefix = `profile_${currentProfile}_`;
+            localStorage.setItem(prefix + 'workouts', JSON.stringify(workouts[currentProfile]));
+            localStorage.setItem(prefix + 'checkedExercises', JSON.stringify(checkedExercises[currentProfile]));
+            localStorage.setItem(prefix + 'customExercises', JSON.stringify(customExercises[currentProfile]));
+            localStorage.setItem(prefix + 'workoutHistory', JSON.stringify(workoutHistory[currentProfile]));
+        }
+
+        function openNewProfileModal() {
+            document.getElementById('newProfileModal').classList.add('show');
+        }
+
+        function closeNewProfileModal() {
+            document.getElementById('newProfileModal').classList.remove('show');
+            document.getElementById('newProfileName').value = '';
+        }
+
+        function createProfile() {
+            const name = document.getElementById('newProfileName').value.trim();
+            
+            if (!name) {
+                alert('Nome do perfil obrigatório!');
+                return;
+            }
+            
+            if (profiles.includes(name)) {
+                alert('Este perfil já existe!');
+                return;
+            }
+            
+            profiles.push(name);
+            localStorage.setItem('profiles', JSON.stringify(profiles));
+            closeNewProfileModal();
+            renderProfilesScreen();
+        }
+
+        function switchProfile() {
+            saveProfileData();
+            currentProfile = null;
+            document.getElementById('loginScreen').classList.add('show');
+            document.getElementById('appScreen').classList.remove('show');
+            renderProfilesScreen();
+        }
+
+        function showAppScreen() {
+            document.getElementById('loginScreen').classList.remove('show');
+            document.getElementById('appScreen').classList.add('show');
+            document.getElementById('currentProfileName').textContent = currentProfile;
+            render();
+        }
+
+        // ===== APP FUNCTIONS =====
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -582,7 +944,6 @@
             if (!isWorkoutActive) {
                 workoutStartTime = Date.now();
                 isWorkoutActive = true;
-                localStorage.setItem('workoutStartTime', workoutStartTime);
                 document.getElementById('btnStart').disabled = true;
                 document.getElementById('btnEnd').disabled = false;
                 startTimer();
@@ -617,28 +978,24 @@
             const seconds = totalSeconds % 60;
             const display = String(hours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
             
-            // Salvar no histórico
-            const completedCount = Object.keys(checkedExercises).length;
-            const totalExercises = window.workouts.reduce((sum, day) => sum + day.exercises.length, 0);
+            const completedCount = Object.keys(checkedExercises[currentProfile]).length;
+            const totalExercises = workouts[currentProfile].reduce((sum, day) => sum + day.exercises.length, 0);
             
-            workoutHistory.push({
+            workoutHistory[currentProfile].push({
                 date: new Date().toISOString(),
                 totalTime: elapsed,
                 completed: completedCount,
                 total: totalExercises
             });
             
-            saveState();
+            saveProfileData();
             
             document.getElementById('finalTime').textContent = display;
             document.getElementById('finishModal').classList.add('show');
-            localStorage.removeItem('workoutStartTime');
             
-            // Limpar checkedExercises para nova jornada
-            checkedExercises = {};
+            checkedExercises[currentProfile] = {};
             render();
             
-            // Fechar modal automaticamente após 3 segundos
             let countDown = 3;
             document.getElementById('modalTimer').textContent = `Fechando em ${countDown}s...`;
             
@@ -648,17 +1005,15 @@
                     document.getElementById('modalTimer').textContent = `Fechando em ${countDown}s...`;
                 } else {
                     clearInterval(modalCloseTimer);
-                    closeModal();
+                    closeFinishModal();
                 }
             }, 1000);
             
             resetWorkout();
         }
 
-        function closeModal() {
-            if (modalCloseTimer) {
-                clearInterval(modalCloseTimer);
-            }
+        function closeFinishModal() {
+            if (modalCloseTimer) clearInterval(modalCloseTimer);
             document.getElementById('finishModal').classList.remove('show');
         }
 
@@ -695,52 +1050,122 @@
             if (!el.classList.contains('checked')) {
                 el.classList.add('checked');
                 el.innerHTML = '✓';
-                checkedExercises[key] = true;
+                checkedExercises[currentProfile][key] = true;
                 startRestTimer();
             } else {
                 el.classList.remove('checked');
                 el.innerHTML = '';
-                delete checkedExercises[key];
+                delete checkedExercises[currentProfile][key];
             }
             
-            saveState();
+            saveProfileData();
             updateProgress();
         }
 
         function deleteExercise(dayIdx, exIdx) {
-            if (confirm('Tem certeza que quer deletar este exercício?')) {
-                window.workouts[dayIdx].exercises.splice(exIdx, 1);
-                saveState();
+            if (confirm('Deletar exercício?')) {
+                workouts[currentProfile][dayIdx].exercises.splice(exIdx, 1);
+                saveProfileData();
                 render();
             }
         }
 
-        function addExercise(dayIdx) {
-            const name = prompt('Nome do exercício:');
-            if (!name) return;
-            const sets = prompt('Séries x Reps (ex: 3 x 10):');
-            if (!sets) return;
+        function searchExercises() {
+            const name = document.getElementById('exerciseName').value.toLowerCase();
+            const matchesContainer = document.getElementById('exerciseMatches');
+            
+            if (!name.trim()) {
+                matchesContainer.classList.add('hidden');
+                document.getElementById('matchIndicator').textContent = '';
+                return;
+            }
+            
+            const matches = exerciseBank.filter(ex => ex.name.toLowerCase().includes(name));
+            
+            if (matches.length === 0) {
+                matchesContainer.classList.add('hidden');
+                document.getElementById('matchIndicator').textContent = '❌ Nenhum exercício encontrado';
+                return;
+            }
+            
+            matchesContainer.classList.remove('hidden');
+            matchesContainer.innerHTML = '';
+            
+            document.getElementById('matchIndicator').textContent = `✅ Encontrado ${matches.length} exercício(s)`;
+            
+            matches.forEach(ex => {
+                const option = document.createElement('div');
+                option.className = 'exercise-option';
+                option.innerHTML = `
+                    <div class="exercise-option-name">💪 ${ex.name}</div>
+                    <div class="exercise-option-desc">${ex.desc}</div>
+                `;
+                option.onclick = () => selectExerciseFromBank(ex);
+                matchesContainer.appendChild(option);
+            });
+        }
+
+        function selectExerciseFromBank(exercise) {
+            selectedExerciseFromBank = exercise;
+            document.getElementById('exerciseName').value = exercise.name;
+            document.getElementById('exerciseDesc').value = exercise.desc;
+            document.getElementById('exerciseSteps').value = exercise.steps;
+            document.getElementById('exerciseTips').value = exercise.tips;
+            document.getElementById('exerciseAvoid').value = exercise.avoid;
+            document.getElementById('exerciseMatches').classList.add('hidden');
+            document.getElementById('matchIndicator').textContent = '✅ Exercício carregado!';
+        }
+
+        function openAddModal(dayIdx) {
+            currentAddingDayIdx = dayIdx;
+            selectedExerciseFromBank = null;
+            document.getElementById('exerciseName').value = '';
+            document.getElementById('exerciseSets').value = '';
+            document.getElementById('exerciseDesc').value = '';
+            document.getElementById('exerciseSteps').value = '';
+            document.getElementById('exerciseTips').value = '';
+            document.getElementById('exerciseAvoid').value = '';
+            document.getElementById('exerciseMatches').classList.add('hidden');
+            document.getElementById('matchIndicator').textContent = '';
+            document.getElementById('addExerciseModal').classList.add('show');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addExerciseModal').classList.remove('show');
+            currentAddingDayIdx = null;
+            selectedExerciseFromBank = null;
+        }
+
+        function confirmAddExercise() {
+            const name = document.getElementById('exerciseName').value.trim();
+            const sets = document.getElementById('exerciseSets').value.trim();
+            
+            if (!name || !sets) {
+                alert('Nome e Séries obrigatórios!');
+                return;
+            }
             
             const newExercise = {
                 name: name,
                 sets: sets,
-                video: 'https://www.youtube.com/results?search_query=' + encodeURIComponent(name),
-                desc: 'Descrição do exercício',
-                steps: '1. Passo 1\n2. Passo 2\n3. Passo 3',
-                tips: '✓ Dica 1\n✓ Dica 2',
-                avoid: '✗ Evite 1\n✗ Evite 2'
+                video: selectedExerciseFromBank ? selectedExerciseFromBank.video : 'https://www.youtube.com/results?search_query=' + encodeURIComponent(name),
+                desc: document.getElementById('exerciseDesc').value || 'Descrição do exercício',
+                steps: document.getElementById('exerciseSteps').value || '1. Passo 1\n2. Passo 2',
+                tips: document.getElementById('exerciseTips').value || '✓ Dica 1',
+                avoid: document.getElementById('exerciseAvoid').value || '✗ Evite 1'
             };
             
-            window.workouts[dayIdx].exercises.push(newExercise);
-            saveState();
+            workouts[currentProfile][currentAddingDayIdx].exercises.push(newExercise);
+            saveProfileData();
             render();
+            closeAddModal();
         }
 
         function render() {
             const container = document.getElementById('workoutContainer');
             container.innerHTML = '';
 
-            window.workouts.forEach((day, dayIdx) => {
+            workouts[currentProfile].forEach((day, dayIdx) => {
                 const dayBox = document.createElement('div');
                 dayBox.className = 'day-box';
                 
@@ -753,7 +1178,7 @@
                         <div class="day-focus">${day.focus}</div>
                     </div>
                     <div class="day-controls">
-                        <button class="btn-add" onclick="addExercise(${dayIdx})">+ Adicionar</button>
+                        <button class="btn-add" onclick="openAddModal(${dayIdx})">+ Adicionar</button>
                         <span style="margin-left: 10px;">▼</span>
                     </div>
                 `;
@@ -778,7 +1203,7 @@
                         toggleCheck(dayIdx, exIdx);
                     };
 
-                    if (checkedExercises[key]) {
+                    if (checkedExercises[currentProfile] && checkedExercises[currentProfile][key]) {
                         checkbox.classList.add('checked');
                         checkbox.innerHTML = '✓';
                     }
@@ -840,11 +1265,11 @@
 
         function renderHistory() {
             const container = document.getElementById('historyCards');
+            const history = workoutHistory[currentProfile] || [];
             
-            // Calcular estatísticas
-            const totalWorkouts = workoutHistory.length;
+            const totalWorkouts = history.length;
             let totalMilliseconds = 0;
-            workoutHistory.forEach(w => {
+            history.forEach(w => {
                 totalMilliseconds += w.totalTime;
             });
             
@@ -853,12 +1278,11 @@
             document.getElementById('totalWorkouts').textContent = totalWorkouts;
             document.getElementById('totalHours').textContent = totalHours > 0 ? totalHours + 'h' : '<1h';
 
-            if (workoutHistory.length === 0) {
+            if (history.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📋</div>
                         <p>Nenhum treino registrado ainda.</p>
-                        <p style="font-size: 12px; margin-top: 10px;">Comece seu primeiro treino!</p>
                     </div>
                 `;
                 return;
@@ -866,8 +1290,7 @@
 
             container.innerHTML = '';
             
-            // Ordenar por data (mais recente primeiro)
-            const sorted = [...workoutHistory].sort((a, b) => new Date(b.date) - new Date(a.date));
+            const sorted = [...history].sort((a, b) => new Date(b.date) - new Date(a.date));
             
             sorted.forEach(workout => {
                 const date = new Date(workout.date);
@@ -885,12 +1308,10 @@
                     <div class="history-day">${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</div>
                     <div class="history-info">
                         <div class="history-info-item">
-                            <span class="history-icon">⏱️</span>
-                            <span>${timeStr}</span>
+                            <span>⏱️ ${timeStr}</span>
                         </div>
                         <div class="history-info-item">
-                            <span class="history-icon">✓</span>
-                            <span>${workout.completed}/${workout.total} exercícios</span>
+                            <span>✓ ${workout.completed}/${workout.total}</span>
                         </div>
                     </div>
                 `;
@@ -910,19 +1331,19 @@
 
         function updateProgress() {
             let total = 0, checked = 0;
-            for (let dayIdx = 0; dayIdx < window.workouts.length; dayIdx++) {
-                for (let exIdx = 0; exIdx < window.workouts[dayIdx].exercises.length; exIdx++) {
+            for (let dayIdx = 0; dayIdx < workouts[currentProfile].length; dayIdx++) {
+                for (let exIdx = 0; exIdx < workouts[currentProfile][dayIdx].exercises.length; exIdx++) {
                     total++;
                     const key = `${dayIdx}-${exIdx}`;
-                    if (checkedExercises[key]) checked++;
+                    if (checkedExercises[currentProfile] && checkedExercises[currentProfile][key]) checked++;
                 }
             }
             const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
             document.getElementById('progressFill').style.width = percent + '%';
         }
 
-        loadState();
-        render();
+        // INIT
+        loadData();
     </script>
 </body>
 </html>
