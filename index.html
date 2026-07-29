@@ -16,12 +16,8 @@
         h1 { font-size: 24px; margin-bottom: 20px; text-align: center; }
 
         /* LOGIN SCREEN */
-        .login-screen {
-            display: none;
-        }
-        .login-screen.show {
-            display: block;
-        }
+        .login-screen { display: none; }
+        .login-screen.show { display: block; }
         .login-title {
             font-size: 32px;
             text-align: center;
@@ -53,11 +49,6 @@
             font-weight: bold;
             margin-bottom: 8px;
         }
-        .profile-info {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
         .btn-new-profile {
             background: #4CAF50;
             color: white;
@@ -70,11 +61,9 @@
             width: 100%;
             margin-top: 20px;
         }
-        .btn-new-profile:hover {
-            background: #45a049;
-        }
+        .btn-new-profile:hover { background: #45a049; }
 
-        /* NEW PROFILE MODAL */
+        /* MODAL */
         .modal {
             display: none;
             position: fixed;
@@ -94,7 +83,9 @@
             border: 1px solid #444;
             border-radius: 12px;
             width: 90%;
-            max-width: 400px;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
         }
         .modal-content h2 {
             font-size: 24px;
@@ -109,7 +100,7 @@
             margin-bottom: 8px;
             font-weight: bold;
         }
-        .form-group input {
+        .form-group input, .form-group textarea {
             width: 100%;
             padding: 12px;
             background: #333;
@@ -117,6 +108,11 @@
             border-radius: 6px;
             color: white;
             font-size: 14px;
+            font-family: inherit;
+        }
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
         }
         .form-buttons {
             display: flex;
@@ -147,12 +143,8 @@
         .btn-cancel:hover { background: #666; }
 
         /* APP SCREEN */
-        .app-screen {
-            display: none;
-        }
-        .app-screen.show {
-            display: block;
-        }
+        .app-screen { display: none; }
+        .app-screen.show { display: block; }
 
         /* HEADER */
         .app-header {
@@ -165,17 +157,9 @@
             align-items: center;
             box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
         }
-        .profile-display {
-            text-align: left;
-        }
-        .profile-label {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-        .profile-name-header {
-            font-size: 18px;
-            font-weight: bold;
-        }
+        .profile-display { text-align: left; }
+        .profile-label { font-size: 12px; opacity: 0.8; }
+        .profile-name-header { font-size: 18px; font-weight: bold; }
         .btn-switch-profile {
             background: rgba(255, 255, 255, 0.2);
             color: white;
@@ -186,9 +170,7 @@
             cursor: pointer;
             font-size: 12px;
         }
-        .btn-switch-profile:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
+        .btn-switch-profile:hover { background: rgba(255, 255, 255, 0.3); }
 
         /* TABS */
         .tabs {
@@ -196,6 +178,7 @@
             gap: 10px;
             margin-bottom: 20px;
             border-bottom: 2px solid #333;
+            overflow-x: auto;
         }
         .tab-btn {
             background: none;
@@ -207,6 +190,7 @@
             font-weight: 600;
             border-bottom: 3px solid transparent;
             transition: all 0.3s;
+            white-space: nowrap;
         }
         .tab-btn.active {
             color: #4CAF50;
@@ -214,12 +198,8 @@
         }
         .tab-btn:hover { color: #fff; }
 
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
         /* TIMER SECTION */
         .timer-section {
@@ -236,11 +216,7 @@
             margin-bottom: 15px;
             font-family: 'Courier New', monospace;
         }
-        .timer-label {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 15px;
-        }
+        .timer-label { font-size: 14px; opacity: 0.9; margin-bottom: 15px; }
         .timer-buttons {
             display: flex;
             gap: 10px;
@@ -344,10 +320,29 @@
             position: relative;
         }
         .exercise:hover { background: #333; }
-        .exercise-delete {
+        .exercise-buttons {
             position: absolute;
             top: 12px;
             right: 15px;
+            display: flex;
+            gap: 5px;
+        }
+        .btn-replace {
+            background: #FF9800;
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-replace:hover { background: #F57C00; }
+        .btn-delete {
             background: #f44336;
             color: white;
             border: none;
@@ -358,7 +353,7 @@
             font-size: 12px;
             font-weight: bold;
         }
-        .exercise-delete:hover { background: #da190b; }
+        .btn-delete:hover { background: #da190b; }
 
         .checkbox {
             width: 24px;
@@ -398,6 +393,16 @@
             line-height: 1.6;
         }
         .exercise-details.show { display: block; }
+
+        .exercise-image {
+            width: 100%;
+            height: 200px;
+            background: #333;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            object-fit: cover;
+            display: block;
+        }
 
         .detail-section { margin-bottom: 15px; }
         .detail-title { font-weight: bold; color: #4CAF50; margin-bottom: 8px; }
@@ -457,11 +462,6 @@
             border-radius: 12px;
             border-left: 4px solid #4CAF50;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s;
-        }
-        .history-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(76, 175, 80, 0.2);
         }
         .history-date {
             font-size: 12px;
@@ -497,7 +497,10 @@
         }
 
         /* EXERCISE SELECTOR */
-        .exercise-selector {
+        .exercises-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
             max-height: 400px;
             overflow-y: auto;
             margin-bottom: 20px;
@@ -505,71 +508,193 @@
         .exercise-option {
             background: #333;
             padding: 15px;
-            margin-bottom: 10px;
             border-radius: 6px;
             cursor: pointer;
             border: 2px solid #444;
             transition: all 0.3s;
+            display: flex;
+            gap: 12px;
+            align-items: center;
         }
         .exercise-option:hover {
             border-color: #4CAF50;
             background: #3a3a3a;
         }
+        .exercise-option-img {
+            width: 80px;
+            height: 80px;
+            background: #444;
+            border-radius: 4px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .exercise-option-content { flex: 1; }
         .exercise-option-name {
             font-weight: bold;
             color: #4CAF50;
             margin-bottom: 5px;
+            font-size: 14px;
         }
         .exercise-option-desc {
+            font-size: 11px;
+            color: #999;
+            line-height: 1.4;
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .category-btn {
+            background: #333;
+            color: #aaa;
+            border: 1px solid #555;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .category-btn.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .category-btn:hover {
+            border-color: #4CAF50;
+            color: #4CAF50;
+        }
+
+        .current-exercise-info {
+            background: #333;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #FF9800;
+        }
+        .current-label {
+            font-size: 12px;
+            color: #FF9800;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .current-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .current-sets {
             font-size: 12px;
             color: #aaa;
         }
 
-        .match-indicator {
-            font-size: 12px;
-            color: #4CAF50;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        textarea {
-            width: 100%;
-            padding: 10px;
-            background: #333;
-            border: 1px solid #555;
-            border-radius: 4px;
-            color: white;
-            font-family: inherit;
-            font-size: 13px;
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .modal-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .modal-btn-confirm {
+        /* EXERCÍCIOS ABA */
+        .btn-create-exercise {
             background: #4CAF50;
             color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
         }
-        .modal-btn-confirm:hover { background: #45a049; }
-        .modal-btn-cancel {
-            background: #555;
+        .btn-create-exercise:hover { background: #45a049; }
+
+        .exercises-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .exercise-card {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            position: relative;
+            overflow: hidden;
+        }
+        .exercise-card-image {
+            width: 100%;
+            height: 150px;
+            background: #333;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+        .exercise-card-name {
+            font-weight: bold;
+            font-size: 16px;
+            color: #4CAF50;
+            margin-bottom: 8px;
+        }
+        .exercise-card-category {
+            display: inline-block;
+            background: #667eea;
             color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
-        .modal-btn-cancel:hover { background: #666; }
+        .exercise-card-desc {
+            font-size: 13px;
+            color: #ccc;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        .exercise-card-buttons {
+            display: flex;
+            gap: 10px;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        .btn-edit {
+            background: #2196F3;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-edit:hover { background: #0b7dda; }
+        .btn-remove {
+            background: #f44336;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-remove:hover { background: #da190b; }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #333;
+            border-top: 3px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -587,7 +712,6 @@
         <div class="container">
             <h1>💪 Seu Treino</h1>
             
-            <!-- HEADER COM PERFIL -->
             <div class="app-header">
                 <div class="profile-display">
                     <div class="profile-label">👤 Perfil</div>
@@ -596,10 +720,10 @@
                 <button class="btn-switch-profile" onclick="switchProfile()">Trocar Perfil</button>
             </div>
 
-            <!-- TABS -->
             <div class="tabs">
                 <button class="tab-btn active" onclick="switchTab('workout')">📅 Treino</button>
                 <button class="tab-btn" onclick="switchTab('history')">📊 Histórico</button>
+                <button class="tab-btn" onclick="switchTab('exercises')">💪 Exercícios</button>
             </div>
 
             <!-- TAB TREINO -->
@@ -637,6 +761,12 @@
 
                 <div id="historyCards" class="history-cards"></div>
             </div>
+
+            <!-- TAB EXERCÍCIOS -->
+            <div id="exercises" class="tab-content">
+                <button class="btn-create-exercise" onclick="openCreateExerciseModal()">➕ Criar Novo Exercício</button>
+                <div class="exercises-list" id="exercisesList"></div>
+            </div>
         </div>
     </div>
 
@@ -655,47 +785,87 @@
         </div>
     </div>
 
-    <!-- MODAL ADICIONAR EXERCÍCIO -->
-    <div id="addExerciseModal" class="modal">
-        <div class="modal-content" style="max-width: 500px; max-height: 80vh; overflow-y: auto;">
-            <h2>➕ Novo Exercício</h2>
+    <!-- MODAL CRIAR/EDITAR EXERCÍCIO -->
+    <div id="createExerciseModal" class="modal">
+        <div class="modal-content">
+            <h2 id="createExerciseTitle">➕ Criar Novo Exercício</h2>
             
             <div class="form-group">
                 <label>Nome do Exercício *</label>
-                <input type="text" id="exerciseName" placeholder="Ex: Supino Reto" oninput="searchExercises()">
-                <div id="matchIndicator" class="match-indicator"></div>
-            </div>
-
-            <div id="exerciseMatches" class="exercise-selector hidden"></div>
-
-            <div class="form-group">
-                <label>Séries x Reps *</label>
-                <input type="text" id="exerciseSets" placeholder="Ex: 3 x 10">
+                <input type="text" id="createExName" placeholder="Ex: Meu Exercício">
             </div>
 
             <div class="form-group">
-                <label>Descrição</label>
-                <textarea id="exerciseDesc" placeholder="Como fazer o exercício"></textarea>
+                <label>Categoria *</label>
+                <select id="createExCategory" style="width: 100%; padding: 12px; background: #333; border: 1px solid #555; border-radius: 6px; color: white; font-size: 14px;">
+                    <option value="">Escolha uma categoria</option>
+                    <option value="Peito">Peito</option>
+                    <option value="Costas">Costas</option>
+                    <option value="Bíceps">Bíceps</option>
+                    <option value="Tríceps">Tríceps</option>
+                    <option value="Ombro">Ombro</option>
+                    <option value="Perna">Perna</option>
+                    <option value="Cardio">Cardio</option>
+                    <option value="Core">Core</option>
+                    <option value="Outro">Outro</option>
+                </select>
             </div>
 
             <div class="form-group">
-                <label>Passo a Passo</label>
-                <textarea id="exerciseSteps" placeholder="1. Passo 1&#10;2. Passo 2"></textarea>
+                <label>Descrição *</label>
+                <textarea id="createExDesc" placeholder="Como fazer o exercício"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Passo a Passo *</label>
+                <textarea id="createExSteps" placeholder="1. Passo 1&#10;2. Passo 2"></textarea>
             </div>
 
             <div class="form-group">
                 <label>Dicas</label>
-                <textarea id="exerciseTips" placeholder="✓ Dica 1&#10;✓ Dica 2"></textarea>
+                <textarea id="createExTips" placeholder="✓ Dica 1&#10;✓ Dica 2"></textarea>
             </div>
 
             <div class="form-group">
                 <label>Evite</label>
-                <textarea id="exerciseAvoid" placeholder="✗ Evite 1&#10;✗ Evite 2"></textarea>
+                <textarea id="createExAvoid" placeholder="✗ Evite 1&#10;✗ Evite 2"></textarea>
             </div>
 
-            <div class="modal-buttons">
-                <button class="modal-btn modal-btn-confirm" onclick="confirmAddExercise()">✓ Adicionar</button>
-                <button class="modal-btn modal-btn-cancel" onclick="closeAddModal()">✕ Cancelar</button>
+            <div class="form-group">
+                <label>Link YouTube (opcional)</label>
+                <input type="text" id="createExVideo" placeholder="https://youtube.com/...">
+            </div>
+
+            <div class="form-buttons">
+                <button class="btn-confirm" onclick="saveCustomExercise()">✓ Salvar</button>
+                <button class="btn-cancel" onclick="closeCreateExerciseModal()">✕ Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TROCAR EXERCÍCIO -->
+    <div id="selectExerciseModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">🔄 Trocar Exercício</h2>
+            
+            <div id="currentExerciseContainer" class="current-exercise-info">
+                <div class="current-label">⚙️ Exercício Atual</div>
+                <div class="current-name" id="currentExerciseName"></div>
+                <div class="current-sets" id="currentExerciseSets"></div>
+            </div>
+
+            <div class="form-group">
+                <label>🔍 Filtrar por Categoria</label>
+                <div class="category-filter" id="categoryFilter"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Exercícios Disponíveis (carregando imagens...)</label>
+                <div class="exercises-grid" id="exercisesGrid"></div>
+            </div>
+
+            <div class="form-buttons">
+                <button class="btn-cancel" onclick="closeSelectModal()" style="flex: 1;">✕ Cancelar</button>
             </div>
         </div>
     </div>
@@ -707,7 +877,7 @@
             <p id="finalTime" style="font-size: 24px; font-weight: bold; color: #4CAF50;"></p>
             <p>Parabéns! Você treinou muito bem! 💪</p>
             <button class="btn-confirm" onclick="closeFinishModal()" style="width: 100%;">✓ Nova Jornada</button>
-            <div class="match-indicator" id="modalTimer">Fechando em 3s...</div>
+            <div style="font-size: 12px; color: #aaa; margin-top: 15px;" id="modalTimer">Fechando em 3s...</div>
         </div>
     </div>
 
@@ -718,44 +888,99 @@
         let isWorkoutActive = false;
         let modalCloseTimer = null;
         let currentAddingDayIdx = null;
-        let selectedExerciseFromBank = null;
+        let currentAddingExIdx = null;
         let currentProfile = null;
+        let selectedCategory = 'todas';
+        let editingExerciseId = null;
+        let exerciseImagesCache = {};
 
-        // Dados do usuário por perfil
         let profiles = [];
         let workouts = {};
         let checkedExercises = {};
-        let customExercises = {};
         let workoutHistory = {};
+        let customExercises = {};
+
+        const exerciseCategories = {
+            'Peito': ['Supino Reto', 'Supino Inclinado', 'Supino Declinado', 'Crucifixo no Cabo', 'Crucifixo com Halteres', 'Supino Smith', 'Flexão', 'Supino Máquina'],
+            'Costas': ['Puxada Frontal', 'Puxada Atrás', 'Remada com Barra', 'Remada Unilateral', 'Remada Máquina', 'Pullover', 'Barra Fixa', 'Remada Invertida', 'Rosca Inversa'],
+            'Bíceps': ['Rosca Direta', 'Rosca Martelo', 'Rosca Inversa', 'Rosca Alternada', 'Rosca Scott', 'Rosca Máquina', 'Rosca Inclinada', 'Rosca Concentrada'],
+            'Tríceps': ['Tríceps Corda', 'Extensão Tríceps Haltere', 'Mergulho no Banco', 'Tríceps Máquina', 'Extensão Overhead', 'Tríceps Polia', 'Flexão Declinada'],
+            'Ombro': ['Desenvolvimento', 'Elevação Lateral', 'Elevação Frontal', 'Shrug', 'Desenvolvimento Arnold', 'Elevação Lateral Máquina', 'Ombro Máquina'],
+            'Perna': ['Agachamento', 'Leg Press', 'Extensora', 'Cadeira Adutora', 'Rosca de Perna', 'Abdutor', 'Leg Curl', 'Prensa de Perna'],
+            'Cardio': ['Aquecimento', 'HIIT', 'Corrida', 'Bicicleta Estacionária', 'Esteira', 'Elíptico', 'Pular Corda'],
+            'Core': ['Prancha', 'Abdominal Dinâmico', 'Mountain Climbers', 'Abdominal Máquina', 'Levantamento de Perna', 'Abdominal Reto', 'Prancha Lateral', 'Crunch']
+        };
 
         const exerciseBank = [
-            { name: "Supino Reto", desc: "Deite-se no banco com pés apoiados. Pegue a barra acima da largura dos ombros. Abaixe até o peito. Suba explosivamente.", steps: "1. Sente firme no banco\n2. Pegue barra além da largura\n3. Levante acima do peito\n4. Abaixe lentamente até peito\n5. Pause 1 segundo\n6. Empurre explosivamente\n7. Repita 6-8 vezes", tips: "✓ Cotovelos a 45°\n✓ Respire corretamente\n✓ Controle sempre", avoid: "✗ Não dar quique\n✗ Não abrir cotovelos demais\n✗ Não trancar", video: "https://www.youtube.com/results?search_query=supino+reto+barra+forma+correta" },
-            { name: "Supino Inclinado", desc: "Banco inclinado a 45°. Pegue a barra acima da largura. Abaixe até o peito superior. Suba explosivamente.", steps: "1. Ajuste banco a 45°\n2. Sente firme\n3. Pegue barra acima largura\n4. Abaixe controladamente\n5. Até peito superior\n6. Pause 1 segundo\n7. Suba explosivo", tips: "✓ Trabalha peito superior\n✓ Cotovelos 45°\n✓ Movimento controlado", avoid: "✗ Não deixar banco cair\n✗ Sem impulso\n✗ Não trancar", video: "https://www.youtube.com/results?search_query=supino+inclinado+peito+forma+correta" },
-            { name: "Crucifixo no Cabo", desc: "Em pé no centro. Pegue as alças com braços abertos. Puxe em movimento de abraço.", steps: "1. Posicione-se no centro\n2. Pegue as alças abertas\n3. Cotovelos flexionados\n4. Puxe em movimento de abraço\n5. Aproxime na frente\n6. Pause 1 segundo\n7. Retorne controlado", tips: "✓ Controle total\n✓ Foco na contração\n✓ Movimento fluido", avoid: "✗ Sem impulso\n✗ Sem deixar cair", video: "https://www.youtube.com/results?search_query=crucifixo+no+cabo+peito+forma+correta" },
-            { name: "Tríceps na Corda", desc: "Pegue a corda na altura da cabeça. Cotovelos fixos. Puxe para baixo.", steps: "1. Pegue a corda\n2. Altura da cabeça\n3. Cotovelos fixos\n4. Puxe para baixo\n5. Separe as pontas\n6. Pause 1 segundo\n7. Retorne controlado", tips: "✓ Apenas antebraços\n✓ Controle na volta\n✓ Sinta o tríceps", avoid: "✗ Não balançar\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=tríceps+corda+forma+correta" },
-            { name: "Extensão de Tríceps", desc: "De pé ou sentado. Segure haltere acima da cabeça. Abaixe dobrando cotovelos. Suba sem mover ombros.", steps: "1. Fique de pé ou sente\n2. Haltere acima cabeça\n3. Cotovelos ligeiramente flexionados\n4. Abaixe dobrando cotovelos\n5. Traga à nuca\n6. Pause 1 segundo\n7. Suba extensível", tips: "✓ Ombros fixos\n✓ Movimento controlado\n✓ Sinta o tríceps", avoid: "✗ Não balançar\n✗ Ombros não mexem", video: "https://www.youtube.com/results?search_query=extensão+tríceps+haltere+forma+correta" },
-            { name: "Puxada Frontal", desc: "Sente com coxas fixadas. Pegue a barra acima dos ombros. Puxe até o peito.", steps: "1. Sente com coxas presas\n2. Pegue barra além da largura\n3. Palmas para frente\n4. Expire ao puxar\n5. Puxe ao peito\n6. Cotovelos para baixo\n7. Pause 1 segundo", tips: "✓ Sinta as costas\n✓ Controle a volta\n✓ Leve ao peito", avoid: "✗ Não jogar corpo\n✗ Sem cair rápido", video: "https://www.youtube.com/results?search_query=puxada+frontal+lat+pulldown+forma+correta" },
-            { name: "Remada com Barra", desc: "Incline-se 30-45°. Joelhos flexionados. Pegue a barra. Puxe ao abdômen.", steps: "1. Pé sob a barra\n2. Joelhos flexionados\n3. Incline costas retas\n4. Pegue barra\n5. Puxe ao abdômen\n6. Cotovelos próximos\n7. Pause 1-2 segundos", tips: "✓ Costas RETAS\n✓ Não deixar cair\n✓ Cotovelos próximos", avoid: "✗ Sem arredondar costas\n✗ Sem balançar", video: "https://www.youtube.com/results?search_query=remada+com+barra+bent+over+row+forma+correta" },
-            { name: "Rosca Direta", desc: "Em pé. Pegue a barra com palmas para frente. Cotovelos fixos. Levante.", steps: "1. Fique em pé\n2. Pegue palmas para frente\n3. Cotovelos fixos\n4. Flexione cotovelos\n5. Suba antebraços\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Sem balanço\n✓ Apenas braços\n✓ Movimento puro", avoid: "✗ Sem impulso\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+direta+barra+biceps+forma+correta" },
-            { name: "Rosca Martelo", desc: "De pé com halteres. Palmas viradas uma para a outra. Flexione cotovelos. Levante até ombros.", steps: "1. Fique em pé\n2. Haltere em cada mão\n3. Palmas viradas interior\n4. Cotovelos fixos\n5. Flexione cotovelos\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Trabalha bíceps e braquial\n✓ Palmas para interior\n✓ Movimento controlado", avoid: "✗ Sem balanço\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+martelo+halteres+biceps+forma+correta" },
-            { name: "Puxada Inversa", desc: "Sente em banco. Pegue barra acima. Puxe sobre o peito em movimento de arco. Traz à cintura.", steps: "1. Sente no banco\n2. Pegue barra acima\n3. Braços quase esticados\n4. Puxe barra sobre você\n5. Traz à cintura\n6. Sinta alongamento costas\n7. Retorne controlado", tips: "✓ Trabalha costas e peito\n✓ Sinta alongamento\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem usar perna", video: "https://www.youtube.com/results?search_query=pullover+costas+forma+correta" },
-            { name: "Agachamento", desc: "Barra nos ombros. Pés largura ombros. Abaixe até 90°. Suba explosivamente.", steps: "1. Barra nos ombros\n2. Pés largura ombros\n3. Peito para frente\n4. Abaixe dobrando\n5. Até 90 graus\n6. Suba explosivo\n7. Quase esticado", tips: "✓ Joelhos alinhados\n✓ Olhe frente\n✓ Suba com força", avoid: "✗ Joelhos não caem\n✗ Costas retas", video: "https://www.youtube.com/results?search_query=agachamento+squat+barra+forma+correta" },
-            { name: "Leg Press", desc: "Sente na máquina. Pés na plataforma. Abaixe flexionando.", steps: "1. Sente na máquina\n2. Pés na plataforma\n3. Largura além ombros\n4. Abaixe dobrando\n5. Até 90 graus\n6. Pause 1 segundo\n7. Suba empurrando", tips: "✓ Empurre calcanhar\n✓ Controlado sempre\n✓ Sinta as pernas", avoid: "✗ Joelhos não caem\n✗ Sem descer demais", video: "https://www.youtube.com/results?search_query=leg+press+perna+forma+correta" },
-            { name: "Extensora", desc: "Sente com costas apoiadas. Estenda completamente.", steps: "1. Sente apoiado\n2. Pés sob rolete\n3. Estenda completamente\n4. Levante rolete\n5. Pause 1-2 seg\n6. Abaixe controlado\n7. Não toque chão", tips: "✓ Foco quadríceps\n✓ Pausa importante\n✓ Lento e controlado", avoid: "✗ Sem impulso\n✗ Sem bater", video: "https://www.youtube.com/results?search_query=extensora+perna+quadriceps+forma+correta" },
-            { name: "Cadeira Adutora", desc: "Sente na máquina. Pernas abertas. Aperte as pernas juntando-as.", steps: "1. Sente na máquina\n2. Pernas bem abertas\n3. Aperte as pernas\n4. Junte totalmente\n5. Pause 1 segundo\n6. Abra controladamente\n7. Volte à posição inicial", tips: "✓ Trabalha perna interna\n✓ Movimento controlado\n✓ Foco na contração", avoid: "✗ Sem impulso\n✗ Sem abrir demais", video: "https://www.youtube.com/results?search_query=cadeira+adutora+perna+interna+forma+correta" },
-            { name: "Rosca de Perna", desc: "Deitado de bruços. Pés sob rolete. Flexione levantando.", steps: "1. Deite-se de bruços\n2. Pés sob rolete\n3. Flexione joelhos\n4. Levante rolete\n5. Até formar 90°\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha posterior coxa\n✓ Pausa importante\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem levantar quadril", video: "https://www.youtube.com/results?search_query=rosca+de+perna+hamstring+forma+correta" },
-            { name: "Desenvolvimento", desc: "Sente ou fique em pé. Halteres na altura ombros. Suba acima da cabeça.", steps: "1. Sente ou de pé\n2. Haltere cada mão\n3. Altura ombros\n4. Palmas para frente\n5. Suba halteres\n6. Estenda completamente\n7. Pause 1 segundo", tips: "✓ Suba explosivamente\n✓ Abaixe controlado\n✓ Sinta ombro", avoid: "✗ Sem arcar costas\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=desenvolvimento+ombro+halteres+forma+correta" },
-            { name: "Elevação Lateral", desc: "Em pé com halteres. Levante lateralmente até ombros.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos flexionados\n4. Levante para lados\n5. Até ombros\n6. Pause 1 segundo\n7. Abaixe lentamente", tips: "✓ Lento e controlado\n✓ Sinta alongamento\n✓ Peso moderado", avoid: "✗ Sem jogar\n✗ Sem deixar cair", video: "https://www.youtube.com/results?search_query=elevação+lateral+ombro+halteres+forma+correta" },
-            { name: "Elevação Frontal", desc: "De pé com halteres. Levante para frente até altura ombros.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos ligeiramente flexionados\n4. Levante para frente\n5. Até altura ombros\n6. Pause 1 segundo\n7. Abaixe lentamente", tips: "✓ Trabalha ombro frontal\n✓ Movimento lento\n✓ Controlado sempre", avoid: "✗ Sem impulso\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=elevação+frontal+ombro+forma+correta" },
-            { name: "Shrug", desc: "De pé com halteres. Encolha ombros levantando até orelhas. Abaixe.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Braços estendidos\n4. Encolha ombros\n5. Levante até orelhas\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha trapézio\n✓ Movimento vertical\n✓ Peso moderado", avoid: "✗ Sem usar impulso\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=encolhimento+ombro+shrug+forma+correta" },
-            { name: "Rosca Inversa", desc: "De pé com barra. Palmas viradas para baixo. Levante até ombros.", steps: "1. Fique em pé\n2. Pegue barra\n3. Palmas para baixo\n4. Cotovelos fixos\n5. Flexione cotovelos\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Trabalha antebraço\n✓ Sem balanço\n✓ Movimento controlado", avoid: "✗ Sem impulso\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+inversa+barra+antebraço+forma+correta" },
-            { name: "Aquecimento", desc: "Corrida, bicicleta ou corda em ritmo moderado.", steps: "1. Escolha exercício\n2. Ritmo moderado\n3. Prepare o corpo\n4. Eleve frequência\n5. 5 minutos totais\n6. Sem ir forte\n7. Pronto para HIIT", tips: "✓ Aqueça bem\n✓ Ritmo moderado\n✓ Prepare articulações", avoid: "✗ Sem pular forte\n✗ Sem sair intenso", video: "https://www.youtube.com/results?search_query=aquecimento+cardio+corrida+forma+correta" },
-            { name: "HIIT", desc: "30s máxima intensidade + 30s recuperação. Repita 20-30 min.", steps: "1. 30s MÁXIMO\n2. Dê tudo\n3. 30s recuperação leve\n4. Respire\n5. Alterne exercícios\n6. Repita 20-30 min\n7. Termine exausto", tips: "✓ Mais intenso = mais gordura\n✓ Máximo esforço\n✓ Recuperação leve", avoid: "✗ Sem pular intensidade\n✗ Recuperação leve", video: "https://www.youtube.com/results?search_query=HIIT+treino+intenso+forma+correta" },
-            { name: "Prancha", desc: "Corpo reto. Cotovelos sob ombros. Contraia abdômen.", steps: "1. Deite-se de bruços\n2. Cotovelos sob ombros\n3. Levante corpo\n4. Apoie cotovelos/pés\n5. Linha reta\n6. Contraia abdômen\n7. Mantenha respiração", tips: "✓ Qualidade > quantidade\n✓ Contraia CORE\n✓ Respiração constante", avoid: "✗ Sem deixar cair\n✗ Sem prender respiração", video: "https://www.youtube.com/results?search_query=prancha+plank+core+forma+correta" },
-            { name: "Abdominal Dinâmico", desc: "Deitado de costas. Joelhos flexionados. Levante o tronco com contração.", steps: "1. Deite de costas\n2. Joelhos flexionados\n3. Pés apoiados\n4. Coloque mãos atrás cabeça\n5. Levante tronco\n6. Máxima contração\n7. Abaixe controlado", tips: "✓ Contração máxima\n✓ Movimento lento\n✓ Foco no abdômen", avoid: "✗ Sem puxar pescoço\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=abdominal+dinâmico+forma+correta" },
-            { name: "Mountain Climbers", desc: "Posição de flexão. Alterne trazendo joelhos ao peito rápido.", steps: "1. Posição de flexão\n2. Corpo reto\n3. Traga joelho esquerdo\n4. Retorne rápido\n5. Traga joelho direito\n6. Mantenha ritmo\n7. 20-30 segundos", tips: "✓ Movimento rápido\n✓ Cardio + core\n✓ Máximo esforço", avoid: "✗ Sem deixar quadril cair\n✗ Sem manter corpo reto", video: "https://www.youtube.com/results?search_query=mountain+climbers+cardio+forma+correta" },
-            { name: "Flexão", desc: "Corpo reto. Mãos abaixo dos ombros. Abaixe até peito tocar chão. Suba.", steps: "1. Posição de flexão\n2. Mãos abaixo ombros\n3. Corpo reto\n4. Abaixe lentamente\n5. Peito ao chão\n6. Suba explosivo\n7. Repita", tips: "✓ Corpo sempre reto\n✓ Cotovelos 45°\n✓ Movimento completo", avoid: "✗ Sem deixar quadril cair\n✗ Sem cair rápido demais", video: "https://www.youtube.com/results?search_query=flexão+push+up+forma+correta" },
-            { name: "Pullup", desc: "Pendurado na barra. Suba puxando até queixo acima da barra.", steps: "1. Pegue barra\n2. Braços estendidos\n3. Palmas para frente\n4. Puxe para suba\n5. Queixo acima\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Movimento completo\n✓ Controle na descida\n✓ Sinta as costas", avoid: "✗ Sem balançar\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=pullup+barra+forma+correta" }
+            { name: "Supino Reto", category: "Peito", desc: "Deite-se no banco com pés apoiados. Pegue a barra acima da largura dos ombros. Abaixe até o peito. Suba explosivamente.", steps: "1. Sente firme\n2. Pegue barra acima largura\n3. Levante acima peito\n4. Abaixe até peito\n5. Pause 1s\n6. Empurre explosivo\n7. Repita", tips: "✓ Cotovelos 45°\n✓ Respire corretamente\n✓ Controle sempre", avoid: "✗ Não dar quique\n✗ Não abrir demais\n✗ Não trancar", video: "https://www.youtube.com/results?search_query=supino+reto" },
+            { name: "Supino Inclinado", category: "Peito", desc: "Banco inclinado 45°. Pegue a barra acima da largura. Abaixe até peito superior. Suba explosivamente.", steps: "1. Ajuste banco 45°\n2. Sente firme\n3. Pegue barra acima\n4. Abaixe controlado\n5. Até peito superior\n6. Pause 1s\n7. Suba explosivo", tips: "✓ Peito superior\n✓ Cotovelos 45°\n✓ Controlado", avoid: "✗ Não deixar cair\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=supino+inclinado" },
+            { name: "Supino Declinado", category: "Peito", desc: "Banco declinado a -45°. Pegue a barra. Abaixe até peito inferior. Suba explosivamente.", steps: "1. Ajuste declínio\n2. Sente firme\n3. Pegue barra\n4. Abaixe controlado\n5. Até peito inferior\n6. Pause 1s\n7. Suba explosivo", tips: "✓ Peito inferior\n✓ Controle\n✓ Movimento completo", avoid: "✗ Sem impulso\n✗ Não abrir demais", video: "https://www.youtube.com/results?search_query=supino+declinado" },
+            { name: "Crucifixo no Cabo", category: "Peito", desc: "Em pé no centro. Pegue as alças com braços abertos. Puxe em movimento de abraço.", steps: "1. Posicione centro\n2. Pegue alças\n3. Cotovelos flex\n4. Puxe abraço\n5. Aproxime frente\n6. Pause 1s\n7. Retorne", tips: "✓ Controle\n✓ Contração máxima\n✓ Movimento fluido", avoid: "✗ Sem impulso\n✗ Sem deixar cair", video: "https://www.youtube.com/results?search_query=crucifixo+cabo+peito" },
+            { name: "Crucifixo com Halteres", category: "Peito", desc: "Deitado no banco. Halteres ao lado do peito. Levante em movimento de abraço. Abaixe.", steps: "1. Deite-se banco\n2. Halteres ao peito\n3. Cotovelos flex\n4. Levante halteres\n5. Junte acima\n6. Pause 1s\n7. Abaixe", tips: "✓ Alongamento total\n✓ Controle descida\n✓ Amplitude grande", avoid: "✗ Sem impulso\n✗ Sem deixar cair", video: "https://www.youtube.com/results?search_query=crucifixo+halteres+peito" },
+            { name: "Supino Smith", category: "Peito", desc: "Máquina Smith. Sente no banco. Pegue a barra. Abaixe até peito. Suba.", steps: "1. Sente máquina\n2. Pegue barra\n3. Abaixe controlado\n4. Até peito\n5. Pause 1s\n6. Suba explosivo\n7. Repita", tips: "✓ Estável\n✓ Bom para iniciante\n✓ Seguro", avoid: "✗ Não deixar cair\n✗ Controle", video: "https://www.youtube.com/results?search_query=supino+smith+peito" },
+            { name: "Flexão", category: "Peito", desc: "Posição de flexão. Mãos abaixo ombros. Abaixe até peito tocar chão. Suba.", steps: "1. Posição flexão\n2. Mãos ombros\n3. Corpo reto\n4. Abaixe lento\n5. Peito chão\n6. Suba explosivo\n7. Repita", tips: "✓ Corpo reto\n✓ Cotovelos 45°\n✓ Amplitude completa", avoid: "✗ Quadril não cai\n✗ Sem cair rápido", video: "https://www.youtube.com/results?search_query=flexao+push+up" },
+            { name: "Supino Máquina", category: "Peito", desc: "Máquina de supino. Sente apoiado. Pegue as alças. Empurre para frente. Retorne.", steps: "1. Sente máquina\n2. Pegue alças\n3. Peito para frente\n4. Empurre alças\n5. Estenda braços\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro e estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem trancar\n✗ Controle", video: "https://www.youtube.com/results?search_query=supino+maquina+peito" },
+            
+            { name: "Puxada Frontal", category: "Costas", desc: "Sente com coxas fixadas. Pegue a barra acima dos ombros. Puxe até o peito.", steps: "1. Sente máquina\n2. Pegue barra acima\n3. Coxas fixadas\n4. Puxe ao peito\n5. Cotovelos baixo\n6. Pause 1s\n7. Retorne", tips: "✓ Sinta costas\n✓ Controle volta\n✓ Peito", avoid: "✗ Não jogar corpo\n✗ Sem cair rápido", video: "https://www.youtube.com/results?search_query=puxada+frontal+lat" },
+            { name: "Puxada Atrás", category: "Costas", desc: "Sente máquina. Puxe a barra atrás da cabeça. Desça controlado.", steps: "1. Sente máquina\n2. Pegue barra\n3. Atrás cabeça\n4. Puxe controlado\n5. Até nuca\n6. Pause 1s\n7. Retorne", tips: "✓ Costas superior\n✓ Amplitude grande\n✓ Controlado", avoid: "✗ Sem puxar força\n✗ Cuidado nuca", video: "https://www.youtube.com/results?search_query=puxada+atras+lat" },
+            { name: "Remada com Barra", category: "Costas", desc: "Incline-se 30-45°. Joelhos flexionados. Pegue a barra. Puxe ao abdômen.", steps: "1. Pé barra\n2. Joelhos flex\n3. Costas retas\n4. Pegue barra\n5. Puxe abdômen\n6. Cotovelos perto\n7. Pause 1s", tips: "✓ Costas RETAS\n✓ Não deixar cair\n✓ Cotovelos perto", avoid: "✗ Sem arredondar\n✗ Sem balançar", video: "https://www.youtube.com/results?search_query=remada+barra+bent+over" },
+            { name: "Remada Unilateral", category: "Costas", desc: "Apoiado no banco. Haltere em uma mão. Puxe ao peito. Abaixe.", steps: "1. Banco apoio\n2. Haltere mão\n3. Puxe ao peito\n4. Cotovelo perto\n5. Levante alto\n6. Pause 1s\n7. Abaixe", tips: "✓ Amplitude grande\n✓ Controle\n✓ Unilateral benefício", avoid: "✗ Sem rodar corpo\n✗ Controle", video: "https://www.youtube.com/results?search_query=remada+unilateral+haltere" },
+            { name: "Remada Máquina", category: "Costas", desc: "Máquina remada. Sente apoiado. Pegue as alças. Puxe ao corpo. Retorne.", steps: "1. Sente máquina\n2. Pegue alças\n3. Peito apoio\n4. Puxe corpo\n5. Cotovelos atrás\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Técnica fácil", avoid: "✗ Sem arredondar\n✗ Controle", video: "https://www.youtube.com/results?search_query=remada+maquina+costas" },
+            { name: "Pullover", category: "Costas", desc: "Sente em banco. Pegue barra acima. Puxe sobre peito em arco. Traz cintura.", steps: "1. Sente banco\n2. Pegue barra\n3. Braços semi-ext\n4. Puxe sobre\n5. Traz cintura\n6. Alongamento\n7. Retorne", tips: "✓ Costas e peito\n✓ Alongamento\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem usar perna", video: "https://www.youtube.com/results?search_query=pullover+costas" },
+            { name: "Barra Fixa", category: "Costas", desc: "Pendurado na barra. Suba puxando até queixo acima. Desça controlado.", steps: "1. Pegue barra\n2. Braços estend\n3. Palmas frente\n4. Puxe suba\n5. Queixo acima\n6. Pause 1s\n7. Abaixe", tips: "✓ Amplitude completa\n✓ Controle descida\n✓ Sinta costas", avoid: "✗ Sem balançar\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=barra+fixa+pullup" },
+            { name: "Remada Invertida", category: "Costas", desc: "Pendurado barra baixa. Corpo quase reto. Suba puxando ao peito. Abaixe.", steps: "1. Pegue barra\n2. Corpo quase reto\n3. Puxe ao peito\n4. Levante corpo\n5. Pausa 1s\n6. Abaixe controlado\n7. Repita", tips: "✓ Movimento completo\n✓ Controle importante\n✓ Excelente exercício", avoid: "✗ Sem deixar cair\n✗ Controle", video: "https://www.youtube.com/results?search_query=remada+invertida+barra" },
+            { name: "Rosca Inversa", category: "Costas", desc: "De pé com barra. Palmas para baixo. Levante até ombros. Abaixe.", steps: "1. De pé barra\n2. Palmas baixo\n3. Cotovelos fixos\n4. Flexione cotovelo\n5. Levante ombro\n6. Pause 1s\n7. Abaixe", tips: "✓ Antebraço\n✓ Sem balanço\n✓ Controlado", avoid: "✗ Sem impulso\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+inversa+barra" },
+            
+            { name: "Rosca Direta", category: "Bíceps", desc: "De pé. Pegue a barra com palmas para frente. Cotovelos fixos. Levante.", steps: "1. De pé firme\n2. Palmas frente\n3. Cotovelos fixos\n4. Flexione cotovelo\n5. Suba antebraço\n6. Levante ombro\n7. Pause 1s", tips: "✓ Sem balanço\n✓ Apenas braços\n✓ Movimento puro", avoid: "✗ Sem impulso\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+direta+biceps" },
+            { name: "Rosca Martelo", category: "Bíceps", desc: "De pé com halteres. Palmas viradas. Flexione cotovelos. Levante até ombros.", steps: "1. De pé firme\n2. Halteres mão\n3. Palmas interior\n4. Cotovelos fixos\n5. Flexione cotovelo\n6. Levante ombro\n7. Pause 1s", tips: "✓ Bíceps e braquial\n✓ Palmas interior\n✓ Controlado", avoid: "✗ Sem balanço\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+martelo+biceps" },
+            { name: "Rosca Inversa", category: "Bíceps", desc: "De pé com barra. Palmas para baixo. Levante até ombros.", steps: "1. De pé barra\n2. Palmas baixo\n3. Cotovelos fixos\n4. Flexione cotovelo\n5. Levante ombro\n6. Pause 1s\n7. Abaixe", tips: "✓ Antebraço\n✓ Sem balanço\n✓ Controlado", avoid: "✗ Sem impulso\n✗ Fixo", video: "https://www.youtube.com/results?search_query=rosca+inversa" },
+            { name: "Rosca Alternada", category: "Bíceps", desc: "De pé com halteres. Alterne braços. Levante até ombro. Abaixe.", steps: "1. De pé halteres\n2. Palmas frente\n3. Braço esquerdo\n4. Levante ombro\n5. Abaixe controlado\n6. Braço direito\n7. Alterne", tips: "✓ Amplitude máxima\n✓ Densidade muscular\n✓ Alternância", avoid: "✗ Sem balanço\n✗ Movimento puro", video: "https://www.youtube.com/results?search_query=rosca+alternada+halteres" },
+            { name: "Rosca Scott", category: "Bíceps", desc: "Banco Scott. Pegue barra. Abaixe até quase estender. Levante até peito.", steps: "1. Sente Scott\n2. Pegue barra\n3. Braços apoio\n4. Abaixe quase estend\n5. Levante peito\n6. Pause 1s\n7. Abaixe", tips: "✓ Isolamento total\n✓ Sem trapéio\n✓ Pico contração", avoid: "✗ Sem estender demais\n✗ Controle", video: "https://www.youtube.com/results?search_query=rosca+scott+banco" },
+            { name: "Rosca Máquina", category: "Bíceps", desc: "Máquina rosca. Sente apoiado. Pegue alças. Levante. Abaixe.", steps: "1. Sente máquina\n2. Pegue alças\n3. Braços apoio\n4. Levante alças\n5. Cotovelos flex\n6. Pause 1s\n7. Abaixe", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem balanço\n✗ Controle", video: "https://www.youtube.com/results?search_query=rosca+maquina+biceps" },
+            { name: "Rosca Inclinada", category: "Bíceps", desc: "Banco inclinado. Halteres ao lado. Levante até ombro. Abaixe.", steps: "1. Sente inclinado\n2. Halteres lado\n3. Cotovelos atrás\n4. Levante ombro\n5. Amplitude máxima\n6. Pause 1s\n7. Abaixe", tips: "✓ Alongamento total\n✓ Amplitude grande\n✓ Isolamento", avoid: "✗ Sem balanço\n✗ Controle", video: "https://www.youtube.com/results?search_query=rosca+inclinada+halteres" },
+            { name: "Rosca Concentrada", category: "Bíceps", desc: "Sente. Cotovelo apoiado coxa. Levante haltere ao ombro. Abaixe.", steps: "1. Sente banco\n2. Cotovelo coxa\n3. Haltere mão\n4. Levante ombro\n5. Máxima contração\n6. Pause 1s\n7. Abaixe", tips: "✓ Pico máximo\n✓ Sem ajuda\n✓ Isolamento total", avoid: "✗ Sem balanço\n✗ Controle total", video: "https://www.youtube.com/results?search_query=rosca+concentrada" },
+            
+            { name: "Tríceps Corda", category: "Tríceps", desc: "Pegue a corda na altura da cabeça. Cotovelos fixos. Puxe para baixo.", steps: "1. Pegue corda\n2. Altura cabeça\n3. Cotovelos fixos\n4. Puxe baixo\n5. Separe pontas\n6. Pause 1s\n7. Retorne", tips: "✓ Apenas antebraços\n✓ Controle volta\n✓ Sinta tríceps", avoid: "✗ Não balançar\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=triceps+corda" },
+            { name: "Extensão Tríceps Haltere", category: "Tríceps", desc: "De pé ou sentado. Segure haltere acima. Abaixe dobrando cotovelos. Suba.", steps: "1. De pé/sente\n2. Haltere acima\n3. Cotovelos flex\n4. Abaixe cotovelo\n5. Traga nuca\n6. Pause 1s\n7. Suba", tips: "✓ Ombros fixos\n✓ Movimento controlado\n✓ Sinta tríceps", avoid: "✗ Não balançar\n✗ Ombros fixos", video: "https://www.youtube.com/results?search_query=extensao+triceps+haltere" },
+            { name: "Mergulho no Banco", category: "Tríceps", desc: "Mãos em banco atrás. Pés no chão. Abaixe corpo. Suba.", steps: "1. Mãos banco\n2. Pés chão\n3. Corpo frente\n4. Abaixe corpo\n5. 90 graus\n6. Suba explosivo\n7. Repita", tips: "✓ Peso corporal\n✓ Amplitude grande\n✓ Tríceps total", avoid: "✗ Sem deixar cair\n✗ Lento descida", video: "https://www.youtube.com/results?search_query=mergulho+banco+triceps" },
+            { name: "Tríceps Máquina", category: "Tríceps", desc: "Máquina tríceps. Sente apoiado. Pegue alças. Empurre. Retorne.", steps: "1. Sente máquina\n2. Pegue alças\n3. Cotovelos flex\n4. Empurre alças\n5. Estenda braços\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem trancar\n✗ Controle", video: "https://www.youtube.com/results?search_query=triceps+maquina" },
+            { name: "Extensão Overhead", category: "Tríceps", desc: "De pé com barra. Pegue acima. Abaixe atrás cabeça. Suba.", steps: "1. De pé barra\n2. Pegue acima\n3. Braços estend\n4. Abaixe atrás\n5. Até nuca\n6. Pause 1s\n7. Suba", tips: "✓ Alongamento\n✓ Amplitude grande\n✓ Longo tríceps", avoid: "✗ Sem deixar cair\n✗ Nuca cuidado", video: "https://www.youtube.com/results?search_query=extensao+overhead+triceps" },
+            { name: "Tríceps Polia", category: "Tríceps", desc: "Pegue polia corda. Cotovelos fixos. Puxe para baixo. Retorne.", steps: "1. Pegue polia\n2. Corda altura\n3. Cotovelos fixos\n4. Puxe baixo\n5. Extensão total\n6. Pause 1s\n7. Retorne", tips: "✓ Apenas antebraços\n✓ Controle volta\n✓ Contração máxima", avoid: "✗ Não balançar\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=triceps+polia" },
+            { name: "Flexão Declinada", category: "Tríceps", desc: "Pés em banco. Mãos chão. Abaixe peito. Suba.", steps: "1. Pés banco\n2. Mãos chão\n3. Corpo reto\n4. Abaixe peito\n5. Até chão\n6. Suba explosivo\n7. Repita", tips: "✓ Tríceps intenso\n✓ Peso corporal\n✓ Muito difícil", avoid: "✗ Sem deixar cair\n✗ Controle", video: "https://www.youtube.com/results?search_query=flexao+declinada+triceps" },
+            
+            { name: "Desenvolvimento", category: "Ombro", desc: "Sente ou de pé. Halteres altura ombros. Suba acima da cabeça.", steps: "1. Sente/de pé\n2. Halteres ombro\n3. Palmas frente\n4. Suba halteres\n5. Estenda total\n6. Pause 1s\n7. Abaixe", tips: "✓ Suba explosivo\n✓ Abaixe controlado\n✓ Sinta ombro", avoid: "✗ Sem arcar costas\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=desenvolvimento+ombro" },
+            { name: "Elevação Lateral", category: "Ombro", desc: "De pé com halteres. Levante lateralmente até ombros.", steps: "1. De pé halteres\n2. Cotovelos flex\n3. Levante lados\n4. Até ombros\n5. Pause 1s\n6. Abaixe lento\n7. Repita", tips: "✓ Lento controlado\n✓ Sinta alongamento\n✓ Peso moderado", avoid: "✗ Sem jogar\n✗ Sem deixar cair", video: "https://www.youtube.com/results?search_query=elevacao+lateral+ombro" },
+            { name: "Elevação Frontal", category: "Ombro", desc: "De pé com halteres. Levante para frente até altura ombros.", steps: "1. De pé halteres\n2. Cotovelos flex\n3. Levante frente\n4. Altura ombro\n5. Pause 1s\n6. Abaixe lento\n7. Repita", tips: "✓ Ombro frontal\n✓ Movimento lento\n✓ Controlado", avoid: "✗ Sem impulso\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=elevacao+frontal+ombro" },
+            { name: "Shrug", category: "Ombro", desc: "De pé com halteres. Encolha ombros até orelhas. Abaixe.", steps: "1. De pé halteres\n2. Braços estend\n3. Encolha ombro\n4. Levante orelha\n5. Pause 1s\n6. Abaixe controlado\n7. Repita", tips: "✓ Trabalha trapézio\n✓ Movimento vertical\n✓ Peso moderado", avoid: "✗ Sem impulso\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=shrug+ombro" },
+            { name: "Desenvolvimento Arnold", category: "Ombro", desc: "Halteres ao ombro com palmas viradas. Levante girando para frente.", steps: "1. Halteres ombro\n2. Palmas interior\n3. Levante girando\n4. Palmas frente\n5. Topo cabeça\n6. Pause 1s\n7. Retorne", tips: "✓ Amplitude máxima\n✓ Todos ombro\n✓ Girando movimento", avoid: "✗ Sem arcar costas\n✗ Controle", video: "https://www.youtube.com/results?search_query=desenvolvimento+arnold+ombro" },
+            { name: "Elevação Lateral Máquina", category: "Ombro", desc: "Máquina elevação lateral. Sente apoiado. Levante laterais. Abaixe.", steps: "1. Sente máquina\n2. Pegue alças\n3. Braços lado\n4. Levante alças\n5. Altura ombro\n6. Pause 1s\n7. Abaixe", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem jogar\n✗ Controle", video: "https://www.youtube.com/results?search_query=elevacao+lateral+maquina" },
+            { name: "Ombro Máquina", category: "Ombro", desc: "Máquina ombro. Sente apoiado. Pegue alças. Empurre acima. Retorne.", steps: "1. Sente máquina\n2. Pegue alças\n3. Altura ombro\n4. Empurre acima\n5. Estenda braços\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem trancar\n✗ Controle", video: "https://www.youtube.com/results?search_query=ombro+maquina" },
+            
+            { name: "Agachamento", category: "Perna", desc: "Barra ombros. Pés largura ombros. Abaixe até 90°. Suba explosivamente.", steps: "1. Barra ombro\n2. Pés largura\n3. Peito frente\n4. Abaixe dobra\n5. 90 graus\n6. Suba explosivo\n7. Quase estend", tips: "✓ Joelhos alin\n✓ Olhe frente\n✓ Suba força", avoid: "✗ Joelhos não cai\n✗ Costas retas", video: "https://www.youtube.com/results?search_query=agachamento+squat" },
+            { name: "Leg Press", category: "Perna", desc: "Sente máquina. Pés plataforma. Abaixe flexionando. Suba.", steps: "1. Sente máquina\n2. Pés plataforma\n3. Largura ombro\n4. Abaixe dobra\n5. 90 graus\n6. Pause 1s\n7. Suba empurra", tips: "✓ Empurre calcanhar\n✓ Controlado\n✓ Sinta pernas", avoid: "✗ Joelhos não cai\n✗ Sem descer demais", video: "https://www.youtube.com/results?search_query=leg+press+perna" },
+            { name: "Extensora", category: "Perna", desc: "Sente máquina. Estenda completamente. Levante rolete.", steps: "1. Sente apoiado\n2. Pés rolete\n3. Estenda total\n4. Levante rolete\n5. Pause 1-2s\n6. Abaixe controlado\n7. Não toque chão", tips: "✓ Foco quadríceps\n✓ Pausa importante\n✓ Lento controlado", avoid: "✗ Sem impulso\n✗ Sem bater", video: "https://www.youtube.com/results?search_query=extensora+perna" },
+            { name: "Cadeira Adutora", category: "Perna", desc: "Sente máquina. Pernas abertas. Aperte juntando. Abra.", steps: "1. Sente máquina\n2. Pernas abertas\n3. Aperte perna\n4. Junte total\n5. Pause 1s\n6. Abra controlado\n7. Volte posição", tips: "✓ Perna interna\n✓ Movimento controlado\n✓ Foco contração", avoid: "✗ Sem impulso\n✗ Sem abrir demais", video: "https://www.youtube.com/results?search_query=cadeira+adutora+perna" },
+            { name: "Rosca de Perna", category: "Perna", desc: "Deitado bruços. Pés rolete. Flexione levantando. Abaixe.", steps: "1. Deite bruços\n2. Pés rolete\n3. Flexione joelho\n4. Levante rolete\n5. 90 graus\n6. Pause 1s\n7. Abaixe controlado", tips: "✓ Posterior coxa\n✓ Pausa importante\n✓ Lento controlado", avoid: "✗ Sem impulso\n✗ Sem levantar quadril", video: "https://www.youtube.com/results?search_query=rosca+perna+hamstring" },
+            { name: "Abdutor", category: "Perna", desc: "Máquina abdutor. Sente apoiado. Pernas abertas. Aperte. Abra.", steps: "1. Sente máquina\n2. Pegue alças\n3. Pernas abertas\n4. Aperte pernas\n5. Junte total\n6. Pause 1s\n7. Abra", tips: "✓ Glúteo médio\n✓ Movimento controlado\n✓ Foco contração", avoid: "✗ Sem impulso\n✗ Sem abrir demais", video: "https://www.youtube.com/results?search_query=abdutor+perna" },
+            { name: "Leg Curl", category: "Perna", desc: "De pé máquina. Pegue alça. Flexione levantando pé. Abaixe.", steps: "1. De pé máquina\n2. Pegue alça\n3. Pé rolete\n4. Flexione joelho\n5. Levante pé\n6. Pause 1s\n7. Abaixe", tips: "✓ Posterior coxa\n✓ Movimento controlado\n✓ Lento", avoid: "✗ Sem balançar\n✗ Corpo fixo", video: "https://www.youtube.com/results?search_query=leg+curl+perna" },
+            { name: "Prensa de Perna", category: "Perna", desc: "Máquina prensa. Sente. Pés plataforma. Empurre. Retorne.", steps: "1. Sente máquina\n2. Pés plataforma\n3. Cotovelo flex\n4. Empurre pés\n5. Estenda perna\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro estável\n✓ Fácil técnica\n✓ Bom isolamento", avoid: "✗ Sem trancar\n✗ Controle", video: "https://www.youtube.com/results?search_query=prensa+perna" },
+            
+            { name: "Aquecimento", category: "Cardio", desc: "Corrida, bicicleta ou corda em ritmo moderado.", steps: "1. Escolha exercício\n2. Ritmo moderado\n3. Prepare corpo\n4. Eleve frequência\n5. 5 minutos\n6. Sem ir forte\n7. Pronto HIIT", tips: "✓ Aqueça bem\n✓ Ritmo moderado\n✓ Prepare articulações", avoid: "✗ Sem pular forte\n✗ Sem sair intenso", video: "https://www.youtube.com/results?search_query=aquecimento+cardio" },
+            { name: "HIIT", category: "Cardio", desc: "30s máxima + 30s recuperação. Repita 20-30 min.", steps: "1. 30s MÁXIMO\n2. Dê tudo\n3. 30s recuperação\n4. Respire\n5. Alterne exercício\n6. Repita 20-30\n7. Termine exausto", tips: "✓ Intenso = gordura\n✓ Máximo esforço\n✓ Recuperação leve", avoid: "✗ Sem intensidade\n✗ Recuperação leve", video: "https://www.youtube.com/results?search_query=HIIT+treino" },
+            { name: "Corrida", category: "Cardio", desc: "Corrida em ritmo constante. Mantenha respiração. Varie intensidade.", steps: "1. Comece leve\n2. Aumente ritmo\n3. Máxima velocidade\n4. Mantenha tempo\n5. Respire bem\n6. Abaixe velocidade\n7. Recuperação", tips: "✓ Ritmo cardíaco\n✓ Respiração constante\n✓ Hidratação", avoid: "✗ Sem forçar muito\n✗ Alongamento pós", video: "https://www.youtube.com/results?search_query=corrida+cardio" },
+            { name: "Bicicleta Estacionária", category: "Cardio", desc: "Bicicleta ritmo. Aumente resistência. Mantenha cadência.", steps: "1. Sente bicicleta\n2. Pés pedal\n3. Comece leve\n4. Aumente velocidade\n5. Mantenha ritmo\n6. Varie resistência\n7. Recuperação", tips: "✓ Resistência variável\n✓ Ritmo constante\n✓ Fácil articulações", avoid: "✗ Sem forçar muito\n✗ Posição correta", video: "https://www.youtube.com/results?search_query=bicicleta+estacionaria" },
+            { name: "Esteira", category: "Cardio", desc: "Esteira ritmo constante. Incline se desejar. Mantenha velocidade.", steps: "1. Suba esteira\n2. Comece leve\n3. Aumente velocidade\n4. Mantenha ritmo\n5. Varie inclinação\n6. Abaixe velocidade\n7. Recuperação", tips: "✓ Impacto alto\n✓ Velocidade controlada\n✓ Inclinação", avoid: "✗ Sem forçar muito\n✗ Alongamento pós", video: "https://www.youtube.com/results?search_query=esteira+cardio" },
+            { name: "Elíptico", category: "Cardio", desc: "Elíptico ritmo. Aumente resistência. Mantenha ritmo.", steps: "1. Suba elíptico\n2. Pegue alças\n3. Comece leve\n4. Aumente resistência\n5. Mantenha ritmo\n6. Varie intensidade\n7. Recuperação", tips: "✓ Baixo impacto\n✓ Fácil articulações\n✓ Resistência", avoid: "✗ Sem forçar muito\n✗ Posição", video: "https://www.youtube.com/results?search_query=eliptico+cardio" },
+            { name: "Pular Corda", category: "Cardio", desc: "Pule corda ritmo. Salte constantemente. Varie velocidade.", steps: "1. Pegue corda\n2. Fique de pé\n3. Comece leve\n4. Pule constante\n5. Aumente velocidade\n6. Máximo ritmo\n7. Recuperação", tips: "✓ Pulmão cardio\n✓ Coordenação\n✓ Intenso", avoid: "✗ Sem forçar articulações\n✗ Alongamento pós", video: "https://www.youtube.com/results?search_query=pular+corda" },
+            
+            { name: "Prancha", category: "Core", desc: "Corpo reto. Cotovelos ombros. Contraia abdômen. Mantenha.", steps: "1. Deite bruços\n2. Cotovelos ombro\n3. Levante corpo\n4. Apoie pés\n5. Linha reta\n6. Contraia abdômen\n7. Mantenha respir", tips: "✓ Qualidade > qtde\n✓ Contraia CORE\n✓ Respiração", avoid: "✗ Sem deixar cair\n✗ Sem prender", video: "https://www.youtube.com/results?search_query=prancha+plank" },
+            { name: "Abdominal Dinâmico", category: "Core", desc: "Deitado costas. Joelhos flex. Levante tronco contração.", steps: "1. Deite costas\n2. Joelhos flex\n3. Pés apoiado\n4. Mãos cabeça\n5. Levante tronco\n6. Máxima contração\n7. Abaixe", tips: "✓ Contração máxima\n✓ Movimento lento\n✓ Foco abdômen", avoid: "✗ Sem puxar\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=abdominal+dinamico" },
+            { name: "Mountain Climbers", category: "Core", desc: "Flexão posição. Alterne joelhos peito rápido.", steps: "1. Flexão posição\n2. Corpo reto\n3. Joelho esquerdo\n4. Retorne rápido\n5. Joelho direito\n6. Mantenha ritmo\n7. 20-30 segundos", tips: "✓ Movimento rápido\n✓ Cardio + core\n✓ Máximo esforço", avoid: "✗ Sem quadril cair\n✗ Corpo reto", video: "https://www.youtube.com/results?search_query=mountain+climbers" },
+            { name: "Abdominal Máquina", category: "Core", desc: "Máquina abdominal. Sente apoiado. Puxe peito. Retorne.", steps: "1. Sente máquina\n2. Pegue alças\n3. Peito apoio\n4. Puxe peito\n5. Contraia abdômen\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem arredondar\n✗ Controle", video: "https://www.youtube.com/results?search_query=abdominal+maquina" },
+            { name: "Levantamento de Perna", category: "Core", desc: "Paralela máquina. Levante perna ao peito. Abaixe.", steps: "1. Paralela máquina\n2. Pegue alças\n3. Perna relaxada\n4. Levante perna\n5. Ao peito\n6. Pause 1s\n7. Abaixe", tips: "✓ Baixo abdômen\n✓ Movimento controlado\n✓ Amplitude máxima", avoid: "✗ Sem balançar\n✗ Controle", video: "https://www.youtube.com/results?search_query=levantamento+perna" },
+            { name: "Abdominal Reto", category: "Core", desc: "Banco abdominal. Levante tronco suave. Abaixe.", steps: "1. Sente banco\n2. Pés apoiado\n3. Mãos cabeça\n4. Levante leve\n5. Máxima contração\n6. Pause 1s\n7. Abaixe", tips: "✓ Movimento curto\n✓ Contração foco\n✓ Lento controlado", avoid: "✗ Sem puxar\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=abdominal+reto" },
+            { name: "Prancha Lateral", category: "Core", desc: "De lado. Cotovelo ombro. Corpo reto. Mantenha.", steps: "1. De lado chão\n2. Cotovelo ombro\n3. Levante corpo\n4. Pé apoio\n5. Linha reta\n6. Contraia core\n7. Mantenha tempo", tips: "✓ Oblíquo foco\n✓ Corpo reto\n✓ Respiração", avoid: "✗ Sem deixar cair\n✗ Sem prender", video: "https://www.youtube.com/results?search_query=prancha+lateral" },
+            { name: "Crunch", category: "Core", desc: "Deitado costas. Levante cabeça ombro leve. Abaixe.", steps: "1. Deite costas\n2. Joelhos flex\n3. Mãos cabeça\n4. Levante leve\n5. Ombro do chão\n6. Pause 1s\n7. Abaixe", tips: "✓ Movimento curto\n✓ Contração máxima\n✓ Lento controlado", avoid: "✗ Sem puxar\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=crunch+abdominal" }
         ];
 
         const defaultWorkouts = [
@@ -763,58 +988,95 @@
                 day: "Segunda",
                 focus: "Peito & Tríceps",
                 exercises: [
-                    { name: "Supino Reto", sets: "4 x 6-8", video: "https://www.youtube.com/results?search_query=supino+reto+barra+forma+correta", desc: "Deite-se no banco com pés apoiados. Pegue a barra acima da largura dos ombros. Abaixe até o peito. Suba explosivamente.", steps: "1. Sente firme no banco\n2. Pegue barra além da largura\n3. Levante acima do peito\n4. Abaixe lentamente até peito\n5. Pause 1 segundo\n6. Empurre explosivamente\n7. Repita 6-8 vezes", tips: "✓ Cotovelos a 45°\n✓ Respire corretamente\n✓ Controle sempre", avoid: "✗ Não dar quique\n✗ Não abrir cotovelos demais\n✗ Não trancar" },
-                    { name: "Supino Inclinado", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=supino+inclinado+peito+forma+correta", desc: "Banco inclinado a 45°. Pegue a barra acima da largura. Abaixe até o peito superior. Suba explosivamente.", steps: "1. Ajuste banco a 45°\n2. Sente firme\n3. Pegue barra acima largura\n4. Abaixe controladamente\n5. Até peito superior\n6. Pause 1 segundo\n7. Suba explosivo", tips: "✓ Trabalha peito superior\n✓ Cotovelos 45°\n✓ Movimento controlado", avoid: "✗ Não deixar banco cair\n✗ Sem impulso\n✗ Não trancar" },
-                    { name: "Crucifixo no Cabo", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=crucifixo+no+cabo+peito+forma+correta", desc: "Em pé no centro. Pegue as alças com braços abertos. Puxe em movimento de abraço.", steps: "1. Posicione-se no centro\n2. Pegue as alças abertas\n3. Cotovelos flexionados\n4. Puxe em movimento de abraço\n5. Aproxime na frente\n6. Pause 1 segundo\n7. Retorne controlado", tips: "✓ Controle total\n✓ Foco na contração\n✓ Movimento fluido", avoid: "✗ Sem impulso\n✗ Sem deixar cair" },
-                    { name: "Tríceps na Corda", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=tríceps+corda+forma+correta", desc: "Pegue a corda na altura da cabeça. Cotovelos fixos. Puxe para baixo.", steps: "1. Pegue a corda\n2. Altura da cabeça\n3. Cotovelos fixos\n4. Puxe para baixo\n5. Separe as pontas\n6. Pause 1 segundo\n7. Retorne controlado", tips: "✓ Apenas antebraços\n✓ Controle na volta\n✓ Sinta o tríceps", avoid: "✗ Não balançar\n✗ Cotovelos fixos" },
-                    { name: "Extensão de Tríceps", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=extensão+tríceps+haltere+forma+correta", desc: "De pé ou sentado. Segure haltere acima da cabeça. Abaixe dobrando cotovelos. Suba sem mover ombros.", steps: "1. Fique de pé ou sente\n2. Haltere acima cabeça\n3. Cotovelos ligeiramente flexionados\n4. Abaixe dobrando cotovelos\n5. Traga à nuca\n6. Pause 1 segundo\n7. Suba extensível", tips: "✓ Ombros fixos\n✓ Movimento controlado\n✓ Sinta o tríceps", avoid: "✗ Não balançar\n✗ Ombros não mexem" }
+                    { ...exerciseBank.find(e => e.name === "Supino Reto"), sets: "4 x 6-8" },
+                    { ...exerciseBank.find(e => e.name === "Supino Inclinado"), sets: "3 x 8-10" },
+                    { ...exerciseBank.find(e => e.name === "Crucifixo no Cabo"), sets: "3 x 10-12" },
+                    { ...exerciseBank.find(e => e.name === "Tríceps Corda"), sets: "3 x 12-15" },
+                    { ...exerciseBank.find(e => e.name === "Extensão Tríceps Haltere"), sets: "3 x 10-12" }
                 ]
             },
             {
                 day: "Terça",
                 focus: "Costas & Bíceps",
                 exercises: [
-                    { name: "Puxada Frontal", sets: "4 x 6-8", video: "https://www.youtube.com/results?search_query=puxada+frontal+lat+pulldown+forma+correta", desc: "Sente com coxas fixadas. Pegue a barra acima dos ombros. Puxe até o peito.", steps: "1. Sente com coxas presas\n2. Pegue barra além da largura\n3. Palmas para frente\n4. Expire ao puxar\n5. Puxe ao peito\n6. Cotovelos para baixo\n7. Pause 1 segundo", tips: "✓ Sinta as costas\n✓ Controle a volta\n✓ Leve ao peito", avoid: "✗ Não jogar corpo\n✗ Sem cair rápido" },
-                    { name: "Remada com Barra", sets: "4 x 8-10", video: "https://www.youtube.com/results?search_query=remada+com+barra+bent+over+row+forma+correta", desc: "Incline-se 30-45°. Joelhos flexionados. Pegue a barra. Puxe ao abdômen.", steps: "1. Pé sob a barra\n2. Joelhos flexionados\n3. Incline costas retas\n4. Pegue barra\n5. Puxe ao abdômen\n6. Cotovelos próximos\n7. Pause 1-2 segundos", tips: "✓ Costas RETAS\n✓ Não deixar cair\n✓ Cotovelos próximos", avoid: "✗ Sem arredondar costas\n✗ Sem balançar" },
-                    { name: "Rosca Direta", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=rosca+direta+barra+biceps+forma+correta", desc: "Em pé. Pegue a barra com palmas para frente. Cotovelos fixos. Levante.", steps: "1. Fique em pé\n2. Pegue palmas para frente\n3. Cotovelos fixos\n4. Flexione cotovelos\n5. Suba antebraços\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Sem balanço\n✓ Apenas braços\n✓ Movimento puro", avoid: "✗ Sem impulso\n✗ Cotovelos fixos" },
-                    { name: "Rosca Martelo", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=rosca+martelo+halteres+biceps+forma+correta", desc: "De pé com halteres. Palmas viradas uma para a outra. Flexione cotovelos. Levante até ombros.", steps: "1. Fique em pé\n2. Haltere em cada mão\n3. Palmas viradas interior\n4. Cotovelos fixos\n5. Flexione cotovelos\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Trabalha bíceps e braquial\n✓ Palmas para interior\n✓ Movimento controlado", avoid: "✗ Sem balanço\n✗ Cotovelos fixos" },
-                    { name: "Puxada Inversa", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=pullover+costas+forma+correta", desc: "Sente em banco. Pegue barra acima. Puxe sobre o peito em movimento de arco. Traz à cintura.", steps: "1. Sente no banco\n2. Pegue barra acima\n3. Braços quase esticados\n4. Puxe barra sobre você\n5. Traz à cintura\n6. Sinta alongamento costas\n7. Retorne controlado", tips: "✓ Trabalha costas e peito\n✓ Sinta alongamento\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem usar perna" }
+                    { ...exerciseBank.find(e => e.name === "Puxada Frontal"), sets: "4 x 6-8" },
+                    { ...exerciseBank.find(e => e.name === "Remada com Barra"), sets: "4 x 8-10" },
+                    { ...exerciseBank.find(e => e.name === "Rosca Direta"), sets: "3 x 8-10" },
+                    { ...exerciseBank.find(e => e.name === "Rosca Martelo"), sets: "3 x 10-12" },
+                    { ...exerciseBank.find(e => e.name === "Pullover"), sets: "3 x 8-10" }
                 ]
             },
             {
                 day: "Quarta",
                 focus: "Perna",
                 exercises: [
-                    { name: "Agachamento", sets: "4 x 6-8", video: "https://www.youtube.com/results?search_query=agachamento+squat+barra+forma+correta", desc: "Barra nos ombros. Pés largura ombros. Abaixe até 90°. Suba explosivamente.", steps: "1. Barra nos ombros\n2. Pés largura ombros\n3. Peito para frente\n4. Abaixe dobrando\n5. Até 90 graus\n6. Suba explosivo\n7. Quase esticado", tips: "✓ Joelhos alinhados\n✓ Olhe frente\n✓ Suba com força", avoid: "✗ Joelhos não caem\n✗ Costas retas" },
-                    { name: "Leg Press", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=leg+press+perna+forma+correta", desc: "Sente na máquina. Pés na plataforma. Abaixe flexionando.", steps: "1. Sente na máquina\n2. Pés na plataforma\n3. Largura além ombros\n4. Abaixe dobrando\n5. Até 90 graus\n6. Pause 1 segundo\n7. Suba empurrando", tips: "✓ Empurre calcanhar\n✓ Controlado sempre\n✓ Sinta as pernas", avoid: "✗ Joelhos não caem\n✗ Sem descer demais" },
-                    { name: "Extensora", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=extensora+perna+quadriceps+forma+correta", desc: "Sente com costas apoiadas. Estenda completamente.", steps: "1. Sente apoiado\n2. Pés sob rolete\n3. Estenda completamente\n4. Levante rolete\n5. Pause 1-2 seg\n6. Abaixe controlado\n7. Não toque chão", tips: "✓ Foco quadríceps\n✓ Pausa importante\n✓ Lento e controlado", avoid: "✗ Sem impulso\n✗ Sem bater" },
-                    { name: "Cadeira Adutora", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=cadeira+adutora+perna+interna+forma+correta", desc: "Sente na máquina. Pernas abertas. Aperte as pernas juntando-as.", steps: "1. Sente na máquina\n2. Pernas bem abertas\n3. Aperte as pernas\n4. Junte totalmente\n5. Pause 1 segundo\n6. Abra controladamente\n7. Volte à posição inicial", tips: "✓ Trabalha perna interna\n✓ Movimento controlado\n✓ Foco na contração", avoid: "✗ Sem impulso\n✗ Sem abrir demais" },
-                    { name: "Rosca de Perna", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=rosca+de+perna+hamstring+forma+correta", desc: "Deitado de bruços. Pés sob rolete. Flexione levantando.", steps: "1. Deite-se de bruços\n2. Pés sob rolete\n3. Flexione joelhos\n4. Levante rolete\n5. Até formar 90°\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha posterior coxa\n✓ Pausa importante\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem levantar quadril" }
+                    { ...exerciseBank.find(e => e.name === "Agachamento"), sets: "4 x 6-8" },
+                    { ...exerciseBank.find(e => e.name === "Leg Press"), sets: "3 x 10-12" },
+                    { ...exerciseBank.find(e => e.name === "Extensora"), sets: "3 x 12-15" },
+                    { ...exerciseBank.find(e => e.name === "Cadeira Adutora"), sets: "3 x 12-15" },
+                    { ...exerciseBank.find(e => e.name === "Rosca de Perna"), sets: "3 x 12-15" }
                 ]
             },
             {
                 day: "Quinta",
                 focus: "Ombro & Braço",
                 exercises: [
-                    { name: "Desenvolvimento", sets: "4 x 8-10", video: "https://www.youtube.com/results?search_query=desenvolvimento+ombro+halteres+forma+correta", desc: "Sente ou fique em pé. Halteres na altura ombros. Suba acima da cabeça.", steps: "1. Sente ou de pé\n2. Haltere cada mão\n3. Altura ombros\n4. Palmas para frente\n5. Suba halteres\n6. Estenda completamente\n7. Pause 1 segundo", tips: "✓ Suba explosivamente\n✓ Abaixe controlado\n✓ Sinta ombro", avoid: "✗ Sem arcar costas\n✗ Peso moderado" },
-                    { name: "Elevação Lateral", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=elevação+lateral+ombro+halteres+forma+correta", desc: "Em pé com halteres. Levante lateralmente até ombros.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos flexionados\n4. Levante para lados\n5. Até ombros\n6. Pause 1 segundo\n7. Abaixe lentamente", tips: "✓ Lento e controlado\n✓ Sinta alongamento\n✓ Peso moderado", avoid: "✗ Sem jogar\n✗ Sem deixar cair" },
-                    { name: "Elevação Frontal", sets: "3 x 12-15", video: "https://www.youtube.com/results?search_query=elevação+frontal+ombro+forma+correta", desc: "De pé com halteres. Levante para frente até altura ombros.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Cotovelos ligeiramente flexionados\n4. Levante para frente\n5. Até altura ombros\n6. Pause 1 segundo\n7. Abaixe lentamente", tips: "✓ Trabalha ombro frontal\n✓ Movimento lento\n✓ Controlado sempre", avoid: "✗ Sem impulso\n✗ Peso moderado" },
-                    { name: "Shrug", sets: "3 x 10-12", video: "https://www.youtube.com/results?search_query=encolhimento+ombro+shrug+forma+correta", desc: "De pé com halteres. Encolha ombros levantando até orelhas. Abaixe.", steps: "1. Fique em pé\n2. Haltere cada mão\n3. Braços estendidos\n4. Encolha ombros\n5. Levante até orelhas\n6. Pause 1 segundo\n7. Abaixe controlado", tips: "✓ Trabalha trapézio\n✓ Movimento vertical\n✓ Peso moderado", avoid: "✗ Sem usar impulso\n✗ Peso moderado" },
-                    { name: "Rosca Inversa", sets: "3 x 8-10", video: "https://www.youtube.com/results?search_query=rosca+inversa+barra+antebraço+forma+correta", desc: "De pé com barra. Palmas viradas para baixo. Levante até ombros.", steps: "1. Fique em pé\n2. Pegue barra\n3. Palmas para baixo\n4. Cotovelos fixos\n5. Flexione cotovelos\n6. Levante até ombros\n7. Pause 1 segundo", tips: "✓ Trabalha antebraço\n✓ Sem balanço\n✓ Movimento controlado", avoid: "✗ Sem impulso\n✗ Cotovelos fixos" }
+                    { ...exerciseBank.find(e => e.name === "Desenvolvimento"), sets: "4 x 8-10" },
+                    { ...exerciseBank.find(e => e.name === "Elevação Lateral"), sets: "3 x 12-15" },
+                    { ...exerciseBank.find(e => e.name === "Elevação Frontal"), sets: "3 x 12-15" },
+                    { ...exerciseBank.find(e => e.name === "Shrug"), sets: "3 x 10-12" },
+                    { ...exerciseBank.find(e => e.name === "Rosca Inversa"), sets: "3 x 8-10" }
                 ]
             },
             {
                 day: "Sexta",
                 focus: "Cardio HIIT + Core",
                 exercises: [
-                    { name: "Aquecimento", sets: "1 x 5 min", video: "https://www.youtube.com/results?search_query=aquecimento+cardio+corrida+forma+correta", desc: "Corrida, bicicleta ou corda em ritmo moderado.", steps: "1. Escolha exercício\n2. Ritmo moderado\n3. Prepare o corpo\n4. Eleve frequência\n5. 5 minutos totais\n6. Sem ir forte\n7. Pronto para HIIT", tips: "✓ Aqueça bem\n✓ Ritmo moderado\n✓ Prepare articulações", avoid: "✗ Sem pular forte\n✗ Sem sair intenso" },
-                    { name: "HIIT", sets: "8 x (30s máx/30s rec)", video: "https://www.youtube.com/results?search_query=HIIT+treino+intenso+forma+correta", desc: "30s máxima intensidade + 30s recuperação. Repita 20-30 min.", steps: "1. 30s MÁXIMO\n2. Dê tudo\n3. 30s recuperação leve\n4. Respire\n5. Alterne exercícios\n6. Repita 20-30 min\n7. Termine exausto", tips: "✓ Mais intenso = mais gordura\n✓ Máximo esforço\n✓ Recuperação leve", avoid: "✗ Sem pular intensidade\n✗ Recuperação leve" },
-                    { name: "Prancha", sets: "3 x 30-60 seg", video: "https://www.youtube.com/results?search_query=prancha+plank+core+forma+correta", desc: "Corpo reto. Cotovelos sob ombros. Contraia abdômen.", steps: "1. Deite-se de bruços\n2. Cotovelos sob ombros\n3. Levante corpo\n4. Apoie cotovelos/pés\n5. Linha reta\n6. Contraia abdômen\n7. Mantenha respiração", tips: "✓ Qualidade > quantidade\n✓ Contraia CORE\n✓ Respiração constante", avoid: "✗ Sem deixar cair\n✗ Sem prender respiração" },
-                    { name: "Abdominal Dinâmico", sets: "3 x 15-20", video: "https://www.youtube.com/results?search_query=abdominal+dinâmico+forma+correta", desc: "Deitado de costas. Joelhos flexionados. Levante o tronco com contração.", steps: "1. Deite de costas\n2. Joelhos flexionados\n3. Pés apoiados\n4. Coloque mãos atrás cabeça\n5. Levante tronco\n6. Máxima contração\n7. Abaixe controlado", tips: "✓ Contração máxima\n✓ Movimento lento\n✓ Foco no abdômen", avoid: "✗ Sem puxar pescoço\n✗ Sem impulso" },
-                    { name: "Mountain Climbers", sets: "3 x 20-30 seg", video: "https://www.youtube.com/results?search_query=mountain+climbers+cardio+forma+correta", desc: "Posição de flexão. Alterne trazendo joelhos ao peito rápido.", steps: "1. Posição de flexão\n2. Corpo reto\n3. Traga joelho esquerdo\n4. Retorne rápido\n5. Traga joelho direito\n6. Mantenha ritmo\n7. 20-30 segundos", tips: "✓ Movimento rápido\n✓ Cardio + core\n✓ Máximo esforço", avoid: "✗ Sem deixar quadril cair\n✗ Sem manter corpo reto" }
+                    { ...exerciseBank.find(e => e.name === "Aquecimento"), sets: "1 x 5 min" },
+                    { ...exerciseBank.find(e => e.name === "HIIT"), sets: "8 x (30s/30s)" },
+                    { ...exerciseBank.find(e => e.name === "Prancha"), sets: "3 x 30-60s" },
+                    { ...exerciseBank.find(e => e.name === "Abdominal Dinâmico"), sets: "3 x 15-20" },
+                    { ...exerciseBank.find(e => e.name === "Mountain Climbers"), sets: "3 x 20-30s" }
                 ]
             }
         ];
+
+        // ===== WGER API =====
+        async function fetchExerciseImageFromWger(exerciseName) {
+            try {
+                // Verificar cache primeiro
+                if (exerciseImagesCache[exerciseName]) {
+                    return exerciseImagesCache[exerciseName];
+                }
+
+                // API do Wger (opensource, sem autenticação necessária)
+                const response = await fetch(`https://wger.de/api/v2/exercise/?name=${encodeURIComponent(exerciseName)}&format=json`);
+                const data = await response.json();
+
+                if (data.results && data.results.length > 0) {
+                    const exercise = data.results[0];
+                    
+                    // Buscar imagens do exercício
+                    if (exercise.id) {
+                        const imageResponse = await fetch(`https://wger.de/api/v2/exerciseimage/?exercise=${exercise.id}&format=json`);
+                        const imageData = await imageResponse.json();
+
+                        if (imageData.results && imageData.results.length > 0) {
+                            const imageUrl = imageData.results[0].image;
+                            exerciseImagesCache[exerciseName] = imageUrl;
+                            return imageUrl;
+                        }
+                    }
+                }
+
+                exerciseImagesCache[exerciseName] = null;
+                return null;
+            } catch (error) {
+                console.log(`Erro ao buscar imagem para ${exerciseName}:`, error);
+                exerciseImagesCache[exerciseName] = null;
+                return null;
+            }
+        }
 
         // ===== PROFILE MANAGEMENT =====
         function loadData() {
@@ -846,7 +1108,7 @@
                 card.className = 'profile-card';
                 card.innerHTML = `
                     <div class="profile-name">👤 ${profile}</div>
-                    <div class="profile-info">Clique para entrar</div>
+                    <div style="font-size: 12px; opacity: 0.8;">Clique para entrar</div>
                 `;
                 card.onclick = () => selectProfile(profile);
                 container.appendChild(card);
@@ -869,19 +1131,19 @@
             const savedChecked = localStorage.getItem(prefix + 'checkedExercises');
             checkedExercises[currentProfile] = savedChecked ? JSON.parse(savedChecked) : {};
             
-            const savedCustom = localStorage.getItem(prefix + 'customExercises');
-            customExercises[currentProfile] = savedCustom ? JSON.parse(savedCustom) : [];
-            
             const savedHistory = localStorage.getItem(prefix + 'workoutHistory');
             workoutHistory[currentProfile] = savedHistory ? JSON.parse(savedHistory) : [];
+            
+            const savedCustom = localStorage.getItem(prefix + 'customExercises');
+            customExercises[currentProfile] = savedCustom ? JSON.parse(savedCustom) : [];
         }
 
         function saveProfileData() {
             const prefix = `profile_${currentProfile}_`;
             localStorage.setItem(prefix + 'workouts', JSON.stringify(workouts[currentProfile]));
             localStorage.setItem(prefix + 'checkedExercises', JSON.stringify(checkedExercises[currentProfile]));
-            localStorage.setItem(prefix + 'customExercises', JSON.stringify(customExercises[currentProfile]));
             localStorage.setItem(prefix + 'workoutHistory', JSON.stringify(workoutHistory[currentProfile]));
+            localStorage.setItem(prefix + 'customExercises', JSON.stringify(customExercises[currentProfile]));
         }
 
         function openNewProfileModal() {
@@ -897,12 +1159,12 @@
             const name = document.getElementById('newProfileName').value.trim();
             
             if (!name) {
-                alert('Nome do perfil obrigatório!');
+                alert('Nome obrigatório!');
                 return;
             }
             
             if (profiles.includes(name)) {
-                alert('Este perfil já existe!');
+                alert('Perfil já existe!');
                 return;
             }
             
@@ -937,6 +1199,8 @@
 
             if (tab === 'history') {
                 renderHistory();
+            } else if (tab === 'exercises') {
+                renderExercisesTab();
             }
         }
 
@@ -1070,95 +1334,203 @@
             }
         }
 
-        function searchExercises() {
-            const name = document.getElementById('exerciseName').value.toLowerCase();
-            const matchesContainer = document.getElementById('exerciseMatches');
+        function replaceExercise(dayIdx, exIdx) {
+            currentAddingDayIdx = dayIdx;
+            currentAddingExIdx = exIdx;
+            selectedCategory = 'todas';
+            openSelectModal();
+        }
+
+        async function openSelectModal() {
+            document.getElementById('selectExerciseModal').classList.add('show');
             
-            if (!name.trim()) {
-                matchesContainer.classList.add('hidden');
-                document.getElementById('matchIndicator').textContent = '';
-                return;
-            }
+            const current = workouts[currentProfile][currentAddingDayIdx].exercises[currentAddingExIdx];
+            document.getElementById('currentExerciseName').textContent = current.name;
+            document.getElementById('currentExerciseSets').textContent = current.sets;
             
-            const matches = exerciseBank.filter(ex => ex.name.toLowerCase().includes(name));
+            renderCategories();
+            await filterExercises('todas');
+        }
+
+        function closeSelectModal() {
+            document.getElementById('selectExerciseModal').classList.remove('show');
+            currentAddingDayIdx = null;
+            currentAddingExIdx = null;
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoryFilter');
+            container.innerHTML = '';
             
-            if (matches.length === 0) {
-                matchesContainer.classList.add('hidden');
-                document.getElementById('matchIndicator').textContent = '❌ Nenhum exercício encontrado';
-                return;
-            }
+            const btn = document.createElement('button');
+            btn.className = 'category-btn' + (selectedCategory === 'todas' ? ' active' : '');
+            btn.textContent = 'Todas';
+            btn.onclick = () => filterExercises('todas');
+            container.appendChild(btn);
             
-            matchesContainer.classList.remove('hidden');
-            matchesContainer.innerHTML = '';
-            
-            document.getElementById('matchIndicator').textContent = `✅ Encontrado ${matches.length} exercício(s)`;
-            
-            matches.forEach(ex => {
-                const option = document.createElement('div');
-                option.className = 'exercise-option';
-                option.innerHTML = `
-                    <div class="exercise-option-name">💪 ${ex.name}</div>
-                    <div class="exercise-option-desc">${ex.desc}</div>
-                `;
-                option.onclick = () => selectExerciseFromBank(ex);
-                matchesContainer.appendChild(option);
+            Object.keys(exerciseCategories).forEach(category => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn' + (selectedCategory === category ? ' active' : '');
+                btn.textContent = category;
+                btn.onclick = () => filterExercises(category);
+                container.appendChild(btn);
             });
         }
 
-        function selectExerciseFromBank(exercise) {
-            selectedExerciseFromBank = exercise;
-            document.getElementById('exerciseName').value = exercise.name;
-            document.getElementById('exerciseDesc').value = exercise.desc;
-            document.getElementById('exerciseSteps').value = exercise.steps;
-            document.getElementById('exerciseTips').value = exercise.tips;
-            document.getElementById('exerciseAvoid').value = exercise.avoid;
-            document.getElementById('exerciseMatches').classList.add('hidden');
-            document.getElementById('matchIndicator').textContent = '✅ Exercício carregado!';
-        }
-
-        function openAddModal(dayIdx) {
-            currentAddingDayIdx = dayIdx;
-            selectedExerciseFromBank = null;
-            document.getElementById('exerciseName').value = '';
-            document.getElementById('exerciseSets').value = '';
-            document.getElementById('exerciseDesc').value = '';
-            document.getElementById('exerciseSteps').value = '';
-            document.getElementById('exerciseTips').value = '';
-            document.getElementById('exerciseAvoid').value = '';
-            document.getElementById('exerciseMatches').classList.add('hidden');
-            document.getElementById('matchIndicator').textContent = '';
-            document.getElementById('addExerciseModal').classList.add('show');
-        }
-
-        function closeAddModal() {
-            document.getElementById('addExerciseModal').classList.remove('show');
-            currentAddingDayIdx = null;
-            selectedExerciseFromBank = null;
-        }
-
-        function confirmAddExercise() {
-            const name = document.getElementById('exerciseName').value.trim();
-            const sets = document.getElementById('exerciseSets').value.trim();
+        async function filterExercises(category) {
+            selectedCategory = category;
+            renderCategories();
             
-            if (!name || !sets) {
-                alert('Nome e Séries obrigatórios!');
+            let exercises = [...exerciseBank, ...customExercises[currentProfile]];
+            if (category !== 'todas') {
+                exercises = exercises.filter(ex => ex.category === category);
+            }
+            
+            const container = document.getElementById('exercisesGrid');
+            container.innerHTML = '';
+            
+            for (const ex of exercises) {
+                const option = document.createElement('div');
+                option.className = 'exercise-option';
+                
+                let imageHTML = '';
+                const imageUrl = await fetchExerciseImageFromWger(ex.name);
+                if (imageUrl) {
+                    imageHTML = `<img src="${imageUrl}" alt="${ex.name}" class="exercise-option-img" onerror="this.style.display='none'">`;
+                }
+                
+                option.innerHTML = `
+                    ${imageHTML}
+                    <div class="exercise-option-content">
+                        <div class="exercise-option-name">💪 ${ex.name}</div>
+                        <div class="exercise-option-desc">${ex.desc}</div>
+                    </div>
+                `;
+                option.onclick = () => selectExercise(ex);
+                container.appendChild(option);
+            }
+        }
+
+        function selectExercise(exercise) {
+            const sets = workouts[currentProfile][currentAddingDayIdx].exercises[currentAddingExIdx].sets;
+            workouts[currentProfile][currentAddingDayIdx].exercises[currentAddingExIdx] = {
+                ...exercise,
+                sets: sets
+            };
+            
+            saveProfileData();
+            render();
+            closeSelectModal();
+        }
+
+        // ===== EXERCÍCIOS ABA =====
+        function openCreateExerciseModal() {
+            editingExerciseId = null;
+            document.getElementById('createExerciseTitle').textContent = '➕ Criar Novo Exercício';
+            document.getElementById('createExName').value = '';
+            document.getElementById('createExCategory').value = '';
+            document.getElementById('createExDesc').value = '';
+            document.getElementById('createExSteps').value = '';
+            document.getElementById('createExTips').value = '';
+            document.getElementById('createExAvoid').value = '';
+            document.getElementById('createExVideo').value = '';
+            document.getElementById('createExerciseModal').classList.add('show');
+        }
+
+        function closeCreateExerciseModal() {
+            document.getElementById('createExerciseModal').classList.remove('show');
+            editingExerciseId = null;
+        }
+
+        function saveCustomExercise() {
+            const name = document.getElementById('createExName').value.trim();
+            const category = document.getElementById('createExCategory').value;
+            const desc = document.getElementById('createExDesc').value.trim();
+            const steps = document.getElementById('createExSteps').value.trim();
+            
+            if (!name || !category || !desc || !steps) {
+                alert('Preencha todos os campos obrigatórios!');
                 return;
             }
             
             const newExercise = {
+                id: Date.now(),
                 name: name,
-                sets: sets,
-                video: selectedExerciseFromBank ? selectedExerciseFromBank.video : 'https://www.youtube.com/results?search_query=' + encodeURIComponent(name),
-                desc: document.getElementById('exerciseDesc').value || 'Descrição do exercício',
-                steps: document.getElementById('exerciseSteps').value || '1. Passo 1\n2. Passo 2',
-                tips: document.getElementById('exerciseTips').value || '✓ Dica 1',
-                avoid: document.getElementById('exerciseAvoid').value || '✗ Evite 1'
+                category: category,
+                desc: desc,
+                steps: steps,
+                tips: document.getElementById('createExTips').value || '✓ Dica',
+                avoid: document.getElementById('createExAvoid').value || '✗ Evite',
+                video: document.getElementById('createExVideo').value || 'https://youtube.com'
             };
             
-            workouts[currentProfile][currentAddingDayIdx].exercises.push(newExercise);
+            if (editingExerciseId) {
+                const idx = customExercises[currentProfile].findIndex(ex => ex.id === editingExerciseId);
+                customExercises[currentProfile][idx] = newExercise;
+            } else {
+                customExercises[currentProfile].push(newExercise);
+            }
+            
             saveProfileData();
-            render();
-            closeAddModal();
+            renderExercisesTab();
+            closeCreateExerciseModal();
+        }
+
+        async function renderExercisesTab() {
+            const container = document.getElementById('exercisesList');
+            const allExercises = [...exerciseBank, ...customExercises[currentProfile]];
+            
+            container.innerHTML = '';
+            
+            for (const ex of allExercises) {
+                const card = document.createElement('div');
+                card.className = 'exercise-card';
+                
+                let imageHTML = '';
+                const imageUrl = await fetchExerciseImageFromWger(ex.name);
+                if (imageUrl) {
+                    imageHTML = `<img src="${imageUrl}" alt="${ex.name}" class="exercise-card-image" onerror="this.style.display='none'">`;
+                }
+                
+                card.innerHTML = `
+                    ${imageHTML}
+                    <div class="exercise-card-name">${ex.name}</div>
+                    <div class="exercise-card-category">${ex.category}</div>
+                    <div class="exercise-card-desc">${ex.desc}</div>
+                    <div class="exercise-card-buttons">
+                        ${customExercises[currentProfile].some(c => c.id === ex.id) ? `
+                            <button class="btn-edit" title="Editar" onclick="editCustomExercise(${ex.id})">✎</button>
+                            <button class="btn-remove" title="Remover" onclick="removeCustomExercise(${ex.id})">✕</button>
+                        ` : ''}
+                    </div>
+                `;
+                container.appendChild(card);
+            }
+        }
+
+        function editCustomExercise(id) {
+            const exercise = customExercises[currentProfile].find(ex => ex.id === id);
+            if (!exercise) return;
+            
+            editingExerciseId = id;
+            document.getElementById('createExerciseTitle').textContent = '✎ Editar Exercício';
+            document.getElementById('createExName').value = exercise.name;
+            document.getElementById('createExCategory').value = exercise.category;
+            document.getElementById('createExDesc').value = exercise.desc;
+            document.getElementById('createExSteps').value = exercise.steps;
+            document.getElementById('createExTips').value = exercise.tips;
+            document.getElementById('createExAvoid').value = exercise.avoid;
+            document.getElementById('createExVideo').value = exercise.video;
+            document.getElementById('createExerciseModal').classList.add('show');
+        }
+
+        function removeCustomExercise(id) {
+            if (confirm('Remover este exercício?')) {
+                const idx = customExercises[currentProfile].findIndex(ex => ex.id === id);
+                customExercises[currentProfile].splice(idx, 1);
+                saveProfileData();
+                renderExercisesTab();
+            }
         }
 
         function render() {
@@ -1178,7 +1550,6 @@
                         <div class="day-focus">${day.focus}</div>
                     </div>
                     <div class="day-controls">
-                        <button class="btn-add" onclick="openAddModal(${dayIdx})">+ Adicionar</button>
                         <span style="margin-left: 10px;">▼</span>
                     </div>
                 `;
@@ -1215,17 +1586,32 @@
                         <div class="exercise-sets">${ex.sets}</div>
                     `;
 
+                    const buttons = document.createElement('div');
+                    buttons.className = 'exercise-buttons';
+                    
+                    const replaceBtn = document.createElement('button');
+                    replaceBtn.className = 'btn-replace';
+                    replaceBtn.textContent = '🔄';
+                    replaceBtn.title = 'Trocar exercício';
+                    replaceBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        replaceExercise(dayIdx, exIdx);
+                    };
+                    
                     const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'exercise-delete';
+                    deleteBtn.className = 'btn-delete';
                     deleteBtn.textContent = '✕';
                     deleteBtn.onclick = (e) => {
                         e.stopPropagation();
                         deleteExercise(dayIdx, exIdx);
                     };
+                    
+                    buttons.appendChild(replaceBtn);
+                    buttons.appendChild(deleteBtn);
 
                     exercise.appendChild(checkbox);
                     exercise.appendChild(info);
-                    exercise.appendChild(deleteBtn);
+                    exercise.appendChild(buttons);
 
                     const details = document.createElement('div');
                     details.className = 'exercise-details';
@@ -1281,7 +1667,7 @@
             if (history.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">📋</div>
+                        <div style="font-size: 48px; margin-bottom: 10px;">📋</div>
                         <p>Nenhum treino registrado ainda.</p>
                     </div>
                 `;
@@ -1342,7 +1728,6 @@
             document.getElementById('progressFill').style.width = percent + '%';
         }
 
-        // INIT
         loadData();
     </script>
 </body>
