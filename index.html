@@ -3,739 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Treino Academia</title>
+    <title>Academia Pro - Seu Treino</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0f0f0f;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
             color: #fff;
             padding: 20px;
         }
-        .container { max-width: 600px; margin: 0 auto; }
-        h1 { font-size: 24px; margin-bottom: 20px; text-align: center; }
+        .container { max-width: 650px; margin: 0 auto; }
 
-        /* LOGIN SCREEN */
+        /* LOGIN */
         .login-screen { display: none; }
         .login-screen.show { display: block; }
-        .login-title {
-            font-size: 32px;
-            text-align: center;
-            margin-bottom: 30px;
-            color: #4CAF50;
-        }
-        .profiles-list {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .profile-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        .profile-card:hover {
-            transform: translateY(-5px);
-            border-color: #4CAF50;
-            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
-        }
-        .profile-name {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-        .btn-new-profile {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-        }
-        .btn-new-profile:hover { background: #45a049; }
+        .login-title { font-size: 36px; text-align: center; margin-bottom: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .profiles-list { display: grid; gap: 12px; margin-bottom: 20px; }
+        .profile-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 15px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s; display: flex; justify-content: space-between; align-items: center; }
+        .profile-card:hover { transform: translateY(-5px); }
+        .profile-name { flex: 1; }
+        .btn-delete-profile { background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .btn-new-profile { background: #4CAF50; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; }
 
         /* MODAL */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            overflow-y: auto;
-        }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
         .modal.show { display: block; }
-        .modal-content {
-            background-color: #2a2a2a;
-            margin: 20% auto;
-            padding: 30px;
-            border: 1px solid #444;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .modal-content h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #4CAF50;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 12px;
-            background: #333;
-            border: 1px solid #555;
-            border-radius: 6px;
-            color: white;
-            font-size: 14px;
-            font-family: inherit;
-        }
-        .form-group textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        .form-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 25px;
-        }
-        .btn-confirm {
-            flex: 1;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .btn-confirm:hover { background: #45a049; }
-        .btn-cancel {
-            flex: 1;
-            background: #555;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .btn-cancel:hover { background: #666; }
+        .modal-content { background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%); margin: 10% auto; padding: 30px; border: 1px solid #667eea; border-radius: 12px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto; }
+        .modal-content h2 { color: #667eea; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .form-group input { width: 100%; padding: 12px; background: #3a3a4e; border: 1px solid #555; border-radius: 6px; color: white; font-size: 14px; font-family: inherit; }
+        .form-buttons { display: flex; gap: 10px; margin-top: 25px; }
+        .btn-confirm { flex: 1; background: #4CAF50; border: none; padding: 12px; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; }
+        .btn-cancel { flex: 1; background: #555; border: none; padding: 12px; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; }
 
-        /* APP SCREEN */
+        /* APP */
         .app-screen { display: none; }
         .app-screen.show { display: block; }
-
-        /* HEADER */
-        .app-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-        }
-        .profile-display { text-align: left; }
-        .profile-label { font-size: 12px; opacity: 0.8; }
+        .app-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
         .profile-name-header { font-size: 18px; font-weight: bold; }
-        .btn-switch-profile {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .btn-switch-profile:hover { background: rgba(255, 255, 255, 0.3); }
+        .btn-switch { background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
 
         /* TABS */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #333;
-            overflow-x: auto;
-        }
-        .tab-btn {
-            background: none;
-            border: none;
-            color: #aaa;
-            padding: 12px 20px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-        .tab-btn.active {
-            color: #4CAF50;
-            border-bottom-color: #4CAF50;
-        }
-        .tab-btn:hover { color: #fff; }
-
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333; overflow-x: auto; }
+        .tab-btn { background: none; border: none; color: #aaa; padding: 12px 20px; cursor: pointer; font-weight: 600; border-bottom: 3px solid transparent; transition: all 0.3s; white-space: nowrap; }
+        .tab-btn.active { color: #4CAF50; border-bottom-color: #4CAF50; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* TIMER SECTION */
-        .timer-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-        }
-        .timer-display {
-            font-size: 48px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-family: 'Courier New', monospace;
-        }
-        .timer-label { font-size: 14px; opacity: 0.9; margin-bottom: 15px; }
-        .timer-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        .btn-start {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .btn-start:hover { background: #45a049; }
-        .btn-end {
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .btn-end:hover { background: #da190b; }
-        .btn-end:disabled { background: #ccc; cursor: not-allowed; }
+        /* TIMER */
+        .timer-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
+        .timer-display { font-size: 48px; font-weight: bold; margin-bottom: 15px; font-family: 'Courier New'; }
+        .timer-buttons { display: flex; gap: 10px; justify-content: center; }
+        .btn-start, .btn-end { border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-start { background: #4CAF50; }
+        .btn-end { background: #f44336; }
+        .btn-end:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .progress-bar { 
-            background: #333; 
-            height: 20px; 
-            border-radius: 10px; 
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            background: #4CAF50;
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s;
-        }
+        .progress-bar { background: #333; height: 20px; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+        .progress-fill { background: linear-gradient(90deg, #4CAF50, #45a049); height: 100%; width: 0%; transition: width 0.3s; }
 
-        .rest-timer {
-            background: #ff9800;
-            color: white;
-            padding: 15px;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 20px;
-            margin-bottom: 10px;
-            display: none;
-            font-family: 'Courier New', monospace;
-            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
-        }
-        .rest-timer.active { display: block; }
-
-        /* DAY BOX */
-        .day-box {
-            background: #2a2a2a;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #444;
-        }
-        .day-header {
-            background: #333;
-            padding: 15px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .day-header:hover { background: #3a3a3a; }
-        .day-title { font-weight: bold; font-size: 16px; }
-        .day-focus { font-size: 12px; color: #aaa; }
-
-        .exercise {
-            border-top: 1px solid #444;
-            padding: 12px 15px;
-            cursor: pointer;
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
-            position: relative;
-        }
-        .exercise:hover { background: #333; }
-        .exercise-buttons {
-            position: absolute;
-            top: 12px;
-            right: 15px;
-            display: flex;
-            gap: 5px;
-        }
-        .btn-replace {
-            background: #FF9800;
-            color: white;
-            border: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn-replace:hover { background: #F57C00; }
-        .btn-delete {
-            background: #f44336;
-            color: white;
-            border: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .btn-delete:hover { background: #da190b; }
-
-        .checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #666;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            cursor: pointer;
-            font-size: 14px;
-            background: #333;
-            transition: all 0.2s;
-        }
-        .checkbox:hover { border-color: #4CAF50; }
-        .checkbox.checked {
-            background: #4CAF50;
-            border-color: #4CAF50;
-            color: white;
-            font-weight: bold;
-        }
-
-        .exercise-info { 
-            flex: 1;
-            cursor: pointer;
-        }
-        .exercise-name { font-weight: bold; font-size: 14px; }
+        /* EXERCISE CARD */
+        .exercise-card { background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%); margin-bottom: 15px; border-radius: 8px; overflow: hidden; border: 1px solid #444; }
+        .exercise-header { background: #2a2a3e; padding: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .exercise-name { font-weight: bold; font-size: 16px; color: #667eea; }
         .exercise-sets { font-size: 12px; color: #aaa; }
+        .checkbox { width: 24px; height: 24px; border: 2px solid #667eea; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: transparent; }
+        .checkbox.checked { background: #4CAF50; border-color: #4CAF50; }
 
-        .exercise-details {
-            display: none;
-            background: #1a1a1a;
-            padding: 15px;
-            border-top: 1px solid #444;
-            font-size: 13px;
-            line-height: 1.6;
-        }
+        .exercise-details { display: none; background: #1a1a2e; padding: 15px; font-size: 13px; }
         .exercise-details.show { display: block; }
-
-        .exercise-image {
-            width: 100%;
-            height: 250px;
-            background: #333;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .detail-section { margin-bottom: 15px; }
-        .detail-title { font-weight: bold; color: #4CAF50; margin-bottom: 8px; }
-
-        .video-btn {
-            background: #ff0000;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-        .video-btn:hover { background: #cc0000; }
-
-        .hidden { display: none; }
+        .detail-section { margin-bottom: 12px; }
+        .detail-title { font-weight: bold; color: #667eea; margin-bottom: 5px; }
 
         /* HISTÓRICO */
-        .history-stats {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-        }
-        .stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 28px;
-            font-weight: bold;
-            color: #4CAF50;
-            margin-bottom: 5px;
-        }
-        .stat-label {
-            font-size: 12px;
-            color: #ddd;
-        }
-
-        .history-cards {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
-        .history-card {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 4px solid #4CAF50;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-        .history-date {
-            font-size: 12px;
-            color: #4CAF50;
-            font-weight: 600;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-        .history-day {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .history-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .history-info-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #aaa;
-        }
-
-        /* EXERCISE SELECTOR */
-        .exercises-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            max-height: 400px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-        .exercise-option {
-            background: #333;
-            padding: 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            border: 2px solid #444;
-            transition: all 0.3s;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-        .exercise-option:hover {
-            border-color: #4CAF50;
-            background: #3a3a3a;
-        }
-        .exercise-option-img {
-            width: 80px;
-            height: 80px;
-            background: #444;
-            border-radius: 4px;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-        .exercise-option-content { flex: 1; }
-        .exercise-option-name {
-            font-weight: bold;
-            color: #4CAF50;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        .exercise-option-desc {
-            font-size: 11px;
-            color: #999;
-            line-height: 1.4;
-        }
-
-        .category-filter {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        .category-btn {
-            background: #333;
-            color: #aaa;
-            border: 1px solid #555;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        .category-btn.active {
-            background: #4CAF50;
-            color: white;
-            border-color: #4CAF50;
-        }
-        .category-btn:hover {
-            border-color: #4CAF50;
-            color: #4CAF50;
-        }
-
-        .current-exercise-info {
-            background: #333;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            border-left: 4px solid #FF9800;
-        }
-        .current-label {
-            font-size: 12px;
-            color: #FF9800;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .current-name {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .current-sets {
-            font-size: 12px;
-            color: #aaa;
-        }
+        .history-stats { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .stat-card { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-number { font-size: 28px; font-weight: bold; color: #4CAF50; }
+        .history-cards { display: grid; gap: 15px; max-height: 60vh; overflow-y: auto; }
+        .history-card { background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%); padding: 20px; border-radius: 12px; border-left: 4px solid #667eea; }
 
         /* EXERCÍCIOS ABA */
-        .btn-create-exercise {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        .btn-create-exercise:hover { background: #45a049; }
+        .exercises-toolbar { background: #667eea; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
+        .selected-count { font-size: 18px; }
+        .btn-save-selected { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-save-selected:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .exercises-list {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-        .exercise-card {
-            background: #2a2a2a;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #444;
-            position: relative;
-            overflow: hidden;
-        }
-        .exercise-card-image {
-            width: 100%;
-            height: 180px;
-            background: #333;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            object-fit: cover;
-        }
-        .exercise-card-name {
-            font-weight: bold;
-            font-size: 16px;
-            color: #4CAF50;
-            margin-bottom: 8px;
-        }
-        .exercise-card-category {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .exercise-card-desc {
-            font-size: 13px;
-            color: #ccc;
-            line-height: 1.5;
-            margin-bottom: 10px;
-        }
-        .exercise-card-buttons {
-            display: flex;
-            gap: 10px;
-            position: absolute;
-            top: 15px;
-            right: 15px;
-        }
-        .btn-edit {
-            background: #2196F3;
-            color: white;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-edit:hover { background: #0b7dda; }
-        .btn-remove {
-            background: #f44336;
-            color: white;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-remove:hover { background: #da190b; }
+        .filter-section { background: #2a2a3e; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #444; }
+        .filter-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-btn { background: #3a3a4e; color: #999; border: 1px solid #555; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .filter-btn.active { background: #667eea; color: white; border-color: #667eea; }
+
+        .exercises-list { display: grid; gap: 15px; max-height: 70vh; overflow-y: auto; }
+        .exercise-browse-card { background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%); padding: 15px; border-radius: 8px; border: 1px solid #444; }
+        .exercise-browse-name { font-weight: bold; font-size: 16px; color: #667eea; margin-bottom: 8px; }
+        .meta-tag { display: inline-block; background: rgba(102,126,234,0.2); color: #667eea; padding: 4px 8px; border-radius: 4px; font-size: 11px; margin-right: 5px; margin-bottom: 8px; }
+
+        .add-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; width: 100%; margin-top: 10px; }
+        .add-btn.added { background: #4CAF50; }
+        .add-btn.added:disabled { opacity: 0.8; }
+
+        .empty-state { text-align: center; padding: 40px 20px; color: #aaa; }
     </style>
 </head>
 <body>
-    <!-- LOGIN SCREEN -->
+    <!-- LOGIN -->
     <div id="loginScreen" class="login-screen show">
         <div class="container">
-            <div class="login-title">💪 Academia</div>
+            <div class="login-title">💪 Academia Pro</div>
             <div class="profiles-list" id="profilesList"></div>
             <button class="btn-new-profile" onclick="openNewProfileModal()">➕ Novo Perfil</button>
         </div>
     </div>
 
-    <!-- APP SCREEN -->
+    <!-- APP -->
     <div id="appScreen" class="app-screen">
         <div class="container">
-            <h1>💪 Seu Treino</h1>
+            <h1 style="font-size: 24px; margin-bottom: 20px; color: #667eea;">💪 Seu Treino</h1>
             
             <div class="app-header">
-                <div class="profile-display">
-                    <div class="profile-label">👤 Perfil</div>
-                    <div class="profile-name-header" id="currentProfileName"></div>
-                </div>
-                <button class="btn-switch-profile" onclick="switchProfile()">Trocar Perfil</button>
+                <div><div style="font-size: 12px;">👤 Perfil</div><div class="profile-name-header" id="currentProfileName"></div></div>
+                <button class="btn-switch" onclick="switchProfile()">Trocar</button>
             </div>
 
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('workout')">📅 Treino</button>
-                <button class="tab-btn" onclick="switchTab('history')">📊 Histórico</button>
-                <button class="tab-btn" onclick="switchTab('exercises')">💪 Exercícios</button>
+                <button class="tab-btn active" onclick="switchTab(event, 'workout')">📅 Treino</button>
+                <button class="tab-btn" onclick="switchTab(event, 'history')">📊 Histórico</button>
+                <button class="tab-btn" onclick="switchTab(event, 'exercises')">💪 Exercícios</button>
             </div>
 
-            <!-- TAB TREINO -->
+            <!-- TREINO -->
             <div id="workout" class="tab-content active">
                 <div class="timer-section">
-                    <div class="timer-label">⏱️ Tempo Total de Academia</div>
+                    <div style="font-size: 12px; opacity: 0.9; margin-bottom: 10px;">⏱️ Tempo Total</div>
                     <div class="timer-display" id="timerDisplay">00:00:00</div>
                     <div class="timer-buttons">
                         <button class="btn-start" id="btnStart" onclick="startWorkout()">▶️ Iniciar</button>
                         <button class="btn-end" id="btnEnd" onclick="endWorkout()" disabled>🛑 Encerrar</button>
                     </div>
                 </div>
-
-                <div class="rest-timer" id="restTimer"></div>
-
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
                 <div id="workoutContainer"></div>
             </div>
 
-            <!-- TAB HISTÓRICO -->
+            <!-- HISTÓRICO -->
             <div id="history" class="tab-content">
                 <div class="history-stats">
-                    <div class="stat-card">
-                        <div class="stat-number" id="totalWorkouts">0</div>
-                        <div class="stat-label">Treinos</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="totalHours">0h</div>
-                        <div class="stat-label">Tempo Total</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-number" id="totalWorkouts">0</div><div style="font-size: 12px;">Treinos</div></div>
+                    <div class="stat-card"><div class="stat-number" id="totalHours">0h</div><div style="font-size: 12px;">Tempo Total</div></div>
                 </div>
-
                 <div id="historyCards" class="history-cards"></div>
             </div>
 
-            <!-- TAB EXERCÍCIOS -->
+            <!-- EXERCÍCIOS -->
             <div id="exercises" class="tab-content">
-                <button class="btn-create-exercise" onclick="openCreateExerciseModal()">➕ Criar Novo Exercício</button>
-                <div class="exercises-list" id="exercisesList"></div>
+                <div class="exercises-toolbar">
+                    <div class="selected-count" id="selectedCount">Selecionados: 0</div>
+                    <button class="btn-save-selected" id="btnSave" onclick="saveSelecionados()" disabled>Salvar Workout</button>
+                </div>
+
+                <div class="filter-section">
+                    <div style="margin-bottom: 10px; font-weight: bold;">Filtrar:</div>
+                    <div class="filter-buttons" id="bodyPartFilters"></div>
+                </div>
+
+                <div id="exercisesList" class="exercises-list"></div>
             </div>
         </div>
     </div>
@@ -745,442 +177,164 @@
         <div class="modal-content">
             <h2>➕ Novo Perfil</h2>
             <div class="form-group">
-                <label>Nome do Perfil *</label>
-                <input type="text" id="newProfileName" placeholder="Ex: João, Maria, etc">
+                <label>Nome</label>
+                <input type="text" id="newProfileName" placeholder="Ex: João">
             </div>
             <div class="form-buttons">
                 <button class="btn-confirm" onclick="createProfile()">✓ Criar</button>
-                <button class="btn-cancel" onclick="closeNewProfileModal()">✕ Cancelar</button>
+                <button class="btn-cancel" onclick="closeModal('newProfileModal')">✕ Cancelar</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL CRIAR/EDITAR EXERCÍCIO -->
-    <div id="createExerciseModal" class="modal">
+    <!-- MODAL SALVAR WORKOUT -->
+    <div id="saveWorkoutModal" class="modal">
         <div class="modal-content">
-            <h2 id="createExerciseTitle">➕ Criar Novo Exercício</h2>
-            
+            <h2>💾 Salvar Workout</h2>
             <div class="form-group">
-                <label>Nome do Exercício *</label>
-                <input type="text" id="createExName" placeholder="Ex: Meu Exercício">
+                <label>Nome do Workout</label>
+                <input type="text" id="workoutNameInput" placeholder="Ex: Peito & Tríceps">
             </div>
-
-            <div class="form-group">
-                <label>Categoria *</label>
-                <select id="createExCategory">
-                    <option value="">Escolha uma categoria</option>
-                    <option value="Peito">Peito</option>
-                    <option value="Costas">Costas</option>
-                    <option value="Bíceps">Bíceps</option>
-                    <option value="Tríceps">Tríceps</option>
-                    <option value="Ombro">Ombro</option>
-                    <option value="Perna">Perna</option>
-                    <option value="Cardio">Cardio</option>
-                    <option value="Core">Core</option>
-                    <option value="Outro">Outro</option>
-                </select>
+            <div style="background: #3a3a4e; padding: 15px; border-radius: 6px; margin-bottom: 20px; max-height: 200px; overflow-y: auto;">
+                <div style="color: #667eea; font-weight: bold; margin-bottom: 10px;">Exercícios selecionados:</div>
+                <div id="workoutPreview"></div>
             </div>
-
-            <div class="form-group">
-                <label>Descrição *</label>
-                <textarea id="createExDesc" placeholder="Como fazer o exercício"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Passo a Passo *</label>
-                <textarea id="createExSteps" placeholder="1. Passo 1&#10;2. Passo 2"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Dicas</label>
-                <textarea id="createExTips" placeholder="✓ Dica 1&#10;✓ Dica 2"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Evite</label>
-                <textarea id="createExAvoid" placeholder="✗ Evite 1&#10;✗ Evite 2"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Link YouTube (opcional)</label>
-                <input type="text" id="createExVideo" placeholder="https://youtube.com/...">
-            </div>
-
             <div class="form-buttons">
-                <button class="btn-confirm" onclick="saveCustomExercise()">✓ Salvar</button>
-                <button class="btn-cancel" onclick="closeCreateExerciseModal()">✕ Cancelar</button>
+                <button class="btn-confirm" onclick="confirmarSalvamentoWorkout()">✓ Salvar</button>
+                <button class="btn-cancel" onclick="closeModal('saveWorkoutModal')">✕ Cancelar</button>
             </div>
-        </div>
-    </div>
-
-    <!-- MODAL TROCAR EXERCÍCIO -->
-    <div id="selectExerciseModal" class="modal">
-        <div class="modal-content">
-            <h2 id="modalTitle">🔄 Trocar Exercício</h2>
-            
-            <div id="currentExerciseContainer" class="current-exercise-info">
-                <div class="current-label">⚙️ Exercício Atual</div>
-                <div class="current-name" id="currentExerciseName"></div>
-                <div class="current-sets" id="currentExerciseSets"></div>
-            </div>
-
-            <div class="form-group">
-                <label>🔍 Filtrar por Categoria</label>
-                <div class="category-filter" id="categoryFilter"></div>
-            </div>
-
-            <div class="form-group">
-                <label>Exercícios Disponíveis</label>
-                <div class="exercises-grid" id="exercisesGrid"></div>
-            </div>
-
-            <div class="form-buttons">
-                <button class="btn-cancel" onclick="closeSelectModal()" style="flex: 1;">✕ Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL CONCLUSÃO -->
-    <div id="finishModal" class="modal">
-        <div class="modal-content">
-            <h2>🎉 Treino Concluído!</h2>
-            <p id="finalTime" style="font-size: 24px; font-weight: bold; color: #4CAF50;"></p>
-            <p>Parabéns! Você treinou muito bem! 💪</p>
-            <button class="btn-confirm" onclick="closeFinishModal()" style="width: 100%;">✓ Nova Jornada</button>
-            <div style="font-size: 12px; color: #aaa; margin-top: 15px;" id="modalTimer">Fechando em 3s...</div>
         </div>
     </div>
 
     <script>
-        // BANCO DE IMAGENS - URLs DE CADA EXERCÍCIO
-        const exerciseImages = {
-            "Supino Reto": "https://images.unsplash.com/photo-1580601204160-fc6ee1ddeb04?w=600&h=400&fit=crop",
-            "Supino Inclinado": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
-            "Supino Declinado": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&h=400&fit=crop",
-            "Crucifixo no Cabo": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop",
-            "Crucifixo com Halteres": "https://images.unsplash.com/photo-1599058917212-d217cde476a6?w=600&h=400&fit=crop",
-            "Supino Smith": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop",
-            "Flexão": "https://images.unsplash.com/photo-1518611505868-48510c8d5b63?w=600&h=400&fit=crop",
-            "Supino Máquina": "https://images.unsplash.com/photo-1519750157634-b6d11b5aea11?w=600&h=400&fit=crop",
+        // BANCO DE EXERCÍCIOS
+        const exercises = [
+            {id:1, name:"Supino Reto", bodyPart:"chest", equipment:"barbell", targetMuscles:["Pectorais"]},
+            {id:2, name:"Supino Inclinado", bodyPart:"chest", equipment:"barbell", targetMuscles:["Pectorais"]},
+            {id:3, name:"Crucifixo Polia", bodyPart:"chest", equipment:"cable", targetMuscles:["Pectorais"]},
+            {id:4, name:"Flexão", bodyPart:"chest", equipment:"bodyweight", targetMuscles:["Pectorais"]},
+            {id:5, name:"Supino Máquina", bodyPart:"chest", equipment:"machine", targetMuscles:["Pectorais"]},
             
-            "Puxada Frontal": "https://images.unsplash.com/photo-1574889616326-4c9be6fb468c?w=600&h=400&fit=crop",
-            "Puxada Atrás": "https://images.unsplash.com/photo-1565550694332-5f7f5e2acbea?w=600&h=400&fit=crop",
-            "Remada com Barra": "https://images.unsplash.com/photo-1534368541640-641405b62cc6?w=600&h=400&fit=crop",
-            "Remada Unilateral": "https://images.unsplash.com/photo-1508217539206-fd8641e28e77?w=600&h=400&fit=crop",
-            "Remada Máquina": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
-            "Pullover": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
-            "Barra Fixa": "https://images.unsplash.com/photo-1521571407223-6864e0c9cfb0?w=600&h=400&fit=crop",
-            "Remada Invertida": "https://images.unsplash.com/photo-1516594798853-ad19643c953a?w=600&h=400&fit=crop",
-            "Rosca Inversa": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop",
-            
-            "Rosca Direta": "https://images.unsplash.com/photo-1549719386-74dfaed0fcca?w=600&h=400&fit=crop",
-            "Rosca Martelo": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
-            "Rosca Inversa": "https://images.unsplash.com/photo-1541534528006-cecffead6c1b?w=600&h=400&fit=crop",
-            "Rosca Alternada": "https://images.unsplash.com/photo-1574889616326-4c9be6fb468c?w=600&h=400&fit=crop",
-            "Rosca Scott": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop",
-            "Rosca Máquina": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
-            "Rosca Inclinada": "https://images.unsplash.com/photo-1580601204160-fc6ee1ddeb04?w=600&h=400&fit=crop",
-            "Rosca Concentrada": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
-            
-            "Tríceps Corda": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop",
-            "Extensão Tríceps Haltere": "https://images.unsplash.com/photo-1599058917212-d217cde476a6?w=600&h=400&fit=crop",
-            "Mergulho no Banco": "https://images.unsplash.com/photo-1518611505868-48510c8d5b63?w=600&h=400&fit=crop",
-            "Tríceps Máquina": "https://images.unsplash.com/photo-1519750157634-b6d11b5aea11?w=600&h=400&fit=crop",
-            "Extensão Overhead": "https://images.unsplash.com/photo-1534368541640-641405b62cc6?w=600&h=400&fit=crop",
-            "Tríceps Polia": "https://images.unsplash.com/photo-1508217539206-fd8641e28e77?w=600&h=400&fit=crop",
-            "Flexão Declinada": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
-            
-            "Desenvolvimento": "https://images.unsplash.com/photo-1549719386-74dfaed0fcca?w=600&h=400&fit=crop",
-            "Elevação Lateral": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
-            "Elevação Frontal": "https://images.unsplash.com/photo-1541534528006-cecffead6c1b?w=600&h=400&fit=crop",
-            "Shrug": "https://images.unsplash.com/photo-1574889616326-4c9be6fb468c?w=600&h=400&fit=crop",
-            "Desenvolvimento Arnold": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop",
-            "Elevação Lateral Máquina": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
-            "Ombro Máquina": "https://images.unsplash.com/photo-1580601204160-fc6ee1ddeb04?w=600&h=400&fit=crop",
-            
-            "Agachamento": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
-            "Leg Press": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop",
-            "Extensora": "https://images.unsplash.com/photo-1599058917212-d217cde476a6?w=600&h=400&fit=crop",
-            "Cadeira Adutora": "https://images.unsplash.com/photo-1518611505868-48510c8d5b63?w=600&h=400&fit=crop",
-            "Rosca de Perna": "https://images.unsplash.com/photo-1519750157634-b6d11b5aea11?w=600&h=400&fit=crop",
-            "Abdutor": "https://images.unsplash.com/photo-1534368541640-641405b62cc6?w=600&h=400&fit=crop",
-            "Leg Curl": "https://images.unsplash.com/photo-1508217539206-fd8641e28e77?w=600&h=400&fit=crop",
-            "Prensa de Perna": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
-            
-            "Aquecimento": "https://images.unsplash.com/photo-1549719386-74dfaed0fcca?w=600&h=400&fit=crop",
-            "HIIT": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
-            "Corrida": "https://images.unsplash.com/photo-1541534528006-cecffead6c1b?w=600&h=400&fit=crop",
-            "Bicicleta Estacionária": "https://images.unsplash.com/photo-1574889616326-4c9be6fb468c?w=600&h=400&fit=crop",
-            "Esteira": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop",
-            "Elíptico": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
-            "Pular Corda": "https://images.unsplash.com/photo-1580601204160-fc6ee1ddeb04?w=600&h=400&fit=crop",
-            
-            "Prancha": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
-            "Abdominal Dinâmico": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop",
-            "Mountain Climbers": "https://images.unsplash.com/photo-1599058917212-d217cde476a6?w=600&h=400&fit=crop",
-            "Abdominal Máquina": "https://images.unsplash.com/photo-1518611505868-48510c8d5b63?w=600&h=400&fit=crop",
-            "Levantamento de Perna": "https://images.unsplash.com/photo-1519750157634-b6d11b5aea11?w=600&h=400&fit=crop",
-            "Abdominal Reto": "https://images.unsplash.com/photo-1534368541640-641405b62cc6?w=600&h=400&fit=crop",
-            "Prancha Lateral": "https://images.unsplash.com/photo-1508217539206-fd8641e28e77?w=600&h=400&fit=crop",
-            "Crunch": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop"
-        };
+            {id:6, name:"Puxada Frontal", bodyPart:"back", equipment:"cable", targetMuscles:["Costas"]},
+            {id:7, name:"Remada Barra", bodyPart:"back", equipment:"barbell", targetMuscles:["Costas"]},
+            {id:8, name:"Remada Unilateral", bodyPart:"back", equipment:"dumbbell", targetMuscles:["Costas"]},
+            {id:9, name:"Barra Fixa", bodyPart:"back", equipment:"bodyweight", targetMuscles:["Costas"]},
+            {id:10, name:"Remada Máquina", bodyPart:"back", equipment:"machine", targetMuscles:["Costas"]},
 
+            {id:11, name:"Rosca Direta", bodyPart:"biceps", equipment:"barbell", targetMuscles:["Bíceps"]},
+            {id:12, name:"Rosca Martelo", bodyPart:"biceps", equipment:"dumbbell", targetMuscles:["Bíceps"]},
+            {id:13, name:"Rosca Inversa", bodyPart:"biceps", equipment:"barbell", targetMuscles:["Antebraço"]},
+            {id:14, name:"Rosca Scott", bodyPart:"biceps", equipment:"barbell", targetMuscles:["Bíceps"]},
+            {id:15, name:"Rosca Máquina", bodyPart:"biceps", equipment:"machine", targetMuscles:["Bíceps"]},
+
+            {id:16, name:"Tríceps Corda", bodyPart:"triceps", equipment:"cable", targetMuscles:["Tríceps"]},
+            {id:17, name:"Extensão Tríceps", bodyPart:"triceps", equipment:"dumbbell", targetMuscles:["Tríceps"]},
+            {id:18, name:"Mergulho Banco", bodyPart:"triceps", equipment:"bodyweight", targetMuscles:["Tríceps"]},
+            {id:19, name:"Tríceps Máquina", bodyPart:"triceps", equipment:"machine", targetMuscles:["Tríceps"]},
+            {id:20, name:"Flexão Declinada", bodyPart:"triceps", equipment:"bodyweight", targetMuscles:["Tríceps"]},
+
+            {id:21, name:"Desenvolvimento", bodyPart:"shoulders", equipment:"dumbbell", targetMuscles:["Ombros"]},
+            {id:22, name:"Elevação Lateral", bodyPart:"shoulders", equipment:"dumbbell", targetMuscles:["Deltóides"]},
+            {id:23, name:"Elevação Frontal", bodyPart:"shoulders", equipment:"dumbbell", targetMuscles:["Deltóides"]},
+            {id:24, name:"Shrug", bodyPart:"shoulders", equipment:"dumbbell", targetMuscles:["Trapézio"]},
+            {id:25, name:"Ombro Máquina", bodyPart:"shoulders", equipment:"machine", targetMuscles:["Ombros"]},
+
+            {id:26, name:"Agachamento", bodyPart:"legs", equipment:"barbell", targetMuscles:["Quadríceps"]},
+            {id:27, name:"Leg Press", bodyPart:"legs", equipment:"machine", targetMuscles:["Quadríceps"]},
+            {id:28, name:"Extensora", bodyPart:"legs", equipment:"machine", targetMuscles:["Quadríceps"]},
+            {id:29, name:"Rosca Perna", bodyPart:"legs", equipment:"machine", targetMuscles:["Posterior"]},
+            {id:30, name:"Cadeira Adutora", bodyPart:"legs", equipment:"machine", targetMuscles:["Adutores"]},
+
+            {id:31, name:"Prancha", bodyPart:"core", equipment:"bodyweight", targetMuscles:["Core"]},
+            {id:32, name:"Abdominal", bodyPart:"core", equipment:"bodyweight", targetMuscles:["Abdômen"]},
+            {id:33, name:"Crunch", bodyPart:"core", equipment:"bodyweight", targetMuscles:["Abdômen"]},
+            {id:34, name:"Mountain Climbers", bodyPart:"core", equipment:"bodyweight", targetMuscles:["Core"]},
+            {id:35, name:"Levantamento Perna", bodyPart:"core", equipment:"bodyweight", targetMuscles:["Abdômen"]},
+        ];
+
+        let currentProfile = null;
+        let profiles = [];
+        let profileData = {};
+        let selectedExercises = [];
         let workoutStartTime = null;
         let timerInterval = null;
-        let restTimerInterval = null;
-        let isWorkoutActive = false;
-        let modalCloseTimer = null;
-        let currentAddingDayIdx = null;
-        let currentAddingExIdx = null;
-        let currentProfile = null;
-        let selectedCategory = 'todas';
-        let editingExerciseId = null;
 
-        let profiles = [];
-        let workouts = {};
-        let checkedExercises = {};
-        let workoutHistory = {};
-        let customExercises = {};
-
-        const exerciseCategories = {
-            'Peito': ['Supino Reto', 'Supino Inclinado', 'Supino Declinado', 'Crucifixo no Cabo', 'Crucifixo com Halteres', 'Supino Smith', 'Flexão', 'Supino Máquina'],
-            'Costas': ['Puxada Frontal', 'Puxada Atrás', 'Remada com Barra', 'Remada Unilateral', 'Remada Máquina', 'Pullover', 'Barra Fixa', 'Remada Invertida', 'Rosca Inversa'],
-            'Bíceps': ['Rosca Direta', 'Rosca Martelo', 'Rosca Inversa', 'Rosca Alternada', 'Rosca Scott', 'Rosca Máquina', 'Rosca Inclinada', 'Rosca Concentrada'],
-            'Tríceps': ['Tríceps Corda', 'Extensão Tríceps Haltere', 'Mergulho no Banco', 'Tríceps Máquina', 'Extensão Overhead', 'Tríceps Polia', 'Flexão Declinada'],
-            'Ombro': ['Desenvolvimento', 'Elevação Lateral', 'Elevação Frontal', 'Shrug', 'Desenvolvimento Arnold', 'Elevação Lateral Máquina', 'Ombro Máquina'],
-            'Perna': ['Agachamento', 'Leg Press', 'Extensora', 'Cadeira Adutora', 'Rosca de Perna', 'Abdutor', 'Leg Curl', 'Prensa de Perna'],
-            'Cardio': ['Aquecimento', 'HIIT', 'Corrida', 'Bicicleta Estacionária', 'Esteira', 'Elíptico', 'Pular Corda'],
-            'Core': ['Prancha', 'Abdominal Dinâmico', 'Mountain Climbers', 'Abdominal Máquina', 'Levantamento de Perna', 'Abdominal Reto', 'Prancha Lateral', 'Crunch']
-        };
-
-        const exerciseBank = [
-            { name: "Supino Reto", category: "Peito", desc: "Deite-se no banco com pés apoiados. Pegue a barra acima da largura dos ombros. Abaixe até o peito. Suba explosivamente.", steps: "1. Sente firme\n2. Pegue barra acima largura\n3. Levante acima peito\n4. Abaixe até peito\n5. Pause 1s\n6. Empurre explosivo\n7. Repita", tips: "✓ Cotovelos 45°\n✓ Respire corretamente\n✓ Controle sempre", avoid: "✗ Não dar quique\n✗ Não abrir demais\n✗ Não trancar", video: "https://www.youtube.com/results?search_query=supino+reto" },
-            { name: "Supino Inclinado", category: "Peito", desc: "Banco inclinado 45°. Pegue a barra acima da largura. Abaixe até peito superior. Suba explosivamente.", steps: "1. Ajuste banco 45°\n2. Sente firme\n3. Pegue barra acima\n4. Abaixe controlado\n5. Até peito superior\n6. Pause 1s\n7. Suba explosivo", tips: "✓ Peito superior\n✓ Cotovelos 45°\n✓ Controlado", avoid: "✗ Não deixar cair\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=supino+inclinado" },
-            { name: "Supino Declinado", category: "Peito", desc: "Banco declinado a -45°. Pegue a barra. Abaixe até peito inferior. Suba explosivamente.", steps: "1. Ajuste declínio\n2. Sente firme\n3. Pegue barra\n4. Abaixe controlado\n5. Até peito inferior\n6. Pause 1s\n7. Suba explosivo", tips: "✓ Peito inferior\n✓ Controle\n✓ Movimento completo", avoid: "✗ Sem impulso\n✗ Não abrir demais", video: "https://www.youtube.com/results?search_query=supino+declinado" },
-            { name: "Crucifixo no Cabo", category: "Peito", desc: "Em pé no centro. Pegue as alças com braços abertos. Puxe em movimento de abraço.", steps: "1. Posicione centro\n2. Pegue alças\n3. Cotovelos flex\n4. Puxe abraço\n5. Aproxime frente\n6. Pause 1s\n7. Retorne", tips: "✓ Controle\n✓ Contração máxima\n✓ Movimento fluido", avoid: "✗ Sem impulso\n✗ Sem deixar cair", video: "https://www.youtube.com/results?search_query=crucifixo+cabo+peito" },
-            { name: "Crucifixo com Halteres", category: "Peito", desc: "Deitado no banco. Halteres ao lado do peito. Levante em movimento de abraço. Abaixe.", steps: "1. Deite-se banco\n2. Halteres ao peito\n3. Cotovelos flex\n4. Levante halteres\n5. Junte acima\n6. Pause 1s\n7. Abaixe", tips: "✓ Alongamento total\n✓ Controle descida\n✓ Amplitude grande", avoid: "✗ Sem impulso\n✗ Sem deixar cair", video: "https://www.youtube.com/results?search_query=crucifixo+halteres+peito" },
-            { name: "Supino Smith", category: "Peito", desc: "Máquina Smith. Sente no banco. Pegue a barra. Abaixe até peito. Suba.", steps: "1. Sente máquina\n2. Pegue barra\n3. Abaixe controlado\n4. Até peito\n5. Pause 1s\n6. Suba explosivo\n7. Repita", tips: "✓ Estável\n✓ Bom para iniciante\n✓ Seguro", avoid: "✗ Não deixar cair\n✗ Controle", video: "https://www.youtube.com/results?search_query=supino+smith+peito" },
-            { name: "Flexão", category: "Peito", desc: "Posição de flexão. Mãos abaixo ombros. Abaixe até peito tocar chão. Suba.", steps: "1. Posição flexão\n2. Mãos ombros\n3. Corpo reto\n4. Abaixe lento\n5. Peito chão\n6. Suba explosivo\n7. Repita", tips: "✓ Corpo reto\n✓ Cotovelos 45°\n✓ Amplitude completa", avoid: "✗ Quadril não cai\n✗ Sem cair rápido", video: "https://www.youtube.com/results?search_query=flexao+push+up" },
-            { name: "Supino Máquina", category: "Peito", desc: "Máquina de supino. Sente apoiado. Pegue as alças. Empurre para frente. Retorne.", steps: "1. Sente máquina\n2. Pegue alças\n3. Peito para frente\n4. Empurre alças\n5. Estenda braços\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro e estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem trancar\n✗ Controle", video: "https://www.youtube.com/results?search_query=supino+maquina+peito" },
-            
-            { name: "Puxada Frontal", category: "Costas", desc: "Sente com coxas fixadas. Pegue a barra acima dos ombros. Puxe até o peito.", steps: "1. Sente máquina\n2. Pegue barra acima\n3. Coxas fixadas\n4. Puxe ao peito\n5. Cotovelos baixo\n6. Pause 1s\n7. Retorne", tips: "✓ Sinta costas\n✓ Controle volta\n✓ Peito", avoid: "✗ Não jogar corpo\n✗ Sem cair rápido", video: "https://www.youtube.com/results?search_query=puxada+frontal+lat" },
-            { name: "Puxada Atrás", category: "Costas", desc: "Sente máquina. Puxe a barra atrás da cabeça. Desça controlado.", steps: "1. Sente máquina\n2. Pegue barra\n3. Atrás cabeça\n4. Puxe controlado\n5. Até nuca\n6. Pause 1s\n7. Retorne", tips: "✓ Costas superior\n✓ Amplitude grande\n✓ Controlado", avoid: "✗ Sem puxar força\n✗ Cuidado nuca", video: "https://www.youtube.com/results?search_query=puxada+atras+lat" },
-            { name: "Remada com Barra", category: "Costas", desc: "Incline-se 30-45°. Joelhos flexionados. Pegue a barra. Puxe ao abdômen.", steps: "1. Pé barra\n2. Joelhos flex\n3. Costas retas\n4. Pegue barra\n5. Puxe abdômen\n6. Cotovelos perto\n7. Pause 1s", tips: "✓ Costas RETAS\n✓ Não deixar cair\n✓ Cotovelos perto", avoid: "✗ Sem arredondar\n✗ Sem balançar", video: "https://www.youtube.com/results?search_query=remada+barra+bent+over" },
-            { name: "Remada Unilateral", category: "Costas", desc: "Apoiado no banco. Haltere em uma mão. Puxe ao peito. Abaixe.", steps: "1. Banco apoio\n2. Haltere mão\n3. Puxe ao peito\n4. Cotovelo perto\n5. Levante alto\n6. Pause 1s\n7. Abaixe", tips: "✓ Amplitude grande\n✓ Controle\n✓ Unilateral benefício", avoid: "✗ Sem rodar corpo\n✗ Controle", video: "https://www.youtube.com/results?search_query=remada+unilateral+haltere" },
-            { name: "Remada Máquina", category: "Costas", desc: "Máquina remada. Sente apoiado. Pegue as alças. Puxe ao corpo. Retorne.", steps: "1. Sente máquina\n2. Pegue alças\n3. Peito apoio\n4. Puxe corpo\n5. Cotovelos atrás\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Técnica fácil", avoid: "✗ Sem arredondar\n✗ Controle", video: "https://www.youtube.com/results?search_query=remada+maquina+costas" },
-            { name: "Pullover", category: "Costas", desc: "Sente em banco. Pegue barra acima. Puxe sobre peito em arco. Traz cintura.", steps: "1. Sente banco\n2. Pegue barra\n3. Braços semi-ext\n4. Puxe sobre\n5. Traz cintura\n6. Alongamento\n7. Retorne", tips: "✓ Costas e peito\n✓ Alongamento\n✓ Movimento lento", avoid: "✗ Sem impulso\n✗ Sem usar perna", video: "https://www.youtube.com/results?search_query=pullover+costas" },
-            { name: "Barra Fixa", category: "Costas", desc: "Pendurado na barra. Suba puxando até queixo acima. Desça controlado.", steps: "1. Pegue barra\n2. Braços estend\n3. Palmas frente\n4. Puxe suba\n5. Queixo acima\n6. Pause 1s\n7. Abaixe", tips: "✓ Amplitude completa\n✓ Controle descida\n✓ Sinta costas", avoid: "✗ Sem balançar\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=barra+fixa+pullup" },
-            { name: "Remada Invertida", category: "Costas", desc: "Pendurado barra baixa. Corpo quase reto. Suba puxando ao peito. Abaixe.", steps: "1. Pegue barra\n2. Corpo quase reto\n3. Puxe ao peito\n4. Levante corpo\n5. Pausa 1s\n6. Abaixe controlado\n7. Repita", tips: "✓ Movimento completo\n✓ Controle importante\n✓ Excelente exercício", avoid: "✗ Sem deixar cair\n✗ Controle", video: "https://www.youtube.com/results?search_query=remada+invertida+barra" },
-            { name: "Rosca Inversa", category: "Costas", desc: "De pé com barra. Palmas para baixo. Levante até ombros. Abaixe.", steps: "1. De pé barra\n2. Palmas baixo\n3. Cotovelos fixos\n4. Flexione cotovelo\n5. Levante ombro\n6. Pause 1s\n7. Abaixe", tips: "✓ Antebraço\n✓ Sem balanço\n✓ Controlado", avoid: "✗ Sem impulso\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+inversa+barra" },
-            
-            { name: "Rosca Direta", category: "Bíceps", desc: "De pé. Pegue a barra com palmas para frente. Cotovelos fixos. Levante.", steps: "1. De pé firme\n2. Palmas frente\n3. Cotovelos fixos\n4. Flexione cotovelo\n5. Suba antebraço\n6. Levante ombro\n7. Pause 1s", tips: "✓ Sem balanço\n✓ Apenas braços\n✓ Movimento puro", avoid: "✗ Sem impulso\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+direta+biceps" },
-            { name: "Rosca Martelo", category: "Bíceps", desc: "De pé com halteres. Palmas viradas. Flexione cotovelos. Levante até ombros.", steps: "1. De pé firme\n2. Halteres mão\n3. Palmas interior\n4. Cotovelos fixos\n5. Flexione cotovelo\n6. Levante ombro\n7. Pause 1s", tips: "✓ Bíceps e braquial\n✓ Palmas interior\n✓ Controlado", avoid: "✗ Sem balanço\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=rosca+martelo+biceps" },
-            { name: "Rosca Inversa", category: "Bíceps", desc: "De pé com barra. Palmas para baixo. Levante até ombros.", steps: "1. De pé barra\n2. Palmas baixo\n3. Cotovelos fixos\n4. Flexione cotovelo\n5. Levante ombro\n6. Pause 1s\n7. Abaixe", tips: "✓ Antebraço\n✓ Sem balanço\n✓ Controlado", avoid: "✗ Sem impulso\n✗ Fixo", video: "https://www.youtube.com/results?search_query=rosca+inversa" },
-            { name: "Rosca Alternada", category: "Bíceps", desc: "De pé com halteres. Alterne braços. Levante até ombro. Abaixe.", steps: "1. De pé halteres\n2. Palmas frente\n3. Braço esquerdo\n4. Levante ombro\n5. Abaixe controlado\n6. Braço direito\n7. Alterne", tips: "✓ Amplitude máxima\n✓ Densidade muscular\n✓ Alternância", avoid: "✗ Sem balanço\n✗ Movimento puro", video: "https://www.youtube.com/results?search_query=rosca+alternada+halteres" },
-            { name: "Rosca Scott", category: "Bíceps", desc: "Banco Scott. Pegue barra. Abaixe até quase estender. Levante até peito.", steps: "1. Sente Scott\n2. Pegue barra\n3. Braços apoio\n4. Abaixe quase estend\n5. Levante peito\n6. Pause 1s\n7. Abaixe", tips: "✓ Isolamento total\n✓ Sem trapéio\n✓ Pico contração", avoid: "✗ Sem estender demais\n✗ Controle", video: "https://www.youtube.com/results?search_query=rosca+scott+banco" },
-            { name: "Rosca Máquina", category: "Bíceps", desc: "Máquina rosca. Sente apoiado. Pegue alças. Levante. Abaixe.", steps: "1. Sente máquina\n2. Pegue alças\n3. Braços apoio\n4. Levante alças\n5. Cotovelos flex\n6. Pause 1s\n7. Abaixe", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem balanço\n✗ Controle", video: "https://www.youtube.com/results?search_query=rosca+maquina+biceps" },
-            { name: "Rosca Inclinada", category: "Bíceps", desc: "Banco inclinado. Halteres ao lado. Levante até ombro. Abaixe.", steps: "1. Sente inclinado\n2. Halteres lado\n3. Cotovelos atrás\n4. Levante ombro\n5. Amplitude máxima\n6. Pause 1s\n7. Abaixe", tips: "✓ Alongamento total\n✓ Amplitude grande\n✓ Isolamento", avoid: "✗ Sem balanço\n✗ Controle", video: "https://www.youtube.com/results?search_query=rosca+inclinada+halteres" },
-            { name: "Rosca Concentrada", category: "Bíceps", desc: "Sente. Cotovelo apoiado coxa. Levante haltere ao ombro. Abaixe.", steps: "1. Sente banco\n2. Cotovelo coxa\n3. Haltere mão\n4. Levante ombro\n5. Máxima contração\n6. Pause 1s\n7. Abaixe", tips: "✓ Pico máximo\n✓ Sem ajuda\n✓ Isolamento total", avoid: "✗ Sem balanço\n✗ Controle total", video: "https://www.youtube.com/results?search_query=rosca+concentrada" },
-            
-            { name: "Tríceps Corda", category: "Tríceps", desc: "Pegue a corda na altura da cabeça. Cotovelos fixos. Puxe para baixo.", steps: "1. Pegue corda\n2. Altura cabeça\n3. Cotovelos fixos\n4. Puxe baixo\n5. Separe pontas\n6. Pause 1s\n7. Retorne", tips: "✓ Apenas antebraços\n✓ Controle volta\n✓ Sinta tríceps", avoid: "✗ Não balançar\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=triceps+corda" },
-            { name: "Extensão Tríceps Haltere", category: "Tríceps", desc: "De pé ou sentado. Segure haltere acima. Abaixe dobrando cotovelos. Suba.", steps: "1. De pé/sente\n2. Haltere acima\n3. Cotovelos flex\n4. Abaixe cotovelo\n5. Traga nuca\n6. Pause 1s\n7. Suba", tips: "✓ Ombros fixos\n✓ Movimento controlado\n✓ Sinta tríceps", avoid: "✗ Não balançar\n✗ Ombros fixos", video: "https://www.youtube.com/results?search_query=extensao+triceps+haltere" },
-            { name: "Mergulho no Banco", category: "Tríceps", desc: "Mãos em banco atrás. Pés no chão. Abaixe corpo. Suba.", steps: "1. Mãos banco\n2. Pés chão\n3. Corpo frente\n4. Abaixe corpo\n5. 90 graus\n6. Suba explosivo\n7. Repita", tips: "✓ Peso corporal\n✓ Amplitude grande\n✓ Tríceps total", avoid: "✗ Sem deixar cair\n✗ Lento descida", video: "https://www.youtube.com/results?search_query=mergulho+banco+triceps" },
-            { name: "Tríceps Máquina", category: "Tríceps", desc: "Máquina tríceps. Sente apoiado. Pegue alças. Empurre. Retorne.", steps: "1. Sente máquina\n2. Pegue alças\n3. Cotovelos flex\n4. Empurre alças\n5. Estenda braços\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem trancar\n✗ Controle", video: "https://www.youtube.com/results?search_query=triceps+maquina" },
-            { name: "Extensão Overhead", category: "Tríceps", desc: "De pé com barra. Pegue acima. Abaixe atrás cabeça. Suba.", steps: "1. De pé barra\n2. Pegue acima\n3. Braços estend\n4. Abaixe atrás\n5. Até nuca\n6. Pause 1s\n7. Suba", tips: "✓ Alongamento\n✓ Amplitude grande\n✓ Longo tríceps", avoid: "✗ Sem deixar cair\n✗ Nuca cuidado", video: "https://www.youtube.com/results?search_query=extensao+overhead+triceps" },
-            { name: "Tríceps Polia", category: "Tríceps", desc: "Pegue polia corda. Cotovelos fixos. Puxe para baixo. Retorne.", steps: "1. Pegue polia\n2. Corda altura\n3. Cotovelos fixos\n4. Puxe baixo\n5. Extensão total\n6. Pause 1s\n7. Retorne", tips: "✓ Apenas antebraços\n✓ Controle volta\n✓ Contração máxima", avoid: "✗ Não balançar\n✗ Cotovelos fixos", video: "https://www.youtube.com/results?search_query=triceps+polia" },
-            { name: "Flexão Declinada", category: "Tríceps", desc: "Pés em banco. Mãos chão. Abaixe peito. Suba.", steps: "1. Pés banco\n2. Mãos chão\n3. Corpo reto\n4. Abaixe peito\n5. Até chão\n6. Suba explosivo\n7. Repita", tips: "✓ Tríceps intenso\n✓ Peso corporal\n✓ Muito difícil", avoid: "✗ Sem deixar cair\n✗ Controle", video: "https://www.youtube.com/results?search_query=flexao+declinada+triceps" },
-            
-            { name: "Desenvolvimento", category: "Ombro", desc: "Sente ou de pé. Halteres altura ombros. Suba acima da cabeça.", steps: "1. Sente/de pé\n2. Halteres ombro\n3. Palmas frente\n4. Suba halteres\n5. Estenda total\n6. Pause 1s\n7. Abaixe", tips: "✓ Suba explosivo\n✓ Abaixe controlado\n✓ Sinta ombro", avoid: "✗ Sem arcar costas\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=desenvolvimento+ombro" },
-            { name: "Elevação Lateral", category: "Ombro", desc: "De pé com halteres. Levante lateralmente até ombros.", steps: "1. De pé halteres\n2. Cotovelos flex\n3. Levante lados\n4. Até ombros\n5. Pause 1s\n6. Abaixe lento\n7. Repita", tips: "✓ Lento controlado\n✓ Sinta alongamento\n✓ Peso moderado", avoid: "✗ Sem jogar\n✗ Sem deixar cair", video: "https://www.youtube.com/results?search_query=elevacao+lateral+ombro" },
-            { name: "Elevação Frontal", category: "Ombro", desc: "De pé com halteres. Levante para frente até altura ombros.", steps: "1. De pé halteres\n2. Cotovelos flex\n3. Levante frente\n4. Altura ombro\n5. Pause 1s\n6. Abaixe lento\n7. Repita", tips: "✓ Ombro frontal\n✓ Movimento lento\n✓ Controlado", avoid: "✗ Sem impulso\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=elevacao+frontal+ombro" },
-            { name: "Shrug", category: "Ombro", desc: "De pé com halteres. Encolha ombros até orelhas. Abaixe.", steps: "1. De pé halteres\n2. Braços estend\n3. Encolha ombro\n4. Levante orelha\n5. Pause 1s\n6. Abaixe controlado\n7. Repita", tips: "✓ Trabalha trapézio\n✓ Movimento vertical\n✓ Peso moderado", avoid: "✗ Sem impulso\n✗ Peso moderado", video: "https://www.youtube.com/results?search_query=shrug+ombro" },
-            { name: "Desenvolvimento Arnold", category: "Ombro", desc: "Halteres ao ombro com palmas viradas. Levante girando para frente.", steps: "1. Halteres ombro\n2. Palmas interior\n3. Levante girando\n4. Palmas frente\n5. Topo cabeça\n6. Pause 1s\n7. Retorne", tips: "✓ Amplitude máxima\n✓ Todos ombro\n✓ Girando movimento", avoid: "✗ Sem arcar costas\n✗ Controle", video: "https://www.youtube.com/results?search_query=desenvolvimento+arnold+ombro" },
-            { name: "Elevação Lateral Máquina", category: "Ombro", desc: "Máquina elevação lateral. Sente apoiado. Levante laterais. Abaixe.", steps: "1. Sente máquina\n2. Pegue alças\n3. Braços lado\n4. Levante alças\n5. Altura ombro\n6. Pause 1s\n7. Abaixe", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem jogar\n✗ Controle", video: "https://www.youtube.com/results?search_query=elevacao+lateral+maquina" },
-            { name: "Ombro Máquina", category: "Ombro", desc: "Máquina ombro. Sente apoiado. Pegue alças. Empurre acima. Retorne.", steps: "1. Sente máquina\n2. Pegue alças\n3. Altura ombro\n4. Empurre acima\n5. Estenda braços\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem trancar\n✗ Controle", video: "https://www.youtube.com/results?search_query=ombro+maquina" },
-            
-            { name: "Agachamento", category: "Perna", desc: "Barra ombros. Pés largura ombros. Abaixe até 90°. Suba explosivamente.", steps: "1. Barra ombro\n2. Pés largura\n3. Peito frente\n4. Abaixe dobra\n5. 90 graus\n6. Suba explosivo\n7. Quase estend", tips: "✓ Joelhos alin\n✓ Olhe frente\n✓ Suba força", avoid: "✗ Joelhos não cai\n✗ Costas retas", video: "https://www.youtube.com/results?search_query=agachamento+squat" },
-            { name: "Leg Press", category: "Perna", desc: "Sente máquina. Pés plataforma. Abaixe flexionando. Suba.", steps: "1. Sente máquina\n2. Pés plataforma\n3. Largura ombro\n4. Abaixe dobra\n5. 90 graus\n6. Pause 1s\n7. Suba empurra", tips: "✓ Empurre calcanhar\n✓ Controlado\n✓ Sinta pernas", avoid: "✗ Joelhos não cai\n✗ Sem descer demais", video: "https://www.youtube.com/results?search_query=leg+press+perna" },
-            { name: "Extensora", category: "Perna", desc: "Sente máquina. Estenda completamente. Levante rolete.", steps: "1. Sente apoiado\n2. Pés rolete\n3. Estenda total\n4. Levante rolete\n5. Pause 1-2s\n6. Abaixe controlado\n7. Não toque chão", tips: "✓ Foco quadríceps\n✓ Pausa importante\n✓ Lento controlado", avoid: "✗ Sem impulso\n✗ Sem bater", video: "https://www.youtube.com/results?search_query=extensora+perna" },
-            { name: "Cadeira Adutora", category: "Perna", desc: "Sente máquina. Pernas abertas. Aperte juntando. Abra.", steps: "1. Sente máquina\n2. Pernas abertas\n3. Aperte perna\n4. Junte total\n5. Pause 1s\n6. Abra controlado\n7. Volte posição", tips: "✓ Perna interna\n✓ Movimento controlado\n✓ Foco contração", avoid: "✗ Sem impulso\n✗ Sem abrir demais", video: "https://www.youtube.com/results?search_query=cadeira+adutora+perna" },
-            { name: "Rosca de Perna", category: "Perna", desc: "Deitado bruços. Pés rolete. Flexione levantando. Abaixe.", steps: "1. Deite bruços\n2. Pés rolete\n3. Flexione joelho\n4. Levante rolete\n5. 90 graus\n6. Pause 1s\n7. Abaixe controlado", tips: "✓ Posterior coxa\n✓ Pausa importante\n✓ Lento controlado", avoid: "✗ Sem impulso\n✗ Sem levantar quadril", video: "https://www.youtube.com/results?search_query=rosca+perna+hamstring" },
-            { name: "Abdutor", category: "Perna", desc: "Máquina abdutor. Sente apoiado. Pernas abertas. Aperte. Abra.", steps: "1. Sente máquina\n2. Pegue alças\n3. Pernas abertas\n4. Aperte pernas\n5. Junte total\n6. Pause 1s\n7. Abra", tips: "✓ Glúteo médio\n✓ Movimento controlado\n✓ Foco contração", avoid: "✗ Sem impulso\n✗ Sem abrir demais", video: "https://www.youtube.com/results?search_query=abdutor+perna" },
-            { name: "Leg Curl", category: "Perna", desc: "De pé máquina. Pegue alça. Flexione levantando pé. Abaixe.", steps: "1. De pé máquina\n2. Pegue alça\n3. Pé rolete\n4. Flexione joelho\n5. Levante pé\n6. Pause 1s\n7. Abaixe", tips: "✓ Posterior coxa\n✓ Movimento controlado\n✓ Lento", avoid: "✗ Sem balançar\n✗ Corpo fixo", video: "https://www.youtube.com/results?search_query=leg+curl+perna" },
-            { name: "Prensa de Perna", category: "Perna", desc: "Máquina prensa. Sente. Pés plataforma. Empurre. Retorne.", steps: "1. Sente máquina\n2. Pés plataforma\n3. Cotovelo flex\n4. Empurre pés\n5. Estenda perna\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro estável\n✓ Fácil técnica\n✓ Bom isolamento", avoid: "✗ Sem trancar\n✗ Controle", video: "https://www.youtube.com/results?search_query=prensa+perna" },
-            
-            { name: "Aquecimento", category: "Cardio", desc: "Corrida, bicicleta ou corda em ritmo moderado.", steps: "1. Escolha exercício\n2. Ritmo moderado\n3. Prepare corpo\n4. Eleve frequência\n5. 5 minutos\n6. Sem ir forte\n7. Pronto HIIT", tips: "✓ Aqueça bem\n✓ Ritmo moderado\n✓ Prepare articulações", avoid: "✗ Sem pular forte\n✗ Sem sair intenso", video: "https://www.youtube.com/results?search_query=aquecimento+cardio" },
-            { name: "HIIT", category: "Cardio", desc: "30s máxima + 30s recuperação. Repita 20-30 min.", steps: "1. 30s MÁXIMO\n2. Dê tudo\n3. 30s recuperação\n4. Respire\n5. Alterne exercício\n6. Repita 20-30\n7. Termine exausto", tips: "✓ Intenso = gordura\n✓ Máximo esforço\n✓ Recuperação leve", avoid: "✗ Sem intensidade\n✗ Recuperação leve", video: "https://www.youtube.com/results?search_query=HIIT+treino" },
-            { name: "Corrida", category: "Cardio", desc: "Corrida em ritmo constante. Mantenha respiração. Varie intensidade.", steps: "1. Comece leve\n2. Aumente ritmo\n3. Máxima velocidade\n4. Mantenha tempo\n5. Respire bem\n6. Abaixe velocidade\n7. Recuperação", tips: "✓ Ritmo cardíaco\n✓ Respiração constante\n✓ Hidratação", avoid: "✗ Sem forçar muito\n✗ Alongamento pós", video: "https://www.youtube.com/results?search_query=corrida+cardio" },
-            { name: "Bicicleta Estacionária", category: "Cardio", desc: "Bicicleta ritmo. Aumente resistência. Mantenha cadência.", steps: "1. Sente bicicleta\n2. Pés pedal\n3. Comece leve\n4. Aumente velocidade\n5. Mantenha ritmo\n6. Varie resistência\n7. Recuperação", tips: "✓ Resistência variável\n✓ Ritmo constante\n✓ Fácil articulações", avoid: "✗ Sem forçar muito\n✗ Posição correta", video: "https://www.youtube.com/results?search_query=bicicleta+estacionaria" },
-            { name: "Esteira", category: "Cardio", desc: "Esteira ritmo constante. Incline se desejar. Mantenha velocidade.", steps: "1. Suba esteira\n2. Comece leve\n3. Aumente velocidade\n4. Mantenha ritmo\n5. Varie inclinação\n6. Abaixe velocidade\n7. Recuperação", tips: "✓ Impacto alto\n✓ Velocidade controlada\n✓ Inclinação", avoid: "✗ Sem forçar muito\n✗ Alongamento pós", video: "https://www.youtube.com/results?search_query=esteira+cardio" },
-            { name: "Elíptico", category: "Cardio", desc: "Elíptico ritmo. Aumente resistência. Mantenha ritmo.", steps: "1. Suba elíptico\n2. Pegue alças\n3. Comece leve\n4. Aumente resistência\n5. Mantenha ritmo\n6. Varie intensidade\n7. Recuperação", tips: "✓ Baixo impacto\n✓ Fácil articulações\n✓ Resistência", avoid: "✗ Sem forçar muito\n✗ Posição", video: "https://www.youtube.com/results?search_query=eliptico+cardio" },
-            { name: "Pular Corda", category: "Cardio", desc: "Pule corda ritmo. Salte constantemente. Varie velocidade.", steps: "1. Pegue corda\n2. Fique de pé\n3. Comece leve\n4. Pule constante\n5. Aumente velocidade\n6. Máximo ritmo\n7. Recuperação", tips: "✓ Pulmão cardio\n✓ Coordenação\n✓ Intenso", avoid: "✗ Sem forçar articulações\n✗ Alongamento pós", video: "https://www.youtube.com/results?search_query=pular+corda" },
-            
-            { name: "Prancha", category: "Core", desc: "Corpo reto. Cotovelos ombros. Contraia abdômen. Mantenha.", steps: "1. Deite bruços\n2. Cotovelos ombro\n3. Levante corpo\n4. Apoie pés\n5. Linha reta\n6. Contraia abdômen\n7. Mantenha respir", tips: "✓ Qualidade > qtde\n✓ Contraia CORE\n✓ Respiração", avoid: "✗ Sem deixar cair\n✗ Sem prender", video: "https://www.youtube.com/results?search_query=prancha+plank" },
-            { name: "Abdominal Dinâmico", category: "Core", desc: "Deitado costas. Joelhos flex. Levante tronco contração.", steps: "1. Deite costas\n2. Joelhos flex\n3. Pés apoiado\n4. Mãos cabeça\n5. Levante tronco\n6. Máxima contração\n7. Abaixe", tips: "✓ Contração máxima\n✓ Movimento lento\n✓ Foco abdômen", avoid: "✗ Sem puxar\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=abdominal+dinamico" },
-            { name: "Mountain Climbers", category: "Core", desc: "Flexão posição. Alterne joelhos peito rápido.", steps: "1. Flexão posição\n2. Corpo reto\n3. Joelho esquerdo\n4. Retorne rápido\n5. Joelho direito\n6. Mantenha ritmo\n7. 20-30 segundos", tips: "✓ Movimento rápido\n✓ Cardio + core\n✓ Máximo esforço", avoid: "✗ Sem quadril cair\n✗ Corpo reto", video: "https://www.youtube.com/results?search_query=mountain+climbers" },
-            { name: "Abdominal Máquina", category: "Core", desc: "Máquina abdominal. Sente apoiado. Puxe peito. Retorne.", steps: "1. Sente máquina\n2. Pegue alças\n3. Peito apoio\n4. Puxe peito\n5. Contraia abdômen\n6. Pause 1s\n7. Retorne", tips: "✓ Seguro estável\n✓ Bom isolamento\n✓ Fácil técnica", avoid: "✗ Sem arredondar\n✗ Controle", video: "https://www.youtube.com/results?search_query=abdominal+maquina" },
-            { name: "Levantamento de Perna", category: "Core", desc: "Paralela máquina. Levante perna ao peito. Abaixe.", steps: "1. Paralela máquina\n2. Pegue alças\n3. Perna relaxada\n4. Levante perna\n5. Ao peito\n6. Pause 1s\n7. Abaixe", tips: "✓ Baixo abdômen\n✓ Movimento controlado\n✓ Amplitude máxima", avoid: "✗ Sem balançar\n✗ Controle", video: "https://www.youtube.com/results?search_query=levantamento+perna" },
-            { name: "Abdominal Reto", category: "Core", desc: "Banco abdominal. Levante tronco suave. Abaixe.", steps: "1. Sente banco\n2. Pés apoiado\n3. Mãos cabeça\n4. Levante leve\n5. Máxima contração\n6. Pause 1s\n7. Abaixe", tips: "✓ Movimento curto\n✓ Contração foco\n✓ Lento controlado", avoid: "✗ Sem puxar\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=abdominal+reto" },
-            { name: "Prancha Lateral", category: "Core", desc: "De lado. Cotovelo ombro. Corpo reto. Mantenha.", steps: "1. De lado chão\n2. Cotovelo ombro\n3. Levante corpo\n4. Pé apoio\n5. Linha reta\n6. Contraia core\n7. Mantenha tempo", tips: "✓ Oblíquo foco\n✓ Corpo reto\n✓ Respiração", avoid: "✗ Sem deixar cair\n✗ Sem prender", video: "https://www.youtube.com/results?search_query=prancha+lateral" },
-            { name: "Crunch", category: "Core", desc: "Deitado costas. Levante cabeça ombro leve. Abaixe.", steps: "1. Deite costas\n2. Joelhos flex\n3. Mãos cabeça\n4. Levante leve\n5. Ombro do chão\n6. Pause 1s\n7. Abaixe", tips: "✓ Movimento curto\n✓ Contração máxima\n✓ Lento controlado", avoid: "✗ Sem puxar\n✗ Sem impulso", video: "https://www.youtube.com/results?search_query=crunch+abdominal" }
-        ];
-
-        const defaultWorkouts = [
-            {
-                day: "Segunda",
-                focus: "Peito & Tríceps",
-                exercises: [
-                    { ...exerciseBank.find(e => e.name === "Supino Reto"), sets: "4 x 6-8" },
-                    { ...exerciseBank.find(e => e.name === "Supino Inclinado"), sets: "3 x 8-10" },
-                    { ...exerciseBank.find(e => e.name === "Crucifixo no Cabo"), sets: "3 x 10-12" },
-                    { ...exerciseBank.find(e => e.name === "Tríceps Corda"), sets: "3 x 12-15" },
-                    { ...exerciseBank.find(e => e.name === "Extensão Tríceps Haltere"), sets: "3 x 10-12" }
-                ]
-            },
-            {
-                day: "Terça",
-                focus: "Costas & Bíceps",
-                exercises: [
-                    { ...exerciseBank.find(e => e.name === "Puxada Frontal"), sets: "4 x 6-8" },
-                    { ...exerciseBank.find(e => e.name === "Remada com Barra"), sets: "4 x 8-10" },
-                    { ...exerciseBank.find(e => e.name === "Rosca Direta"), sets: "3 x 8-10" },
-                    { ...exerciseBank.find(e => e.name === "Rosca Martelo"), sets: "3 x 10-12" },
-                    { ...exerciseBank.find(e => e.name === "Pullover"), sets: "3 x 8-10" }
-                ]
-            },
-            {
-                day: "Quarta",
-                focus: "Perna",
-                exercises: [
-                    { ...exerciseBank.find(e => e.name === "Agachamento"), sets: "4 x 6-8" },
-                    { ...exerciseBank.find(e => e.name === "Leg Press"), sets: "3 x 10-12" },
-                    { ...exerciseBank.find(e => e.name === "Extensora"), sets: "3 x 12-15" },
-                    { ...exerciseBank.find(e => e.name === "Cadeira Adutora"), sets: "3 x 12-15" },
-                    { ...exerciseBank.find(e => e.name === "Rosca de Perna"), sets: "3 x 12-15" }
-                ]
-            },
-            {
-                day: "Quinta",
-                focus: "Ombro & Braço",
-                exercises: [
-                    { ...exerciseBank.find(e => e.name === "Desenvolvimento"), sets: "4 x 8-10" },
-                    { ...exerciseBank.find(e => e.name === "Elevação Lateral"), sets: "3 x 12-15" },
-                    { ...exerciseBank.find(e => e.name === "Elevação Frontal"), sets: "3 x 12-15" },
-                    { ...exerciseBank.find(e => e.name === "Shrug"), sets: "3 x 10-12" },
-                    { ...exerciseBank.find(e => e.name === "Rosca Inversa"), sets: "3 x 8-10" }
-                ]
-            },
-            {
-                day: "Sexta",
-                focus: "Cardio HIIT + Core",
-                exercises: [
-                    { ...exerciseBank.find(e => e.name === "Aquecimento"), sets: "1 x 5 min" },
-                    { ...exerciseBank.find(e => e.name === "HIIT"), sets: "8 x (30s/30s)" },
-                    { ...exerciseBank.find(e => e.name === "Prancha"), sets: "3 x 30-60s" },
-                    { ...exerciseBank.find(e => e.name === "Abdominal Dinâmico"), sets: "3 x 15-20" },
-                    { ...exerciseBank.find(e => e.name === "Mountain Climbers"), sets: "3 x 20-30s" }
-                ]
+        function getProfileData() {
+            if (!profileData[currentProfile]) {
+                profileData[currentProfile] = { workouts: [], checkedExercises: {}, history: [] };
             }
-        ];
+            return profileData[currentProfile];
+        }
 
-        // ===== PROFILE MANAGEMENT =====
+        function saveData() {
+            if (currentProfile) {
+                localStorage.setItem(`prof_${currentProfile}`, JSON.stringify(profileData[currentProfile]));
+            }
+        }
+
         function loadData() {
-            const savedProfiles = localStorage.getItem('profiles');
-            const current = localStorage.getItem('currentProfile');
+            profiles = JSON.parse(localStorage.getItem('profiles') || '[]');
+            currentProfile = localStorage.getItem('currentProfile');
             
-            if (savedProfiles) {
-                profiles = JSON.parse(savedProfiles);
-            }
-            if (current) {
-                currentProfile = current;
-            }
+            profiles.forEach(p => {
+                const saved = localStorage.getItem(`prof_${p}`);
+                profileData[p] = saved ? JSON.parse(saved) : { workouts: [], checkedExercises: {}, history: [] };
+            });
             
             renderProfilesScreen();
         }
 
         function renderProfilesScreen() {
-            const container = document.getElementById('profilesList');
-            container.innerHTML = '';
-            
+            const cont = document.getElementById('profilesList');
+            cont.innerHTML = '';
             if (profiles.length === 0) {
                 document.getElementById('loginScreen').classList.add('show');
                 document.getElementById('appScreen').classList.remove('show');
                 return;
             }
-            
-            profiles.forEach(profile => {
+            profiles.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'profile-card';
-                card.innerHTML = `
-                    <div class="profile-name">👤 ${profile}</div>
-                    <div style="font-size: 12px; opacity: 0.8;">Clique para entrar</div>
-                `;
-                card.onclick = () => selectProfile(profile);
-                container.appendChild(card);
+                card.innerHTML = `<div class="profile-name">👤 ${p}</div><button class="btn-delete-profile" onclick="deleteProfile('${p}')">🗑️ Remover</button>`;
+                card.onclick = (e) => { if(e.target.className !== 'btn-delete-profile') selectProfile(p); };
+                cont.appendChild(card);
             });
         }
 
-        function selectProfile(profileName) {
-            currentProfile = profileName;
-            localStorage.setItem('currentProfile', profileName);
-            loadProfileData();
+        function deleteProfile(name) {
+            if (confirm(`Tem certeza que quer remover o perfil "${name}"?`)) {
+                profiles = profiles.filter(p => p !== name);
+                delete profileData[name];
+                localStorage.setItem('profiles', JSON.stringify(profiles));
+                localStorage.removeItem(`prof_${name}`);
+                renderProfilesScreen();
+            }
+        }
+
+        function selectProfile(name) {
+            currentProfile = name;
+            localStorage.setItem('currentProfile', name);
             showAppScreen();
         }
 
-        function loadProfileData() {
-            const prefix = `profile_${currentProfile}_`;
-            
-            const savedWorkouts = localStorage.getItem(prefix + 'workouts');
-            workouts[currentProfile] = savedWorkouts ? JSON.parse(savedWorkouts) : JSON.parse(JSON.stringify(defaultWorkouts));
-            
-            const savedChecked = localStorage.getItem(prefix + 'checkedExercises');
-            checkedExercises[currentProfile] = savedChecked ? JSON.parse(savedChecked) : {};
-            
-            const savedHistory = localStorage.getItem(prefix + 'workoutHistory');
-            workoutHistory[currentProfile] = savedHistory ? JSON.parse(savedHistory) : [];
-            
-            const savedCustom = localStorage.getItem(prefix + 'customExercises');
-            customExercises[currentProfile] = savedCustom ? JSON.parse(savedCustom) : [];
-        }
-
-        function saveProfileData() {
-            const prefix = `profile_${currentProfile}_`;
-            localStorage.setItem(prefix + 'workouts', JSON.stringify(workouts[currentProfile]));
-            localStorage.setItem(prefix + 'checkedExercises', JSON.stringify(checkedExercises[currentProfile]));
-            localStorage.setItem(prefix + 'workoutHistory', JSON.stringify(workoutHistory[currentProfile]));
-            localStorage.setItem(prefix + 'customExercises', JSON.stringify(customExercises[currentProfile]));
-        }
-
-        function openNewProfileModal() {
-            document.getElementById('newProfileModal').classList.add('show');
-        }
-
-        function closeNewProfileModal() {
-            document.getElementById('newProfileModal').classList.remove('show');
+        function openNewProfileModal() { 
             document.getElementById('newProfileName').value = '';
+            document.getElementById('newProfileModal').classList.add('show'); 
         }
+        function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
         function createProfile() {
             const name = document.getElementById('newProfileName').value.trim();
-            
-            if (!name) {
-                alert('Nome obrigatório!');
-                return;
-            }
-            
-            if (profiles.includes(name)) {
-                alert('Perfil já existe!');
-                return;
-            }
-            
+            if (!name || profiles.includes(name)) { alert('Nome inválido!'); return; }
             profiles.push(name);
+            profileData[name] = { workouts: [], checkedExercises: {}, history: [] };
             localStorage.setItem('profiles', JSON.stringify(profiles));
-            closeNewProfileModal();
+            closeModal('newProfileModal');
             renderProfilesScreen();
         }
 
         function switchProfile() {
-            saveProfileData();
+            saveData();
             currentProfile = null;
             document.getElementById('loginScreen').classList.add('show');
             document.getElementById('appScreen').classList.remove('show');
@@ -1194,539 +348,222 @@
             render();
         }
 
-        // ===== APP FUNCTIONS =====
-        function switchTab(tab) {
+        function switchTab(event, tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
             document.getElementById(tab).classList.add('active');
             event.target.classList.add('active');
 
-            if (tab === 'history') {
-                renderHistory();
-            } else if (tab === 'exercises') {
-                renderExercisesTab();
-            }
+            if (tab === 'history') renderHistory();
+            else if (tab === 'exercises') renderExercisesTab();
         }
 
         function startWorkout() {
-            if (!isWorkoutActive) {
-                workoutStartTime = Date.now();
-                isWorkoutActive = true;
-                document.getElementById('btnStart').disabled = true;
-                document.getElementById('btnEnd').disabled = false;
-                startTimer();
-            }
-        }
-
-        function startTimer() {
-            if (timerInterval) clearInterval(timerInterval);
-            timerInterval = setInterval(updateTimer, 100);
-        }
-
-        function updateTimer() {
-            if (!workoutStartTime || !isWorkoutActive) return;
-            const elapsed = Date.now() - workoutStartTime;
-            const totalSeconds = Math.floor(elapsed / 1000);
-            const hours = Math.floor(totalSeconds / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
-            const display = String(hours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
-            document.getElementById('timerDisplay').textContent = display;
+            workoutStartTime = Date.now();
+            document.getElementById('btnStart').disabled = true;
+            document.getElementById('btnEnd').disabled = false;
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - workoutStartTime) / 1000);
+                const h = Math.floor(elapsed / 3600);
+                const m = Math.floor((elapsed % 3600) / 60);
+                const s = elapsed % 60;
+                document.getElementById('timerDisplay').textContent = 
+                    String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+            }, 1000);
         }
 
         function endWorkout() {
-            if (!isWorkoutActive) return;
             clearInterval(timerInterval);
-            isWorkoutActive = false;
-            
             const elapsed = Date.now() - workoutStartTime;
-            const totalSeconds = Math.floor(elapsed / 1000);
-            const hours = Math.floor(totalSeconds / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
-            const display = String(hours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
-            
-            const completedCount = Object.keys(checkedExercises[currentProfile]).length;
-            const totalExercises = workouts[currentProfile].reduce((sum, day) => sum + day.exercises.length, 0);
-            
-            workoutHistory[currentProfile].push({
-                date: new Date().toISOString(),
-                totalTime: elapsed,
-                completed: completedCount,
-                total: totalExercises
-            });
-            
-            saveProfileData();
-            
-            document.getElementById('finalTime').textContent = display;
-            document.getElementById('finishModal').classList.add('show');
-            
-            checkedExercises[currentProfile] = {};
-            render();
-            
-            let countDown = 3;
-            document.getElementById('modalTimer').textContent = `Fechando em ${countDown}s...`;
-            
-            modalCloseTimer = setInterval(() => {
-                countDown--;
-                if (countDown > 0) {
-                    document.getElementById('modalTimer').textContent = `Fechando em ${countDown}s...`;
-                } else {
-                    clearInterval(modalCloseTimer);
-                    closeFinishModal();
-                }
-            }, 1000);
-            
-            resetWorkout();
-        }
-
-        function closeFinishModal() {
-            if (modalCloseTimer) clearInterval(modalCloseTimer);
-            document.getElementById('finishModal').classList.remove('show');
-        }
-
-        function resetWorkout() {
-            workoutStartTime = null;
-            isWorkoutActive = false;
+            const data = getProfileData();
+            data.history.push({ date: new Date().toISOString(), time: elapsed });
+            data.checkedExercises = {};
+            saveData();
+            alert('✓ Treino Salvo!');
             document.getElementById('btnStart').disabled = false;
             document.getElementById('btnEnd').disabled = true;
             document.getElementById('timerDisplay').textContent = '00:00:00';
-        }
-
-        function startRestTimer() {
-            if (restTimerInterval) clearInterval(restTimerInterval);
-            let restSeconds = 60;
-            const restEl = document.getElementById('restTimer');
-            restEl.classList.add('active');
-            restEl.textContent = `⏳ Descanso: ${restSeconds}s`;
-            
-            restTimerInterval = setInterval(() => {
-                if (restSeconds > 0) {
-                    restEl.textContent = `⏳ Descanso: ${restSeconds}s`;
-                    restSeconds--;
-                } else {
-                    clearInterval(restTimerInterval);
-                    restEl.classList.remove('active');
-                }
-            }, 1000);
-        }
-
-        function toggleCheck(dayIdx, exIdx) {
-            const key = `${dayIdx}-${exIdx}`;
-            const el = document.getElementById(`check${key}`);
-            
-            if (!el.classList.contains('checked')) {
-                el.classList.add('checked');
-                el.innerHTML = '✓';
-                checkedExercises[currentProfile][key] = true;
-                startRestTimer();
-            } else {
-                el.classList.remove('checked');
-                el.innerHTML = '';
-                delete checkedExercises[currentProfile][key];
-            }
-            
-            saveProfileData();
-            updateProgress();
-        }
-
-        function deleteExercise(dayIdx, exIdx) {
-            if (confirm('Deletar exercício?')) {
-                workouts[currentProfile][dayIdx].exercises.splice(exIdx, 1);
-                saveProfileData();
-                render();
-            }
-        }
-
-        function replaceExercise(dayIdx, exIdx) {
-            currentAddingDayIdx = dayIdx;
-            currentAddingExIdx = exIdx;
-            selectedCategory = 'todas';
-            openSelectModal();
-        }
-
-        function openSelectModal() {
-            document.getElementById('selectExerciseModal').classList.add('show');
-            
-            const current = workouts[currentProfile][currentAddingDayIdx].exercises[currentAddingExIdx];
-            document.getElementById('currentExerciseName').textContent = current.name;
-            document.getElementById('currentExerciseSets').textContent = current.sets;
-            
-            renderCategories();
-            filterExercises('todas');
-        }
-
-        function closeSelectModal() {
-            document.getElementById('selectExerciseModal').classList.remove('show');
-            currentAddingDayIdx = null;
-            currentAddingExIdx = null;
-        }
-
-        function renderCategories() {
-            const container = document.getElementById('categoryFilter');
-            container.innerHTML = '';
-            
-            const btn = document.createElement('button');
-            btn.className = 'category-btn' + (selectedCategory === 'todas' ? ' active' : '');
-            btn.textContent = 'Todas';
-            btn.onclick = () => filterExercises('todas');
-            container.appendChild(btn);
-            
-            Object.keys(exerciseCategories).forEach(category => {
-                const btn = document.createElement('button');
-                btn.className = 'category-btn' + (selectedCategory === category ? ' active' : '');
-                btn.textContent = category;
-                btn.onclick = () => filterExercises(category);
-                container.appendChild(btn);
-            });
-        }
-
-        function filterExercises(category) {
-            selectedCategory = category;
-            renderCategories();
-            
-            let exercises = [...exerciseBank, ...customExercises[currentProfile]];
-            if (category !== 'todas') {
-                exercises = exercises.filter(ex => ex.category === category);
-            }
-            
-            const container = document.getElementById('exercisesGrid');
-            container.innerHTML = '';
-            
-            exercises.forEach(ex => {
-                const option = document.createElement('div');
-                option.className = 'exercise-option';
-                
-                const imageUrl = exerciseImages[ex.name] || 'https://via.placeholder.com/80?text=Sem+Imagem';
-                
-                option.innerHTML = `
-                    <img src="${imageUrl}" alt="${ex.name}" class="exercise-option-img" onerror="this.src='https://via.placeholder.com/80?text=Sem+Imagem'">
-                    <div class="exercise-option-content">
-                        <div class="exercise-option-name">${ex.name}</div>
-                        <div class="exercise-option-desc">${ex.desc}</div>
-                    </div>
-                `;
-                option.onclick = () => selectExercise(ex);
-                container.appendChild(option);
-            });
-        }
-
-        function selectExercise(exercise) {
-            const sets = workouts[currentProfile][currentAddingDayIdx].exercises[currentAddingExIdx].sets;
-            workouts[currentProfile][currentAddingDayIdx].exercises[currentAddingExIdx] = {
-                ...exercise,
-                sets: sets
-            };
-            
-            saveProfileData();
+            workoutStartTime = null;
             render();
-            closeSelectModal();
         }
 
-        // ===== EXERCÍCIOS ABA =====
-        function openCreateExerciseModal() {
-            editingExerciseId = null;
-            document.getElementById('createExerciseTitle').textContent = '➕ Criar Novo Exercício';
-            document.getElementById('createExName').value = '';
-            document.getElementById('createExCategory').value = '';
-            document.getElementById('createExDesc').value = '';
-            document.getElementById('createExSteps').value = '';
-            document.getElementById('createExTips').value = '';
-            document.getElementById('createExAvoid').value = '';
-            document.getElementById('createExVideo').value = '';
-            document.getElementById('createExerciseModal').classList.add('show');
+        function toggleCheck(key) {
+            const data = getProfileData();
+            if (data.checkedExercises[key]) delete data.checkedExercises[key];
+            else data.checkedExercises[key] = true;
+            saveData();
+            updateProgress();
+            render();
         }
 
-        function closeCreateExerciseModal() {
-            document.getElementById('createExerciseModal').classList.remove('show');
-            editingExerciseId = null;
-        }
-
-        function saveCustomExercise() {
-            const name = document.getElementById('createExName').value.trim();
-            const category = document.getElementById('createExCategory').value;
-            const desc = document.getElementById('createExDesc').value.trim();
-            const steps = document.getElementById('createExSteps').value.trim();
-            
-            if (!name || !category || !desc || !steps) {
-                alert('Preencha todos os campos obrigatórios!');
-                return;
-            }
-            
-            const newExercise = {
-                id: Date.now(),
-                name: name,
-                category: category,
-                desc: desc,
-                steps: steps,
-                tips: document.getElementById('createExTips').value || '✓ Dica',
-                avoid: document.getElementById('createExAvoid').value || '✗ Evite',
-                video: document.getElementById('createExVideo').value || 'https://youtube.com'
-            };
-            
-            if (editingExerciseId) {
-                const idx = customExercises[currentProfile].findIndex(ex => ex.id === editingExerciseId);
-                customExercises[currentProfile][idx] = newExercise;
-            } else {
-                customExercises[currentProfile].push(newExercise);
-            }
-            
-            saveProfileData();
-            renderExercisesTab();
-            closeCreateExerciseModal();
-        }
-
-        function renderExercisesTab() {
-            const container = document.getElementById('exercisesList');
-            const allExercises = [...exerciseBank, ...customExercises[currentProfile]];
-            
-            container.innerHTML = '';
-            
-            allExercises.forEach(ex => {
-                const card = document.createElement('div');
-                card.className = 'exercise-card';
-                
-                const imageUrl = exerciseImages[ex.name] || 'https://via.placeholder.com/300x180?text=Sem+Imagem';
-                
-                card.innerHTML = `
-                    <img src="${imageUrl}" alt="${ex.name}" class="exercise-card-image" onerror="this.src='https://via.placeholder.com/300x180?text=Sem+Imagem'">
-                    <div class="exercise-card-name">${ex.name}</div>
-                    <div class="exercise-card-category">${ex.category}</div>
-                    <div class="exercise-card-desc">${ex.desc}</div>
-                    <div class="exercise-card-buttons">
-                        ${customExercises[currentProfile].some(c => c.id === ex.id) ? `
-                            <button class="btn-edit" title="Editar" onclick="editCustomExercise(${ex.id})">✎</button>
-                            <button class="btn-remove" title="Remover" onclick="removeCustomExercise(${ex.id})">✕</button>
-                        ` : ''}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function editCustomExercise(id) {
-            const exercise = customExercises[currentProfile].find(ex => ex.id === id);
-            if (!exercise) return;
-            
-            editingExerciseId = id;
-            document.getElementById('createExerciseTitle').textContent = '✎ Editar Exercício';
-            document.getElementById('createExName').value = exercise.name;
-            document.getElementById('createExCategory').value = exercise.category;
-            document.getElementById('createExDesc').value = exercise.desc;
-            document.getElementById('createExSteps').value = exercise.steps;
-            document.getElementById('createExTips').value = exercise.tips;
-            document.getElementById('createExAvoid').value = exercise.avoid;
-            document.getElementById('createExVideo').value = exercise.video;
-            document.getElementById('createExerciseModal').classList.add('show');
-        }
-
-        function removeCustomExercise(id) {
-            if (confirm('Remover este exercício?')) {
-                const idx = customExercises[currentProfile].findIndex(ex => ex.id === id);
-                customExercises[currentProfile].splice(idx, 1);
-                saveProfileData();
-                renderExercisesTab();
-            }
+        function toggleDetails(idx) {
+            const el = document.getElementById(`det${idx}`);
+            if (el) el.classList.toggle('show');
         }
 
         function render() {
-            const container = document.getElementById('workoutContainer');
-            container.innerHTML = '';
+            const data = getProfileData();
+            const cont = document.getElementById('workoutContainer');
+            cont.innerHTML = '';
 
-            workouts[currentProfile].forEach((day, dayIdx) => {
-                const dayBox = document.createElement('div');
-                dayBox.className = 'day-box';
+            if (!data.workouts || data.workouts.length === 0) {
+                cont.innerHTML = '<div class="empty-state">Nenhum workout criado. Acesse a aba Exercícios!</div>';
+                updateProgress();
+                return;
+            }
+
+            data.workouts.forEach((w, widx) => {
+                const box = document.createElement('div');
+                box.className = 'exercise-card';
                 
                 const header = document.createElement('div');
-                header.className = 'day-header';
-                header.onclick = () => toggleDay(dayIdx);
-                header.innerHTML = `
-                    <div>
-                        <div class="day-title">${day.day}</div>
-                        <div class="day-focus">${day.focus}</div>
-                    </div>
-                    <div class="day-controls">
-                        <span style="margin-left: 10px;">▼</span>
-                    </div>
-                `;
-                dayBox.appendChild(header);
+                header.className = 'exercise-header';
+                header.innerHTML = `<div><div class="exercise-name">${w.name}</div><div class="exercise-sets">${w.exercises.length} exercícios</div></div>`;
+                header.onclick = () => toggleDetails(`w${widx}`);
+                box.appendChild(header);
 
-                const content = document.createElement('div');
-                content.id = `day${dayIdx}`;
-                content.className = 'hidden';
-
-                day.exercises.forEach((ex, exIdx) => {
-                    const key = `${dayIdx}-${exIdx}`;
-
-                    const exercise = document.createElement('div');
-                    exercise.className = 'exercise';
-                    exercise.onclick = () => toggleExercise(dayIdx, exIdx);
-
-                    const checkbox = document.createElement('div');
-                    checkbox.className = 'checkbox';
-                    checkbox.id = `check${key}`;
-                    checkbox.onclick = (e) => {
-                        e.stopPropagation();
-                        toggleCheck(dayIdx, exIdx);
-                    };
-
-                    if (checkedExercises[currentProfile] && checkedExercises[currentProfile][key]) {
-                        checkbox.classList.add('checked');
-                        checkbox.innerHTML = '✓';
-                    }
-
-                    const info = document.createElement('div');
-                    info.className = 'exercise-info';
-                    info.innerHTML = `
-                        <div class="exercise-name">${ex.name}</div>
-                        <div class="exercise-sets">${ex.sets}</div>
-                    `;
-
-                    const buttons = document.createElement('div');
-                    buttons.className = 'exercise-buttons';
-                    
-                    const replaceBtn = document.createElement('button');
-                    replaceBtn.className = 'btn-replace';
-                    replaceBtn.textContent = '🔄';
-                    replaceBtn.title = 'Trocar exercício';
-                    replaceBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        replaceExercise(dayIdx, exIdx);
-                    };
-                    
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'btn-delete';
-                    deleteBtn.textContent = '✕';
-                    deleteBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        deleteExercise(dayIdx, exIdx);
-                    };
-                    
-                    buttons.appendChild(replaceBtn);
-                    buttons.appendChild(deleteBtn);
-
-                    exercise.appendChild(checkbox);
-                    exercise.appendChild(info);
-                    exercise.appendChild(buttons);
-
-                    const details = document.createElement('div');
-                    details.className = 'exercise-details';
-                    details.id = `details${key}`;
-                    
-                    const imageUrl = exerciseImages[ex.name] || 'https://via.placeholder.com/600x400?text=Sem+Imagem';
-                    
-                    details.innerHTML = `
-                        <img src="${imageUrl}" alt="${ex.name}" class="exercise-image" onerror="this.src='https://via.placeholder.com/600x400?text=Sem+Imagem'">
-                        <button class="video-btn" onclick="window.open('${ex.video}', '_blank')">
-                            📹 Ver Vídeo YouTube
-                        </button>
-                        <div class="detail-section">
-                            <div class="detail-title">📖 Como Fazer:</div>
-                            <div>${ex.desc}</div>
-                        </div>
-                        <div class="detail-section">
-                            <div class="detail-title">🔢 Passo a Passo:</div>
-                            <div style="white-space: pre-wrap;">${ex.steps}</div>
-                        </div>
-                        <div class="detail-section">
-                            <div class="detail-title">💡 Dicas:</div>
-                            <div style="white-space: pre-wrap;">${ex.tips}</div>
-                        </div>
-                        <div class="detail-section">
-                            <div class="detail-title">⚠️ Evite:</div>
-                            <div style="white-space: pre-wrap;">${ex.avoid}</div>
+                const det = document.createElement('div');
+                det.id = `detw${widx}`;
+                det.className = 'exercise-details';
+                
+                w.exercises.forEach((ex, exidx) => {
+                    const key = `${widx}-${exidx}`;
+                    const isChecked = data.checkedExercises[key];
+                    det.innerHTML += `
+                        <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #444;">
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                <div class="checkbox ${isChecked ? 'checked' : ''}" onclick="toggleCheck('${key}')">${isChecked ? '✓' : ''}</div>
+                                <div><div class="exercise-name" style="font-size: 14px;">${ex.name}</div><div class="exercise-sets">3 séries x 8-10</div></div>
+                            </div>
                         </div>
                     `;
-
-                    content.appendChild(exercise);
-                    content.appendChild(details);
                 });
 
-                dayBox.appendChild(content);
-                container.appendChild(dayBox);
+                box.appendChild(det);
+                cont.appendChild(box);
             });
 
             updateProgress();
         }
 
+        function updateProgress() {
+            const data = getProfileData();
+            let total = 0;
+            if (data.workouts) data.workouts.forEach(w => total += w.exercises.length);
+            const pct = total > 0 ? Math.round((Object.keys(data.checkedExercises).length / total) * 100) : 0;
+            document.getElementById('progressFill').style.width = pct + '%';
+        }
+
         function renderHistory() {
-            const container = document.getElementById('historyCards');
-            const history = workoutHistory[currentProfile] || [];
-            
-            const totalWorkouts = history.length;
-            let totalMilliseconds = 0;
-            history.forEach(w => {
-                totalMilliseconds += w.totalTime;
-            });
-            
-            const totalHours = Math.floor(totalMilliseconds / (1000 * 60 * 60));
-            
-            document.getElementById('totalWorkouts').textContent = totalWorkouts;
-            document.getElementById('totalHours').textContent = totalHours > 0 ? totalHours + 'h' : '<1h';
+            const data = getProfileData();
+            const hist = data.history || [];
+            document.getElementById('totalWorkouts').textContent = hist.length;
+            let totalMs = 0;
+            hist.forEach(h => totalMs += h.time || 0);
+            document.getElementById('totalHours').textContent = Math.floor(totalMs / 3600000) + 'h';
 
-            if (history.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div style="font-size: 48px; margin-bottom: 10px;">📋</div>
-                        <p>Nenhum treino registrado ainda.</p>
-                    </div>
-                `;
-                return;
-            }
+            const cont = document.getElementById('historyCards');
+            if (hist.length === 0) { cont.innerHTML = '<div class="empty-state">Nenhum treino</div>'; return; }
 
-            container.innerHTML = '';
-            
-            const sorted = [...history].sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            sorted.forEach(workout => {
-                const date = new Date(workout.date);
-                const dayName = date.toLocaleDateString('pt-BR', { weekday: 'long' });
-                const dateStr = date.toLocaleDateString('pt-BR');
-                
-                const hours = Math.floor(workout.totalTime / (1000 * 60 * 60));
-                const minutes = Math.floor((workout.totalTime % (1000 * 60 * 60)) / (1000 * 60));
-                const timeStr = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
-                
+            cont.innerHTML = '';
+            [...hist].reverse().forEach(h => {
+                const d = new Date(h.date);
                 const card = document.createElement('div');
                 card.className = 'history-card';
-                card.innerHTML = `
-                    <div class="history-date">${dateStr}</div>
-                    <div class="history-day">${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</div>
-                    <div class="history-info">
-                        <div class="history-info-item">
-                            <span>⏱️ ${timeStr}</span>
-                        </div>
-                        <div class="history-info-item">
-                            <span>✓ ${workout.completed}/${workout.total}</span>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
+                card.innerHTML = `<div style="font-size: 12px; color: #667eea;">${d.toLocaleDateString('pt-BR')}</div>
+                    <div style="font-size: 16px; font-weight: bold;">${d.toLocaleDateString('pt-BR', {weekday:'long'})}</div>
+                    <div style="margin-top: 8px;">⏱️ ${Math.floor(h.time / 60000)}m</div>`;
+                cont.appendChild(card);
             });
         }
 
-        function toggleDay(idx) {
-            const el = document.getElementById(`day${idx}`);
-            el.classList.toggle('hidden');
+        function renderExercisesTab() {
+            renderBodyPartFilters();
+            loadExercises();
         }
 
-        function toggleExercise(dayIdx, exIdx) {
-            const el = document.getElementById(`details${dayIdx}-${exIdx}`);
-            el.classList.toggle('show');
+        function renderBodyPartFilters() {
+            const bodyParts = ['chest','back','shoulders','biceps','triceps','legs','core'];
+            const cont = document.getElementById('bodyPartFilters');
+            cont.innerHTML = '';
+            bodyParts.forEach(bp => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.textContent = bp.charAt(0).toUpperCase() + bp.slice(1);
+                btn.onclick = () => loadExercises(bp);
+                cont.appendChild(btn);
+            });
         }
 
-        function updateProgress() {
-            let total = 0, checked = 0;
-            for (let dayIdx = 0; dayIdx < workouts[currentProfile].length; dayIdx++) {
-                for (let exIdx = 0; exIdx < workouts[currentProfile][dayIdx].exercises.length; exIdx++) {
-                    total++;
-                    const key = `${dayIdx}-${exIdx}`;
-                    if (checkedExercises[currentProfile] && checkedExercises[currentProfile][key]) checked++;
-                }
+        function loadExercises(bodyPart = '') {
+            const cont = document.getElementById('exercisesList');
+            const filtered = bodyPart ? exercises.filter(e => e.bodyPart === bodyPart) : exercises;
+            
+            cont.innerHTML = '';
+            filtered.forEach(ex => {
+                const isAdded = selectedExercises.find(s => s.id === ex.id);
+                const card = document.createElement('div');
+                card.className = 'exercise-browse-card';
+                card.innerHTML = `
+                    <div class="exercise-browse-name">${ex.name}</div>
+                    <div><span class="meta-tag">${ex.bodyPart}</span><span class="meta-tag">${ex.equipment}</span></div>
+                    <button class="add-btn ${isAdded ? 'added' : ''}" onclick="adicionarExercicio(${ex.id}, '${ex.name}', ${JSON.stringify(ex).replace(/"/g, '&quot;')})" ${isAdded ? 'disabled' : ''}>
+                        ${isAdded ? '✓ Adicionado' : '+ Adicionar'}
+                    </button>
+                `;
+                cont.appendChild(card);
+            });
+        }
+
+        function adicionarExercicio(id, name, exObj) {
+            if (!selectedExercises.find(s => s.id === id)) {
+                selectedExercises.push(exObj);
+                atualizarBadgeSelecionados();
+                loadExercises(); // Recarrega para atualizar visual
             }
-            const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
-            document.getElementById('progressFill').style.width = percent + '%';
+        }
+
+        function atualizarBadgeSelecionados() {
+            document.getElementById('selectedCount').textContent = `Selecionados: ${selectedExercises.length}`;
+            document.getElementById('btnSave').disabled = selectedExercises.length === 0;
+        }
+
+        function saveSelecionados() {
+            if (selectedExercises.length === 0) return;
+            
+            const preview = document.getElementById('workoutPreview');
+            preview.innerHTML = '';
+            selectedExercises.forEach(ex => {
+                const item = document.createElement('div');
+                item.style.cssText = 'padding: 8px 0; border-bottom: 1px solid #555; color: #bbb;';
+                item.innerHTML = `✓ ${ex.name}`;
+                preview.appendChild(item);
+            });
+            
+            document.getElementById('workoutNameInput').value = '';
+            document.getElementById('saveWorkoutModal').classList.add('show');
+        }
+
+        function confirmarSalvamentoWorkout() {
+            const name = document.getElementById('workoutNameInput').value.trim();
+            if (!name) { alert('Digite o nome!'); return; }
+
+            const data = getProfileData();
+            data.workouts.push({ name, exercises: selectedExercises });
+            saveData();
+            
+            selectedExercises = [];
+            atualizarBadgeSelecionados();
+            closeModal('saveWorkoutModal');
+            
+            // Volta aba Treino
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('workout').classList.add('active');
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            
+            render();
+            alert('✓ Workout salvo!');
         }
 
         loadData();
