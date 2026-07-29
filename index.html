@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academia Pro - Plano Eduardo (5 Ex/Dia)</title>
+    <title>Academia Pro - Plano Eduardo</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -68,7 +68,7 @@
         .workout-card { background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%); margin-bottom: 15px; border-radius: 8px; border: 1px solid #444; overflow: hidden; }
         .workout-header { background: #2a2a3e; padding: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .workout-title { font-weight: bold; font-size: 16px; color: #667eea; }
-        .workout-exercises { font-size: 12px; color: #aaa; }
+        .workout-subtitle { font-size: 12px; color: #aaa; margin-top: 4px; }
         .expand-icon { color: #667eea; font-size: 18px; }
 
         .workout-details { display: none; background: #1a1a2e; padding: 15px; }
@@ -82,14 +82,13 @@
         .exercise-item-actions { display: flex; gap: 8px; margin-top: 8px; }
         .btn-check { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
         .btn-check.done { background: #4CAF50; }
-        .btn-remove { background: #f44336; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
-        .btn-delete-workout { background: #f44336; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-top: 12px; width: 100%; }
 
         .day-box { background: linear-gradient(135deg, #3a3a4e 0%, #2a2a3e 100%); padding: 15px; border-radius: 8px; border: 1px solid #444; margin-bottom: 15px; }
-        .day-header { font-weight: bold; font-size: 16px; color: #4CAF50; margin-bottom: 12px; }
+        .day-header { font-weight: bold; font-size: 14px; color: #4CAF50; margin-bottom: 4px; }
+        .day-subtitle { font-size: 11px; color: #999; margin-bottom: 12px; }
         .day-exercises { display: flex; flex-direction: column; gap: 8px; }
         .exercise-row { background: #1a1a2e; padding: 10px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid #667eea; }
-        .exercise-name { flex: 1; font-size: 13px; }
+        .exercise-name { flex: 1; font-size: 12px; }
         .exercise-check { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 10px; font-weight: bold; }
         .exercise-check.done { background: #4CAF50; }
 
@@ -140,7 +139,7 @@
             <div id="weekly" class="tab-content active">
                 <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: #667eea; border-radius: 8px;">
                     <div style="font-size: 18px; font-weight: bold;">📋 Plano Semanal</div>
-                    <div style="font-size: 12px; margin-top: 8px;">5 Exercícios/Dia (Seg-Sex)</div>
+                    <div style="font-size: 12px; margin-top: 8px;">5 Exercícios por Dia (Seg-Sex)</div>
                 </div>
                 <div id="weeklySummary"></div>
             </div>
@@ -183,51 +182,6 @@
     </div>
 
     <script>
-        const allExercises = [
-            // Segunda: Peito + Costas
-            {id:1, name:"Supino Reto", bodyPart:"chest", type:"🔴 Peito"},
-            {id:2, name:"Supino Inclinado", bodyPart:"chest", type:"🔴 Peito"},
-            {id:3, name:"Flexão", bodyPart:"chest", type:"🔴 Peito"},
-            {id:6, name:"Puxada Frontal", bodyPart:"back", type:"🟠 Costas"},
-            {id:32, name:"Abdominal", bodyPart:"core", type:"⚪ Core"},
-            
-            // Terça: Costas + Braços
-            {id:7, name:"Remada Barra", bodyPart:"back", type:"🟠 Costas"},
-            {id:11, name:"Rosca Direta", bodyPart:"biceps", type:"🟡 Bíceps"},
-            {id:12, name:"Rosca Martelo", bodyPart:"biceps", type:"🟡 Bíceps"},
-            {id:16, name:"Tríceps Corda", bodyPart:"triceps", type:"🟢 Tríceps"},
-            {id:31, name:"Prancha", bodyPart:"core", type:"⚪ Core"},
-            
-            // Quarta: Pernas + Core
-            {id:26, name:"Agachamento", bodyPart:"legs", type:"🟣 Pernas"},
-            {id:27, name:"Leg Press", bodyPart:"legs", type:"🟣 Pernas"},
-            {id:28, name:"Extensora", bodyPart:"legs", type:"🟣 Pernas"},
-            {id:32, name:"Abdominal", bodyPart:"core", type:"⚪ Core"},
-            {id:31, name:"Prancha", bodyPart:"core", type:"⚪ Core"},
-            
-            // Quinta: Ombros + Braços + Barriga
-            {id:21, name:"Desenvolvimento", bodyPart:"shoulders", type:"🔵 Ombros"},
-            {id:22, name:"Elevação Lateral", bodyPart:"shoulders", type:"🔵 Ombros"},
-            {id:11, name:"Rosca Direta", bodyPart:"biceps", type:"🟡 Bíceps"},
-            {id:17, name:"Extensão Tríceps", bodyPart:"triceps", type:"🟢 Tríceps"},
-            {id:32, name:"Abdominal", bodyPart:"core", type:"⚪ Core"},
-            
-            // Sexta: Total Body
-            {id:1, name:"Supino Reto", bodyPart:"chest", type:"🔴 Peito"},
-            {id:7, name:"Remada Barra", bodyPart:"back", type:"🟠 Costas"},
-            {id:26, name:"Agachamento", bodyPart:"legs", type:"🟣 Pernas"},
-            {id:21, name:"Desenvolvimento", bodyPart:"shoulders", type:"🔵 Ombros"},
-            {id:31, name:"Prancha", bodyPart:"core", type:"⚪ Core"},
-        ];
-
-        const weeklyPlan = {
-            'Segunda': [allExercises[0], allExercises[1], allExercises[2], allExercises[3], allExercises[4]],
-            'Terça': [allExercises[5], allExercises[6], allExercises[7], allExercises[8], allExercises[9]],
-            'Quarta': [allExercises[10], allExercises[11], allExercises[12], allExercises[13], allExercises[14]],
-            'Quinta': [allExercises[15], allExercises[16], allExercises[17], allExercises[18], allExercises[19]],
-            'Sexta': [allExercises[20], allExercises[21], allExercises[22], allExercises[23], allExercises[24]],
-        };
-
         function getExerciseImage(bodyPart) {
             const images = {
                 chest: '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#667eea" opacity="0.6"/><line x1="30" y1="35" x2="70" y2="35" stroke="white" stroke-width="2.5"/><line x1="30" y1="50" x2="70" y2="50" stroke="white" stroke-width="2.5"/><line x1="30" y1="65" x2="70" y2="65" stroke="white" stroke-width="2.5"/></svg>',
@@ -240,6 +194,60 @@
             };
             return images[bodyPart] || images.chest;
         }
+
+        // Plano estruturado conforme especificação - COM TYPE ADICIONADO
+        const weeklyPlan = {
+            'Segunda': {
+                subtitle: '💪 Peito + Tríceps (Força)',
+                exercises: [
+                    {name:"Supino Reto", bodyPart:"chest", type:"🔴 Peito"},
+                    {name:"Supino Inclinado", bodyPart:"chest", type:"🔴 Peito"},
+                    {name:"Crucifixo Polia", bodyPart:"chest", type:"🔴 Peito"},
+                    {name:"Tríceps Corda", bodyPart:"triceps", type:"🟢 Tríceps"},
+                    {name:"Extensão Tríceps", bodyPart:"triceps", type:"🟢 Tríceps"}
+                ]
+            },
+            'Terça': {
+                subtitle: '💪 Costas + Bíceps (Força)',
+                exercises: [
+                    {name:"Puxada Frontal", bodyPart:"back", type:"🟠 Costas"},
+                    {name:"Remada Barra", bodyPart:"back", type:"🟠 Costas"},
+                    {name:"Barra Fixa", bodyPart:"back", type:"🟠 Costas"},
+                    {name:"Rosca Direta", bodyPart:"biceps", type:"🟡 Bíceps"},
+                    {name:"Rosca Martelo", bodyPart:"biceps", type:"🟡 Bíceps"}
+                ]
+            },
+            'Quarta': {
+                subtitle: '🔥 Perna (Ganho Muscular)',
+                exercises: [
+                    {name:"Agachamento", bodyPart:"legs", type:"🟣 Pernas"},
+                    {name:"Leg Press", bodyPart:"legs", type:"🟣 Pernas"},
+                    {name:"Extensora", bodyPart:"legs", type:"🟣 Pernas"},
+                    {name:"Rosca Perna", bodyPart:"legs", type:"🟣 Pernas"},
+                    {name:"Cadeira Adutora", bodyPart:"legs", type:"🟣 Pernas"}
+                ]
+            },
+            'Quinta': {
+                subtitle: '🌟 Ombro + Perna Leve (Recuperação)',
+                exercises: [
+                    {name:"Desenvolvimento", bodyPart:"shoulders", type:"🔵 Ombros"},
+                    {name:"Elevação Lateral", bodyPart:"shoulders", type:"🔵 Ombros"},
+                    {name:"Elevação Frontal", bodyPart:"shoulders", type:"🔵 Ombros"},
+                    {name:"Leg Press Leve", bodyPart:"legs", type:"🟣 Pernas"},
+                    {name:"Extensora Leve", bodyPart:"legs", type:"🟣 Pernas"}
+                ]
+            },
+            'Sexta': {
+                subtitle: '🔥 HIIT + Core (Queima de Gordura)',
+                exercises: [
+                    {name:"Burpees", bodyPart:"core", type:"⚪ Core"},
+                    {name:"Mountain Climbers", bodyPart:"core", type:"⚪ Core"},
+                    {name:"Prancha", bodyPart:"core", type:"⚪ Core"},
+                    {name:"Abdominal", bodyPart:"core", type:"⚪ Core"},
+                    {name:"Prancha Dinâmica", bodyPart:"core", type:"⚪ Core"}
+                ]
+            }
+        };
 
         let currentProfile = null;
         let profiles = [];
@@ -273,8 +281,9 @@
             if (!profiles.includes('Eduardo')) {
                 profiles.push('Eduardo');
                 const workouts = Object.keys(weeklyPlan).map(day => ({
-                    name: `${day}`,
-                    exercises: weeklyPlan[day]
+                    name: day,
+                    subtitle: weeklyPlan[day].subtitle,
+                    exercises: weeklyPlan[day].exercises
                 }));
                 profileData['Eduardo'] = {
                     workouts,
@@ -362,44 +371,51 @@
             const cont = document.getElementById('weeklySummary');
             cont.innerHTML = '';
 
-            const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
-            const emojis = ['🔴', '🟠', '🟡', '🟢', '🔵'];
+            if (!data.workouts || data.workouts.length === 0) {
+                cont.innerHTML = '<div class="empty-state">Carregando plano...</div>';
+                return;
+            }
 
-            days.forEach((day, idx) => {
-                const workout = data.workouts[idx];
-                if (!workout) return;
-
+            // Renderizar todos os 5 dias
+            data.workouts.forEach((w, idx) => {
                 const box = document.createElement('div');
                 box.className = 'day-box';
                 
                 const header = document.createElement('div');
                 header.className = 'day-header';
-                header.textContent = `${emojis[idx]} ${day} (5 exercícios)`;
+                header.textContent = w.name;
                 box.appendChild(header);
+
+                const subtitle = document.createElement('div');
+                subtitle.className = 'day-subtitle';
+                subtitle.textContent = w.subtitle;
+                box.appendChild(subtitle);
 
                 const exList = document.createElement('div');
                 exList.className = 'day-exercises';
                 
-                workout.exercises.forEach((ex, exidx) => {
-                    const key = `${idx}-${exidx}`;
-                    const isChecked = data.checkedExercises[key];
-                    
-                    const row = document.createElement('div');
-                    row.className = 'exercise-row';
-                    
-                    const nameSpan = document.createElement('span');
-                    nameSpan.className = 'exercise-name';
-                    nameSpan.textContent = `${ex.type} ${ex.name}`;
-                    
-                    const btn = document.createElement('button');
-                    btn.className = `exercise-check ${isChecked ? 'done' : ''}`;
-                    btn.textContent = isChecked ? '✓' : '○';
-                    btn.onclick = () => toggleCheckWeekly(idx, exidx);
-                    
-                    row.appendChild(nameSpan);
-                    row.appendChild(btn);
-                    exList.appendChild(row);
-                });
+                if (w.exercises && w.exercises.length > 0) {
+                    w.exercises.forEach((ex, exidx) => {
+                        const key = `${idx}-${exidx}`;
+                        const isChecked = data.checkedExercises[key];
+                        
+                        const row = document.createElement('div');
+                        row.className = 'exercise-row';
+                        
+                        const nameSpan = document.createElement('span');
+                        nameSpan.className = 'exercise-name';
+                        nameSpan.textContent = `${ex.type} ${ex.name}`;
+                        
+                        const btn = document.createElement('button');
+                        btn.className = `exercise-check ${isChecked ? 'done' : ''}`;
+                        btn.textContent = isChecked ? '✓' : '○';
+                        btn.onclick = () => toggleCheckWeekly(idx, exidx);
+                        
+                        row.appendChild(nameSpan);
+                        row.appendChild(btn);
+                        exList.appendChild(row);
+                    });
+                }
 
                 box.appendChild(exList);
                 cont.appendChild(box);
@@ -493,19 +509,31 @@
                 return;
             }
 
-            const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
-            const emojis = ['🔴', '🟠', '🟡', '🟢', '🔵'];
-
             data.workouts.forEach((w, widx) => {
                 const box = document.createElement('div');
                 box.className = 'workout-card';
                 
                 const header = document.createElement('div');
                 header.className = 'workout-header';
-                header.innerHTML = `
-                    <div><div class="workout-title">${emojis[widx]} ${days[widx]}</div><div class="workout-exercises">5 exercícios</div></div>
-                    <div class="expand-icon">▼</div>
-                `;
+                
+                const titleDiv = document.createElement('div');
+                const titleSpan = document.createElement('div');
+                titleSpan.className = 'workout-title';
+                titleSpan.textContent = w.name;
+                
+                const subtitleSpan = document.createElement('div');
+                subtitleSpan.className = 'workout-subtitle';
+                subtitleSpan.textContent = w.subtitle;
+                
+                titleDiv.appendChild(titleSpan);
+                titleDiv.appendChild(subtitleSpan);
+                
+                const expandIcon = document.createElement('div');
+                expandIcon.className = 'expand-icon';
+                expandIcon.textContent = '▼';
+                
+                header.appendChild(titleDiv);
+                header.appendChild(expandIcon);
                 header.onclick = () => toggleDetails(`w${widx}`);
                 box.appendChild(header);
 
@@ -513,47 +541,49 @@
                 det.id = `detw${widx}`;
                 det.className = 'workout-details';
                 
-                w.exercises.forEach((ex, exidx) => {
-                    const key = `${widx}-${exidx}`;
-                    const isChecked = data.checkedExercises[key];
-                    
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'exercise-item';
-                    
-                    const imgDiv = document.createElement('div');
-                    imgDiv.className = 'exercise-image';
-                    imgDiv.innerHTML = getExerciseImage(ex.bodyPart);
-                    
-                    const contentDiv = document.createElement('div');
-                    contentDiv.style.display = 'flex';
-                    contentDiv.style.flexDirection = 'column';
-                    
-                    const nameDiv = document.createElement('div');
-                    nameDiv.className = 'exercise-item-name';
-                    nameDiv.textContent = ex.name;
-                    
-                    const typeDiv = document.createElement('div');
-                    typeDiv.className = 'exercise-item-type';
-                    typeDiv.textContent = ex.type;
-                    
-                    const actionsDiv = document.createElement('div');
-                    actionsDiv.className = 'exercise-item-actions';
-                    
-                    const checkBtn = document.createElement('button');
-                    checkBtn.className = `btn-check ${isChecked ? 'done' : ''}`;
-                    checkBtn.textContent = isChecked ? '✓' : '○';
-                    checkBtn.onclick = () => toggleCheck(widx, exidx);
-                    
-                    actionsDiv.appendChild(checkBtn);
-                    
-                    contentDiv.appendChild(nameDiv);
-                    contentDiv.appendChild(typeDiv);
-                    contentDiv.appendChild(actionsDiv);
-                    
-                    itemDiv.appendChild(imgDiv);
-                    itemDiv.appendChild(contentDiv);
-                    det.appendChild(itemDiv);
-                });
+                if (w.exercises && w.exercises.length > 0) {
+                    w.exercises.forEach((ex, exidx) => {
+                        const key = `${widx}-${exidx}`;
+                        const isChecked = data.checkedExercises[key];
+                        
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'exercise-item';
+                        
+                        const imgDiv = document.createElement('div');
+                        imgDiv.className = 'exercise-image';
+                        imgDiv.innerHTML = getExerciseImage(ex.bodyPart);
+                        
+                        const contentDiv = document.createElement('div');
+                        contentDiv.style.display = 'flex';
+                        contentDiv.style.flexDirection = 'column';
+                        
+                        const nameDiv = document.createElement('div');
+                        nameDiv.className = 'exercise-item-name';
+                        nameDiv.textContent = ex.name;
+                        
+                        const typeDiv = document.createElement('div');
+                        typeDiv.className = 'exercise-item-type';
+                        typeDiv.textContent = ex.type;
+                        
+                        const actionsDiv = document.createElement('div');
+                        actionsDiv.className = 'exercise-item-actions';
+                        
+                        const checkBtn = document.createElement('button');
+                        checkBtn.className = `btn-check ${isChecked ? 'done' : ''}`;
+                        checkBtn.textContent = isChecked ? '✓' : '○';
+                        checkBtn.onclick = () => toggleCheck(widx, exidx);
+                        
+                        actionsDiv.appendChild(checkBtn);
+                        
+                        contentDiv.appendChild(nameDiv);
+                        contentDiv.appendChild(typeDiv);
+                        contentDiv.appendChild(actionsDiv);
+                        
+                        itemDiv.appendChild(imgDiv);
+                        itemDiv.appendChild(contentDiv);
+                        det.appendChild(itemDiv);
+                    });
+                }
 
                 box.appendChild(det);
                 cont.appendChild(box);
@@ -565,7 +595,7 @@
         function updateProgress() {
             const data = getProfileData();
             let total = 0;
-            if (data.workouts) data.workouts.forEach(w => total += w.exercises.length);
+            if (data.workouts) data.workouts.forEach(w => total += (w.exercises ? w.exercises.length : 0));
             const pct = total > 0 ? Math.round((Object.keys(data.checkedExercises).length / total) * 100) : 0;
             document.getElementById('progressFill').style.width = pct + '%';
         }
