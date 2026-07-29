@@ -382,24 +382,11 @@
         .exercise-image {
             width: 100%;
             height: 250px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #333;
             border-radius: 6px;
             margin-bottom: 15px;
             object-fit: cover;
             display: block;
-        }
-
-        .exercise-image-loading {
-            width: 100%;
-            height: 250px;
-            background: #333;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #999;
         }
 
         .detail-section { margin-bottom: 15px; }
@@ -622,7 +609,7 @@
         .exercise-card-image {
             width: 100%;
             height: 180px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #333;
             border-radius: 4px;
             margin-bottom: 10px;
             object-fit: cover;
@@ -678,20 +665,6 @@
             font-weight: bold;
         }
         .btn-remove:hover { background: #da190b; }
-
-        .loading {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            background: #4CAF50;
-            border-radius: 50%;
-            animation: pulse 1.5s ease-in-out infinite;
-            margin-left: 5px;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
     </style>
 </head>
 <body>
@@ -879,6 +852,79 @@
     </div>
 
     <script>
+        // BANCO DE IMAGENS - URLs DE CADA EXERCÍCIO
+        const exerciseImages = {
+            "Supino Reto": "https://images.unsplash.com/photo-1580601204160-fc6ee1ddeb04?w=600&h=400&fit=crop",
+            "Supino Inclinado": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
+            "Supino Declinado": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&h=400&fit=crop",
+            "Crucifixo no Cabo": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop",
+            "Crucifixo com Halteres": "https://images.unsplash.com/photo-1599058917212-d217cde476a6?w=600&h=400&fit=crop",
+            "Supino Smith": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop",
+            "Flexão": "https://images.unsplash.com/photo-1518611505868-48510c8d5b63?w=600&h=400&fit=crop",
+            "Supino Máquina": "https://images.unsplash.com/photo-1519750157634-b6d11b5aea11?w=600&h=400&fit=crop",
+            
+            "Puxada Frontal": "https://images.unsplash.com/photo-1574889616326-4c9be6fb468c?w=600&h=400&fit=crop",
+            "Puxada Atrás": "https://images.unsplash.com/photo-1565550694332-5f7f5e2acbea?w=600&h=400&fit=crop",
+            "Remada com Barra": "https://images.unsplash.com/photo-1534368541640-641405b62cc6?w=600&h=400&fit=crop",
+            "Remada Unilateral": "https://images.unsplash.com/photo-1508217539206-fd8641e28e77?w=600&h=400&fit=crop",
+            "Remada Máquina": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
+            "Pullover": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
+            "Barra Fixa": "https://images.unsplash.com/photo-1521571407223-6864e0c9cfb0?w=600&h=400&fit=crop",
+            "Remada Invertida": "https://images.unsplash.com/photo-1516594798853-ad19643c953a?w=600&h=400&fit=crop",
+            "Rosca Inversa": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop",
+            
+            "Rosca Direta": "https://images.unsplash.com/photo-1549719386-74dfaed0fcca?w=600&h=400&fit=crop",
+            "Rosca Martelo": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
+            "Rosca Inversa": "https://images.unsplash.com/photo-1541534528006-cecffead6c1b?w=600&h=400&fit=crop",
+            "Rosca Alternada": "https://images.unsplash.com/photo-1574889616326-4c9be6fb468c?w=600&h=400&fit=crop",
+            "Rosca Scott": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop",
+            "Rosca Máquina": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
+            "Rosca Inclinada": "https://images.unsplash.com/photo-1580601204160-fc6ee1ddeb04?w=600&h=400&fit=crop",
+            "Rosca Concentrada": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
+            
+            "Tríceps Corda": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop",
+            "Extensão Tríceps Haltere": "https://images.unsplash.com/photo-1599058917212-d217cde476a6?w=600&h=400&fit=crop",
+            "Mergulho no Banco": "https://images.unsplash.com/photo-1518611505868-48510c8d5b63?w=600&h=400&fit=crop",
+            "Tríceps Máquina": "https://images.unsplash.com/photo-1519750157634-b6d11b5aea11?w=600&h=400&fit=crop",
+            "Extensão Overhead": "https://images.unsplash.com/photo-1534368541640-641405b62cc6?w=600&h=400&fit=crop",
+            "Tríceps Polia": "https://images.unsplash.com/photo-1508217539206-fd8641e28e77?w=600&h=400&fit=crop",
+            "Flexão Declinada": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
+            
+            "Desenvolvimento": "https://images.unsplash.com/photo-1549719386-74dfaed0fcca?w=600&h=400&fit=crop",
+            "Elevação Lateral": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
+            "Elevação Frontal": "https://images.unsplash.com/photo-1541534528006-cecffead6c1b?w=600&h=400&fit=crop",
+            "Shrug": "https://images.unsplash.com/photo-1574889616326-4c9be6fb468c?w=600&h=400&fit=crop",
+            "Desenvolvimento Arnold": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop",
+            "Elevação Lateral Máquina": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
+            "Ombro Máquina": "https://images.unsplash.com/photo-1580601204160-fc6ee1ddeb04?w=600&h=400&fit=crop",
+            
+            "Agachamento": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
+            "Leg Press": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop",
+            "Extensora": "https://images.unsplash.com/photo-1599058917212-d217cde476a6?w=600&h=400&fit=crop",
+            "Cadeira Adutora": "https://images.unsplash.com/photo-1518611505868-48510c8d5b63?w=600&h=400&fit=crop",
+            "Rosca de Perna": "https://images.unsplash.com/photo-1519750157634-b6d11b5aea11?w=600&h=400&fit=crop",
+            "Abdutor": "https://images.unsplash.com/photo-1534368541640-641405b62cc6?w=600&h=400&fit=crop",
+            "Leg Curl": "https://images.unsplash.com/photo-1508217539206-fd8641e28e77?w=600&h=400&fit=crop",
+            "Prensa de Perna": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
+            
+            "Aquecimento": "https://images.unsplash.com/photo-1549719386-74dfaed0fcca?w=600&h=400&fit=crop",
+            "HIIT": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
+            "Corrida": "https://images.unsplash.com/photo-1541534528006-cecffead6c1b?w=600&h=400&fit=crop",
+            "Bicicleta Estacionária": "https://images.unsplash.com/photo-1574889616326-4c9be6fb468c?w=600&h=400&fit=crop",
+            "Esteira": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop",
+            "Elíptico": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop",
+            "Pular Corda": "https://images.unsplash.com/photo-1580601204160-fc6ee1ddeb04?w=600&h=400&fit=crop",
+            
+            "Prancha": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&h=400&fit=crop",
+            "Abdominal Dinâmico": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop",
+            "Mountain Climbers": "https://images.unsplash.com/photo-1599058917212-d217cde476a6?w=600&h=400&fit=crop",
+            "Abdominal Máquina": "https://images.unsplash.com/photo-1518611505868-48510c8d5b63?w=600&h=400&fit=crop",
+            "Levantamento de Perna": "https://images.unsplash.com/photo-1519750157634-b6d11b5aea11?w=600&h=400&fit=crop",
+            "Abdominal Reto": "https://images.unsplash.com/photo-1534368541640-641405b62cc6?w=600&h=400&fit=crop",
+            "Prancha Lateral": "https://images.unsplash.com/photo-1508217539206-fd8641e28e77?w=600&h=400&fit=crop",
+            "Crunch": "https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?w=600&h=400&fit=crop"
+        };
+
         let workoutStartTime = null;
         let timerInterval = null;
         let restTimerInterval = null;
@@ -889,79 +935,12 @@
         let currentProfile = null;
         let selectedCategory = 'todas';
         let editingExerciseId = null;
-        let exerciseImagesCache = {};
 
         let profiles = [];
         let workouts = {};
         let checkedExercises = {};
         let workoutHistory = {};
         let customExercises = {};
-
-        // MAPA DE BUSCAS - Termo em inglês para cada exercício
-        const exerciseSearchTerms = {
-            "Supino Reto": "bench press",
-            "Supino Inclinado": "incline bench press",
-            "Supino Declinado": "decline bench press",
-            "Crucifixo no Cabo": "cable fly chest",
-            "Crucifixo com Halteres": "dumbbell fly",
-            "Supino Smith": "smith machine bench",
-            "Flexão": "push up",
-            "Supino Máquina": "chest press machine",
-            "Puxada Frontal": "lat pulldown",
-            "Puxada Atrás": "lat pulldown behind neck",
-            "Remada com Barra": "barbell row",
-            "Remada Unilateral": "dumbbell row",
-            "Remada Máquina": "rowing machine",
-            "Pullover": "pullover exercise",
-            "Barra Fixa": "pull up",
-            "Remada Invertida": "inverted row",
-            "Rosca Inversa": "reverse grip barbell curl",
-            "Rosca Direta": "barbell curl",
-            "Rosca Martelo": "hammer curl",
-            "Rosca Inversa": "reverse curl",
-            "Rosca Alternada": "dumbbell curl",
-            "Rosca Scott": "scott curl",
-            "Rosca Máquina": "bicep curl machine",
-            "Rosca Inclinada": "incline dumbbell curl",
-            "Rosca Concentrada": "concentration curl",
-            "Tríceps Corda": "triceps rope pushdown",
-            "Extensão Tríceps Haltere": "overhead dumbbell extension",
-            "Mergulho no Banco": "bench dips",
-            "Tríceps Máquina": "triceps machine",
-            "Extensão Overhead": "overhead rope extension",
-            "Tríceps Polia": "triceps pushdown",
-            "Flexão Declinada": "decline push up",
-            "Desenvolvimento": "shoulder press",
-            "Elevação Lateral": "lateral raise",
-            "Elevação Frontal": "front dumbbell raise",
-            "Shrug": "barbell shrug",
-            "Desenvolvimento Arnold": "arnold press",
-            "Elevação Lateral Máquina": "lateral raise machine",
-            "Ombro Máquina": "shoulder press machine",
-            "Agachamento": "barbell squat",
-            "Leg Press": "leg press",
-            "Extensora": "leg extension",
-            "Cadeira Adutora": "adductor machine",
-            "Rosca de Perna": "lying leg curl",
-            "Abdutor": "abductor machine",
-            "Leg Curl": "leg curl",
-            "Prensa de Perna": "leg press",
-            "Aquecimento": "cardio warm up",
-            "HIIT": "hiit training",
-            "Corrida": "running",
-            "Bicicleta Estacionária": "stationary bike",
-            "Esteira": "treadmill",
-            "Elíptico": "elliptical machine",
-            "Pular Corda": "jump rope",
-            "Prancha": "plank exercise",
-            "Abdominal Dinâmico": "crunches",
-            "Mountain Climbers": "mountain climbers",
-            "Abdominal Máquina": "ab machine",
-            "Levantamento de Perna": "hanging leg raise",
-            "Abdominal Reto": "sit ups",
-            "Prancha Lateral": "side plank",
-            "Crunch": "crunch"
-        };
 
         const exerciseCategories = {
             'Peito': ['Supino Reto', 'Supino Inclinado', 'Supino Declinado', 'Crucifixo no Cabo', 'Crucifixo com Halteres', 'Supino Smith', 'Flexão', 'Supino Máquina'],
@@ -1103,36 +1082,6 @@
                 ]
             }
         ];
-
-        // ===== FETCH EXERCISE IMAGE FROM UNSPLASH =====
-        async function fetchExerciseImage(exerciseName) {
-            try {
-                if (exerciseImagesCache[exerciseName]) {
-                    return exerciseImagesCache[exerciseName];
-                }
-
-                const searchTerm = exerciseSearchTerms[exerciseName] || exerciseName;
-                const response = await fetch(
-                    `https://api.unsplash.com/search/photos?query=${encodeURIComponent(searchTerm)}&per_page=1&client_id=rIhI2qYjEpkXDKGOPxlvXKGKPJSQh_6MrIiKLLzF_eo`
-                );
-                
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = await response.json();
-
-                if (data.results && data.results.length > 0) {
-                    const imageUrl = data.results[0].urls.regular;
-                    exerciseImagesCache[exerciseName] = imageUrl;
-                    return imageUrl;
-                }
-
-                exerciseImagesCache[exerciseName] = null;
-                return null;
-            } catch (error) {
-                console.log(`Erro buscando imagem para ${exerciseName}:`, error.message);
-                exerciseImagesCache[exerciseName] = null;
-                return null;
-            }
-        }
 
         // ===== PROFILE MANAGEMENT =====
         function loadData() {
@@ -1433,7 +1382,7 @@
             });
         }
 
-        async function filterExercises(category) {
+        function filterExercises(category) {
             selectedCategory = category;
             renderCategories();
             
@@ -1445,20 +1394,14 @@
             const container = document.getElementById('exercisesGrid');
             container.innerHTML = '';
             
-            for (const ex of exercises) {
+            exercises.forEach(ex => {
                 const option = document.createElement('div');
                 option.className = 'exercise-option';
                 
-                let imgHTML = '';
-                const imageUrl = await fetchExerciseImage(ex.name);
-                if (imageUrl) {
-                    imgHTML = `<img src="${imageUrl}" alt="${ex.name}" class="exercise-option-img" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">`;
-                } else {
-                    imgHTML = `<div class="exercise-option-img" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">📸</div>`;
-                }
+                const imageUrl = exerciseImages[ex.name] || 'https://via.placeholder.com/80?text=Sem+Imagem';
                 
                 option.innerHTML = `
-                    ${imgHTML}
+                    <img src="${imageUrl}" alt="${ex.name}" class="exercise-option-img" onerror="this.src='https://via.placeholder.com/80?text=Sem+Imagem'">
                     <div class="exercise-option-content">
                         <div class="exercise-option-name">${ex.name}</div>
                         <div class="exercise-option-desc">${ex.desc}</div>
@@ -1466,7 +1409,7 @@
                 `;
                 option.onclick = () => selectExercise(ex);
                 container.appendChild(option);
-            }
+            });
         }
 
         function selectExercise(exercise) {
@@ -1534,26 +1477,20 @@
             closeCreateExerciseModal();
         }
 
-        async function renderExercisesTab() {
+        function renderExercisesTab() {
             const container = document.getElementById('exercisesList');
             const allExercises = [...exerciseBank, ...customExercises[currentProfile]];
             
             container.innerHTML = '';
             
-            for (const ex of allExercises) {
+            allExercises.forEach(ex => {
                 const card = document.createElement('div');
                 card.className = 'exercise-card';
                 
-                let imgHTML = '';
-                const imageUrl = await fetchExerciseImage(ex.name);
-                if (imageUrl) {
-                    imgHTML = `<img src="${imageUrl}" alt="${ex.name}" class="exercise-card-image" style="width: 100%; height: 180px; object-fit: cover; border-radius: 4px; margin-bottom: 10px;">`;
-                } else {
-                    imgHTML = `<div class="exercise-card-image" style="display: flex; align-items: center; justify-content: center; font-size: 60px;">📸</div>`;
-                }
+                const imageUrl = exerciseImages[ex.name] || 'https://via.placeholder.com/300x180?text=Sem+Imagem';
                 
                 card.innerHTML = `
-                    ${imgHTML}
+                    <img src="${imageUrl}" alt="${ex.name}" class="exercise-card-image" onerror="this.src='https://via.placeholder.com/300x180?text=Sem+Imagem'">
                     <div class="exercise-card-name">${ex.name}</div>
                     <div class="exercise-card-category">${ex.category}</div>
                     <div class="exercise-card-desc">${ex.desc}</div>
@@ -1565,7 +1502,7 @@
                     </div>
                 `;
                 container.appendChild(card);
-            }
+            });
         }
 
         function editCustomExercise(id) {
@@ -1677,11 +1614,13 @@
                     details.className = 'exercise-details';
                     details.id = `details${key}`;
                     
+                    const imageUrl = exerciseImages[ex.name] || 'https://via.placeholder.com/600x400?text=Sem+Imagem';
+                    
                     details.innerHTML = `
+                        <img src="${imageUrl}" alt="${ex.name}" class="exercise-image" onerror="this.src='https://via.placeholder.com/600x400?text=Sem+Imagem'">
                         <button class="video-btn" onclick="window.open('${ex.video}', '_blank')">
                             📹 Ver Vídeo YouTube
                         </button>
-                        <div id="img-container-${key}" class="exercise-image-loading">Buscando imagem...</div>
                         <div class="detail-section">
                             <div class="detail-title">📖 Como Fazer:</div>
                             <div>${ex.desc}</div>
@@ -1699,18 +1638,6 @@
                             <div style="white-space: pre-wrap;">${ex.avoid}</div>
                         </div>
                     `;
-
-                    // Buscar imagem de forma assíncrona
-                    fetchExerciseImage(ex.name).then(imageUrl => {
-                        const imgContainer = document.getElementById(`img-container-${key}`);
-                        if (imgContainer) {
-                            if (imageUrl) {
-                                imgContainer.innerHTML = `<img src="${imageUrl}" alt="${ex.name}" class="exercise-image">`;
-                            } else {
-                                imgContainer.innerHTML = `<div style="text-align: center; color: #999;">Sem imagem disponível 📸</div>`;
-                            }
-                        }
-                    });
 
                     content.appendChild(exercise);
                     content.appendChild(details);
