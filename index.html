@@ -17,47 +17,33 @@
             --secondary: #764ba2;
             --success: #4CAF50;
             --danger: #f44336;
-            --warning: #ff9800;
             --dark: #1a1a2e;
-            --light: #e8e8ff;
+            --bg: #0f0f1e;
             --text: #fff;
             --text-muted: #b0b0d6;
         }
 
-        /* TEMAS DE CORES */
-        body.theme-purple {
+        /* TEMAS */
+        body.theme-dark {
             --primary: #667eea;
             --secondary: #764ba2;
+            --dark: #1a1a2e;
+            --bg: #0f0f1e;
+            --text: #fff;
         }
 
-        body.theme-pink {
-            --primary: #ec4899;
-            --secondary: #be185d;
-        }
-
-        body.theme-green {
-            --primary: #10b981;
-            --secondary: #047857;
-        }
-
-        body.theme-blue {
-            --primary: #0ea5e9;
-            --secondary: #0369a1;
-        }
-
-        body.theme-orange {
-            --primary: #f97316;
-            --secondary: #c2410c;
-        }
-
-        body.theme-red {
-            --primary: #ef4444;
-            --secondary: #b91c1c;
+        body.theme-white {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --dark: #f5f5f5;
+            --bg: #ffffff;
+            --text: #1a1a2e;
+            --text-muted: #666;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--dark) 0%, #0f0f1e 100%);
+            background: linear-gradient(135deg, var(--dark) 0%, var(--bg) 100%);
             color: var(--text);
             min-height: 100vh;
             transition: 0.3s;
@@ -148,72 +134,61 @@
         /* NAVBAR */
         .navbar {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            padding: 15px 0;
+            padding: 12px 0;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
             margin-bottom: 30px;
-            border-radius: 0 0 12px 12px;
         }
 
         .navbar .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .navbar h1 {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
-        .btn-toggle {
+        .navbar h1 {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        select {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: inherit;
+        }
+
+        select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .btn-small {
             background: rgba(255,255,255,0.2);
             border: none;
             color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 6px 10px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
             transition: 0.3s;
         }
 
-        .btn-toggle:hover {
+        .btn-small:hover {
             background: rgba(255,255,255,0.4);
         }
-
-        /* THEME SELECTOR */
-        .theme-selector {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .theme-btn {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .theme-btn:hover, .theme-btn.active {
-            border-color: white;
-            transform: scale(1.2);
-        }
-
-        .theme-purple { background: #667eea; }
-        .theme-pink { background: #ec4899; }
-        .theme-green { background: #10b981; }
-        .theme-blue { background: #0ea5e9; }
-        .theme-orange { background: #f97316; }
-        .theme-red { background: #ef4444; }
 
         /* TABS */
         .tabs {
@@ -307,7 +282,6 @@
             color: var(--primary);
         }
 
-        /* WEEKLY PLAN */
         .week-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -552,17 +526,17 @@
         .modal-content {
             background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
             border: 1px solid rgba(102, 126, 234, 0.3);
-            padding: 30px;
+            padding: 20px;
             border-radius: 12px;
             width: 90%;
-            max-width: 500px;
+            max-width: 350px;
             max-height: 90vh;
             overflow-y: auto;
         }
 
         .modal-close {
             text-align: right;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .modal-close button {
@@ -571,6 +545,12 @@
             color: var(--text-muted);
             font-size: 24px;
             cursor: pointer;
+        }
+
+        .modal-content h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 16px;
         }
 
         .progress-bar {
@@ -622,17 +602,53 @@
 
             .navbar .container {
                 flex-direction: column;
-                gap: 10px;
+                gap: 8px;
             }
 
-            .nav-buttons {
+            .nav-controls {
                 width: 100%;
                 justify-content: space-around;
             }
         }
+
+        /* THEME WHITE */
+        body.theme-white .card {
+            background: rgba(200, 200, 220, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        body.theme-white .stat-card {
+            background: rgba(200, 200, 220, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        body.theme-white .day-card {
+            background: rgba(200, 200, 220, 0.3);
+        }
+
+        body.theme-white .login-box {
+            background: rgba(200, 200, 220, 0.5);
+        }
+
+        body.theme-white .modal-content {
+            background: rgba(240, 240, 250, 0.95);
+        }
+
+        body.theme-white select,
+        body.theme-white .form-group input,
+        body.theme-white .form-group select,
+        body.theme-white .form-group textarea {
+            background: rgba(200, 200, 220, 0.5);
+            border-color: rgba(102, 126, 234, 0.5);
+            color: #1a1a2e;
+        }
+
+        body.theme-white .form-group label {
+            color: var(--primary);
+        }
     </style>
 </head>
-<body class="theme-purple">
+<body class="theme-dark">
     <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="login-screen show">
         <div class="login-box">
@@ -650,22 +666,14 @@
         <!-- NAVBAR -->
         <div class="navbar">
             <div class="container">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <h1>💪 FitTrack Pro</h1>
-                    <div style="font-size: 16px; font-weight: bold;" id="profileDisplay"></div>
-                </div>
-                <div class="nav-buttons">
-                    <div class="theme-selector">
-                        <span style="font-size: 12px;">Tema:</span>
-                        <button class="theme-btn theme-purple active" onclick="setTheme('purple')" title="Roxo"></button>
-                        <button class="theme-btn theme-pink" onclick="setTheme('pink')" title="Rosa"></button>
-                        <button class="theme-btn theme-green" onclick="setTheme('green')" title="Verde"></button>
-                        <button class="theme-btn theme-blue" onclick="setTheme('blue')" title="Azul"></button>
-                        <button class="theme-btn theme-orange" onclick="setTheme('orange')" title="Laranja"></button>
-                        <button class="theme-btn theme-red" onclick="setTheme('red')" title="Vermelho"></button>
-                    </div>
-                    <button class="btn-toggle" onclick="showProfile()">👤 Perfil</button>
-                    <button class="btn-toggle" onclick="switchProfile()">🔄 Trocar</button>
+                <h1>💪 FitTrack Pro</h1>
+                <div class="nav-controls">
+                    <select onchange="setTheme(this.value)">
+                        <option value="dark">🌙 Dark</option>
+                        <option value="white">☀️ White</option>
+                    </select>
+                    <select id="profileSelect" onchange="switchProfile(this.value)"></select>
+                    <button class="btn-small" onclick="openEditProfile()" title="Editar Perfil">✏️</button>
                 </div>
             </div>
         </div>
@@ -807,9 +815,9 @@
     <div id="newProfileModal" class="modal">
         <div class="modal-content">
             <div class="modal-close"><button onclick="closeModal('newProfileModal')">×</button></div>
-            <h2 style="color: var(--primary); margin-bottom: 20px;">➕ Novo Perfil</h2>
+            <h2>➕ Novo Perfil</h2>
             <div class="form-group">
-                <label>Nome do Perfil</label>
+                <label>Nome</label>
                 <input type="text" id="newProfileName" placeholder="Ex: João">
             </div>
             <div class="form-group">
@@ -826,18 +834,18 @@
         </div>
     </div>
 
-    <!-- MODAL PERFIL -->
-    <div id="profileModal" class="modal">
+    <!-- MODAL EDITAR PERFIL -->
+    <div id="editProfileModal" class="modal">
         <div class="modal-content">
-            <div class="modal-close"><button onclick="closeModal('profileModal')">×</button></div>
-            <h2 style="color: var(--primary); margin-bottom: 20px;">👤 Seu Perfil</h2>
+            <div class="modal-close"><button onclick="closeModal('editProfileModal')">×</button></div>
+            <h2>✏️ Editar Perfil</h2>
             <div class="form-group">
                 <label>Nome</label>
-                <input type="text" id="profileName" placeholder="Seu nome">
+                <input type="text" id="editProfileName" placeholder="Seu nome">
             </div>
             <div class="form-group">
                 <label>Objetivo</label>
-                <select id="profileGoal">
+                <select id="editProfileGoal">
                     <option value="">Selecione...</option>
                     <option value="ganho">💪 Ganho Muscular</option>
                     <option value="perda">🔥 Perda de Peso</option>
@@ -845,7 +853,7 @@
                     <option value="saude">❤️ Saúde Geral</option>
                 </select>
             </div>
-            <button class="btn success" onclick="saveProfile()" style="width: 100%;">✅ Salvar</button>
+            <button class="btn success" onclick="saveEditedProfile()" style="width: 100%;">✅ Salvar</button>
         </div>
     </div>
 
@@ -895,15 +903,6 @@
             showApp();
         }
 
-        function saveProfile() {
-            appData.name = document.getElementById('profileName').value;
-            appData.goal = document.getElementById('profileGoal').value;
-            localStorage.setItem(`fittrack_${currentProfile}`, JSON.stringify(appData));
-            closeModal('profileModal');
-            renderLoginScreen();
-            alert('✓ Perfil salvo!');
-        }
-
         function renderLoginScreen() {
             const cont = document.getElementById('profilesList');
             cont.innerHTML = '';
@@ -922,6 +921,20 @@
             document.getElementById('newProfileModal').classList.add('show');
         }
 
+        function openEditProfile() {
+            document.getElementById('editProfileName').value = appData.name || '';
+            document.getElementById('editProfileGoal').value = appData.goal || '';
+            document.getElementById('editProfileModal').classList.add('show');
+        }
+
+        function saveEditedProfile() {
+            appData.name = document.getElementById('editProfileName').value || currentProfile;
+            appData.goal = document.getElementById('editProfileGoal').value;
+            localStorage.setItem(`fittrack_${currentProfile}`, JSON.stringify(appData));
+            closeModal('editProfileModal');
+            alert('✓ Perfil atualizado!');
+        }
+
         function createProfile() {
             const name = document.getElementById('newProfileName').value.trim();
             const goal = document.getElementById('newProfileGoal').value;
@@ -938,19 +951,13 @@
 
             closeModal('newProfileModal');
             renderLoginScreen();
-            alert(`✓ Perfil "${name}" criado! Clique para usar.`);
-        }
-
-        function showProfile() {
-            document.getElementById('profileName').value = appData.name || '';
-            document.getElementById('profileGoal').value = appData.goal || '';
-            document.getElementById('profileModal').classList.add('show');
+            alert(`✓ Perfil criado!`);
         }
 
         function showApp() {
             document.getElementById('loginScreen').classList.remove('show');
             document.getElementById('appScreen').style.display = 'block';
-            document.getElementById('profileDisplay').textContent = `👤 ${currentProfile}`;
+            renderProfileSelect();
             renderDashboard();
             renderWeekly();
             renderExercisesBank();
@@ -958,19 +965,28 @@
             renderExercisesLogged();
         }
 
-        function switchProfile() {
-            localStorage.setItem(`fittrack_${currentProfile}`, JSON.stringify(appData));
-            currentProfile = null;
-            document.getElementById('appScreen').style.display = 'none';
-            document.getElementById('loginScreen').classList.add('show');
-            renderLoginScreen();
+        function renderProfileSelect() {
+            const sel = document.getElementById('profileSelect');
+            sel.innerHTML = '';
+            profiles.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p;
+                opt.textContent = p;
+                opt.selected = p === currentProfile;
+                sel.appendChild(opt);
+            });
+        }
+
+        function switchProfile(name) {
+            if (name && name !== currentProfile) {
+                localStorage.setItem(`fittrack_${currentProfile}`, JSON.stringify(appData));
+                loadProfile(name);
+            }
         }
 
         function setTheme(theme) {
             document.body.className = `theme-${theme}`;
             localStorage.setItem('fittrackTheme', theme);
-            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`.theme-${theme}`).classList.add('active');
         }
 
         function switchTab(e, tab) {
@@ -989,8 +1005,7 @@
 
             let summary = '<ul class="exercise-list">';
             Object.keys(appData.weeklyPlan).forEach(day => {
-                const done = appData.todayExercises ? appData.todayExercises.length : 0;
-                summary += `<li class="exercise-item"><span>${day}: ${done > 0 ? done : 0}/5</span></li>`;
+                summary += `<li class="exercise-item"><span>${day}: 0/5</span></li>`;
             });
             summary += '</ul>';
             document.getElementById('weekSummary').innerHTML = summary;
@@ -1136,7 +1151,7 @@
 
         function renderExercisesBank() {
             if (!appData.customExercises || appData.customExercises.length === 0) {
-                document.getElementById('exercisesBank').innerHTML = '<div class="empty-state"><i class="fas fa-plus"></i><p>Nenhum exercício customizado. Crie um!</p></div>';
+                document.getElementById('exercisesBank').innerHTML = '<div class="empty-state"><i class="fas fa-plus"></i><p>Nenhum exercício customizado</p></div>';
                 return;
             }
 
@@ -1173,8 +1188,7 @@
             document.getElementById(id).classList.remove('show');
         }
 
-        // INICIALIZAR
-        const savedTheme = localStorage.getItem('fittrackTheme') || 'purple';
+        const savedTheme = localStorage.getItem('fittrackTheme') || 'dark';
         setTheme(savedTheme);
         loadProfiles();
     </script>
