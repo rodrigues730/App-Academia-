@@ -24,6 +24,37 @@
             --text-muted: #b0b0d6;
         }
 
+        /* TEMAS DE CORES */
+        body.theme-purple {
+            --primary: #667eea;
+            --secondary: #764ba2;
+        }
+
+        body.theme-pink {
+            --primary: #ec4899;
+            --secondary: #be185d;
+        }
+
+        body.theme-green {
+            --primary: #10b981;
+            --secondary: #047857;
+        }
+
+        body.theme-blue {
+            --primary: #0ea5e9;
+            --secondary: #0369a1;
+        }
+
+        body.theme-orange {
+            --primary: #f97316;
+            --secondary: #c2410c;
+        }
+
+        body.theme-red {
+            --primary: #ef4444;
+            --secondary: #b91c1c;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--dark) 0%, #0f0f1e 100%);
@@ -36,6 +67,82 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
+        }
+
+        /* LOGIN SCREEN */
+        .login-screen {
+            display: none;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-screen.show {
+            display: flex;
+        }
+
+        .login-box {
+            background: linear-gradient(135deg, rgba(42, 42, 62, 0.8) 0%, rgba(26, 26, 46, 0.8) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 40px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-title {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .profile-btn {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .profile-btn:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .btn-new-profile {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-new-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
         }
 
         /* NAVBAR */
@@ -61,6 +168,7 @@
         .nav-buttons {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .btn-toggle {
@@ -77,6 +185,35 @@
         .btn-toggle:hover {
             background: rgba(255,255,255,0.4);
         }
+
+        /* THEME SELECTOR */
+        .theme-selector {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .theme-btn {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .theme-btn:hover, .theme-btn.active {
+            border-color: white;
+            transform: scale(1.2);
+        }
+
+        .theme-purple { background: #667eea; }
+        .theme-pink { background: #ec4899; }
+        .theme-green { background: #10b981; }
+        .theme-blue { background: #0ea5e9; }
+        .theme-orange { background: #f97316; }
+        .theme-red { background: #ef4444; }
 
         /* TABS */
         .tabs {
@@ -315,6 +452,31 @@
             box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
         }
 
+        .form-group input[type="file"] {
+            padding: 8px;
+        }
+
+        /* IMAGE PREVIEW */
+        .image-preview {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            background: rgba(42, 42, 62, 0.8);
+            border: 2px dashed rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         /* HISTORY */
         .history-list {
             display: grid;
@@ -326,9 +488,22 @@
             padding: 15px;
             border-radius: 8px;
             border-left: 4px solid var(--success);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        }
+
+        .history-image {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .history-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .history-date {
@@ -337,9 +512,10 @@
         }
 
         .history-time {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: var(--success);
+            margin-top: 8px;
         }
 
         /* EMPTY STATE */
@@ -353,6 +529,64 @@
             font-size: 48px;
             margin-bottom: 15px;
             opacity: 0.5;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .modal-close button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, var(--primary) 100%);
+            width: 0%;
+            transition: width 0.3s;
         }
 
         /* RESPONSIVE */
@@ -385,201 +619,210 @@
                 padding: 10px 15px;
                 font-size: 12px;
             }
-        }
 
-        /* MODAL */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            align-items: center;
-            justify-content: center;
-        }
+            .navbar .container {
+                flex-direction: column;
+                gap: 10px;
+            }
 
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-        }
-
-        .modal-close {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-
-        .modal-close button {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(102, 126, 234, 0.2);
-            border-radius: 10px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--success) 0%, var(--primary) 100%);
-            width: 0%;
-            transition: width 0.3s;
+            .nav-buttons {
+                width: 100%;
+                justify-content: space-around;
+            }
         }
     </style>
 </head>
-<body>
-    <!-- NAVBAR -->
-    <div class="navbar">
+<body class="theme-purple">
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="login-screen show">
+        <div class="login-box">
+            <div class="login-title">💪 FitTrack Pro</div>
+            <div style="margin-bottom: 20px;">
+                <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 15px; text-align: center;">Selecione seu perfil:</p>
+                <div class="profiles-grid" id="profilesList"></div>
+            </div>
+            <button class="btn-new-profile" onclick="openNewProfileModal()">➕ Novo Perfil</button>
+        </div>
+    </div>
+
+    <!-- APP SCREEN -->
+    <div id="appScreen" style="display: none;">
+        <!-- NAVBAR -->
+        <div class="navbar">
+            <div class="container">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <h1>💪 FitTrack Pro</h1>
+                    <div style="font-size: 16px; font-weight: bold;" id="profileDisplay"></div>
+                </div>
+                <div class="nav-buttons">
+                    <div class="theme-selector">
+                        <span style="font-size: 12px;">Tema:</span>
+                        <button class="theme-btn theme-purple active" onclick="setTheme('purple')" title="Roxo"></button>
+                        <button class="theme-btn theme-pink" onclick="setTheme('pink')" title="Rosa"></button>
+                        <button class="theme-btn theme-green" onclick="setTheme('green')" title="Verde"></button>
+                        <button class="theme-btn theme-blue" onclick="setTheme('blue')" title="Azul"></button>
+                        <button class="theme-btn theme-orange" onclick="setTheme('orange')" title="Laranja"></button>
+                        <button class="theme-btn theme-red" onclick="setTheme('red')" title="Vermelho"></button>
+                    </div>
+                    <button class="btn-toggle" onclick="showProfile()">👤 Perfil</button>
+                    <button class="btn-toggle" onclick="switchProfile()">🔄 Trocar</button>
+                </div>
+            </div>
+        </div>
+
         <div class="container">
-            <h1>💪 FitTrack Pro</h1>
-            <div class="nav-buttons">
-                <button class="btn-toggle" onclick="showProfile()">👤 Perfil</button>
-                <button class="btn-toggle" onclick="toggleTheme()">🌙 Tema</button>
+            <!-- TABS -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab(event, 'dashboard')">📊 Dashboard</button>
+                <button class="tab-btn" onclick="switchTab(event, 'weekly')">📅 Semana</button>
+                <button class="tab-btn" onclick="switchTab(event, 'timer')">⏱️ Treino</button>
+                <button class="tab-btn" onclick="switchTab(event, 'exercises')">📋 Exercícios</button>
+                <button class="tab-btn" onclick="switchTab(event, 'history')">📈 Histórico</button>
+            </div>
+
+            <!-- DASHBOARD -->
+            <div id="dashboard" class="tab-content active">
+                <div class="dashboard">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalWorkouts">0</div>
+                        <div class="stat-label">Treinos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalMinutes">0</div>
+                        <div class="stat-label">Minutos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="weekProgress">0</div>
+                        <div class="stat-label">Progresso</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="streak">0</div>
+                        <div class="stat-label">Sequência</div>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📊 Resumo da Semana</div>
+                    <div id="weekSummary"></div>
+                </div>
+            </div>
+
+            <!-- WEEKLY PLAN -->
+            <div id="weekly" class="tab-content">
+                <div class="card">
+                    <div class="card-title">📅 Plano Semanal (5 Exercícios/dia)</div>
+                    <div class="week-grid" id="weeklyPlan"></div>
+                </div>
+            </div>
+
+            <!-- TIMER & EXERCISES -->
+            <div id="timer" class="tab-content">
+                <div class="timer-section">
+                    <div style="color: rgba(255,255,255,0.8); font-size: 14px;">⏱️ Cronômetro do Treino</div>
+                    <div class="timer-display" id="timerDisplay">00:00:00</div>
+                    <div class="timer-buttons">
+                        <button class="btn success" id="btnStart" onclick="startTimer()">▶️ Iniciar</button>
+                        <button class="btn danger" id="btnStop" onclick="stopTimer()" disabled>⏹️ Pausar</button>
+                        <button class="btn" onclick="resetTimer()">🔄 Resetar</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📝 Registrar Exercício com Foto</div>
+                    <div class="form-group">
+                        <label>Exercício</label>
+                        <input type="text" id="exerciseName" placeholder="Ex: Supino Reto">
+                    </div>
+                    <div class="form-group">
+                        <label>Séries</label>
+                        <input type="number" id="exerciseSeries" placeholder="Ex: 4" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Repetições</label>
+                        <input type="number" id="exerciseReps" placeholder="Ex: 10" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Peso (kg)</label>
+                        <input type="number" id="exerciseWeight" placeholder="Ex: 100" min="0" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label>📸 Foto do Treino</label>
+                        <input type="file" id="exerciseImage" accept="image/*">
+                        <div class="image-preview" id="imagePreview"></div>
+                    </div>
+                    <button class="btn success" onclick="logExercise()" style="width: 100%;">✅ Registrar</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📊 Exercícios Registrados Hoje</div>
+                    <div id="exercisesLogged"></div>
+                </div>
+            </div>
+
+            <!-- EXERCÍCIOS -->
+            <div id="exercises" class="tab-content">
+                <div class="card">
+                    <div class="card-title">➕ Criar Novo Exercício</div>
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input type="text" id="newExerciseName" placeholder="Ex: Supino Inclinado">
+                    </div>
+                    <div class="form-group">
+                        <label>Grupo Muscular</label>
+                        <select id="newExerciseGroup">
+                            <option value="">Selecione...</option>
+                            <option value="peito">🔴 Peito</option>
+                            <option value="costas">🟠 Costas</option>
+                            <option value="biceps">🟡 Bíceps</option>
+                            <option value="triceps">🟢 Tríceps</option>
+                            <option value="ombros">🔵 Ombros</option>
+                            <option value="pernas">🟣 Pernas</option>
+                            <option value="core">⚪ Core</option>
+                        </select>
+                    </div>
+                    <button class="btn success" onclick="createCustomExercise()" style="width: 100%;">✅ Criar</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📋 Banco de Exercícios</div>
+                    <div id="exercisesBank"></div>
+                </div>
+            </div>
+
+            <!-- HISTÓRICO -->
+            <div id="history" class="tab-content">
+                <div class="card">
+                    <div class="card-title">📈 Histórico de Treinos</div>
+                    <div id="historyList"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <!-- DASHBOARD -->
-        <div id="dashboard" class="tab-content active">
-            <div class="dashboard">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalWorkouts">0</div>
-                    <div class="stat-label">Treinos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalMinutes">0</div>
-                    <div class="stat-label">Minutos</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="weekProgress">0</div>
-                    <div class="stat-label">Progresso Semana</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="streak">0</div>
-                    <div class="stat-label">Sequência</div>
-                </div>
+    <!-- MODAL NOVO PERFIL -->
+    <div id="newProfileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-close"><button onclick="closeModal('newProfileModal')">×</button></div>
+            <h2 style="color: var(--primary); margin-bottom: 20px;">➕ Novo Perfil</h2>
+            <div class="form-group">
+                <label>Nome do Perfil</label>
+                <input type="text" id="newProfileName" placeholder="Ex: João">
             </div>
-
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressBar"></div>
+            <div class="form-group">
+                <label>Objetivo</label>
+                <select id="newProfileGoal">
+                    <option value="">Selecione...</option>
+                    <option value="ganho">💪 Ganho Muscular</option>
+                    <option value="perda">🔥 Perda de Peso</option>
+                    <option value="resistencia">⚡ Resistência</option>
+                    <option value="saude">❤️ Saúde Geral</option>
+                </select>
             </div>
-
-            <div class="card">
-                <div class="card-title">📊 Resumo da Semana</div>
-                <div id="weekSummary"></div>
-            </div>
-        </div>
-
-        <!-- TABS NAVIGATION -->
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab(event, 'dashboard')">📊 Dashboard</button>
-            <button class="tab-btn" onclick="switchTab(event, 'weekly')">📅 Semana</button>
-            <button class="tab-btn" onclick="switchTab(event, 'timer')">⏱️ Treino</button>
-            <button class="tab-btn" onclick="switchTab(event, 'exercises')">📋 Exercícios</button>
-            <button class="tab-btn" onclick="switchTab(event, 'history')">📈 Histórico</button>
-        </div>
-
-        <!-- WEEKLY PLAN -->
-        <div id="weekly" class="tab-content">
-            <div class="card">
-                <div class="card-title">📅 Plano Semanal (5 Exercícios/dia)</div>
-                <div class="week-grid" id="weeklyPlan"></div>
-            </div>
-        </div>
-
-        <!-- TIMER -->
-        <div id="timer" class="tab-content">
-            <div class="timer-section">
-                <div style="color: rgba(255,255,255,0.8); font-size: 14px;">⏱️ Cronômetro do Treino</div>
-                <div class="timer-display" id="timerDisplay">00:00:00</div>
-                <div class="timer-buttons">
-                    <button class="btn success" id="btnStart" onclick="startTimer()">▶️ Iniciar</button>
-                    <button class="btn danger" id="btnStop" onclick="stopTimer()" disabled>⏹️ Pausar</button>
-                    <button class="btn" onclick="resetTimer()">🔄 Resetar</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">📝 Registrar Exercício</div>
-                <div class="form-group">
-                    <label>Exercício</label>
-                    <input type="text" id="exerciseName" placeholder="Ex: Supino Reto">
-                </div>
-                <div class="form-group">
-                    <label>Séries</label>
-                    <input type="number" id="exerciseSeries" placeholder="Ex: 4" min="1">
-                </div>
-                <div class="form-group">
-                    <label>Repetições</label>
-                    <input type="number" id="exerciseReps" placeholder="Ex: 10" min="1">
-                </div>
-                <div class="form-group">
-                    <label>Peso (kg)</label>
-                    <input type="number" id="exerciseWeight" placeholder="Ex: 100" min="0" step="0.5">
-                </div>
-                <button class="btn success" onclick="logExercise()" style="width: 100%;">✅ Registrar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-title">📊 Exercícios Registrados</div>
-                <div id="exercisesLogged"></div>
-            </div>
-        </div>
-
-        <!-- EXERCÍCIOS -->
-        <div id="exercises" class="tab-content">
-            <div class="card">
-                <div class="card-title">➕ Criar Novo Exercício</div>
-                <div class="form-group">
-                    <label>Nome</label>
-                    <input type="text" id="newExerciseName" placeholder="Ex: Supino Inclinado">
-                </div>
-                <div class="form-group">
-                    <label>Grupo Muscular</label>
-                    <select id="newExerciseGroup">
-                        <option value="">Selecione...</option>
-                        <option value="peito">🔴 Peito</option>
-                        <option value="costas">🟠 Costas</option>
-                        <option value="biceps">🟡 Bíceps</option>
-                        <option value="triceps">🟢 Tríceps</option>
-                        <option value="ombros">🔵 Ombros</option>
-                        <option value="pernas">🟣 Pernas</option>
-                        <option value="core">⚪ Core</option>
-                    </select>
-                </div>
-                <button class="btn success" onclick="createCustomExercise()" style="width: 100%;">✅ Criar</button>
-            </div>
-
-            <div class="card">
-                <div class="card-title">📋 Banco de Exercícios</div>
-                <div id="exercisesBank"></div>
-            </div>
-        </div>
-
-        <!-- HISTÓRICO -->
-        <div id="history" class="tab-content">
-            <div class="card">
-                <div class="card-title">📈 Histórico de Treinos</div>
-                <div id="historyList"></div>
-            </div>
+            <button class="btn success" onclick="createProfile()" style="width: 100%;">✅ Criar</button>
         </div>
     </div>
 
@@ -587,7 +830,7 @@
     <div id="profileModal" class="modal">
         <div class="modal-content">
             <div class="modal-close"><button onclick="closeModal('profileModal')">×</button></div>
-            <h2>👤 Seu Perfil</h2>
+            <h2 style="color: var(--primary); margin-bottom: 20px;">👤 Seu Perfil</h2>
             <div class="form-group">
                 <label>Nome</label>
                 <input type="text" id="profileName" placeholder="Seu nome">
@@ -615,31 +858,119 @@
             'Sexta': { subtitle: '🔥 HIIT + Core (Queima)', exercises: ['Mountain Climbers', 'Prancha', 'Abdominal', 'Crunch', 'Levantamento Perna'] }
         };
 
-        let appData = {
-            profile: { name: 'Eduardo', goal: '' },
-            weeklyPlan: JSON.parse(JSON.stringify(INITIAL_PLAN)),
-            history: [],
-            customExercises: [],
-            todayExercises: [],
-            timerSeconds: 0,
-            timerRunning: false
-        };
-
+        let profiles = [];
+        let currentProfile = null;
+        let appData = {};
         let timerInterval = null;
 
-        function loadData() {
-            const saved = localStorage.getItem('fittrackData');
-            if (saved) {
-                appData = { ...appData, ...JSON.parse(saved) };
+        function loadProfiles() {
+            profiles = JSON.parse(localStorage.getItem('fittrackProfiles') || '[]');
+            if (profiles.length === 0) {
+                profiles = ['Eduardo'];
+                localStorage.setItem('fittrackProfiles', JSON.stringify(profiles));
             }
+            renderLoginScreen();
+        }
+
+        function createDefaultProfile(name) {
+            return {
+                name: name,
+                goal: '',
+                weeklyPlan: JSON.parse(JSON.stringify(INITIAL_PLAN)),
+                history: [],
+                customExercises: [],
+                todayExercises: []
+            };
+        }
+
+        function loadProfile(name) {
+            currentProfile = name;
+            const saved = localStorage.getItem(`fittrack_${name}`);
+            if (saved) {
+                appData = JSON.parse(saved);
+            } else {
+                appData = createDefaultProfile(name);
+            }
+            localStorage.setItem('currentProfile', name);
+            showApp();
+        }
+
+        function saveProfile() {
+            appData.name = document.getElementById('profileName').value;
+            appData.goal = document.getElementById('profileGoal').value;
+            localStorage.setItem(`fittrack_${currentProfile}`, JSON.stringify(appData));
+            closeModal('profileModal');
+            renderLoginScreen();
+            alert('✓ Perfil salvo!');
+        }
+
+        function renderLoginScreen() {
+            const cont = document.getElementById('profilesList');
+            cont.innerHTML = '';
+            profiles.forEach(p => {
+                const btn = document.createElement('button');
+                btn.className = 'profile-btn';
+                btn.textContent = `👤 ${p}${p === 'Eduardo' ? ' ⭐' : ''}`;
+                btn.onclick = () => loadProfile(p);
+                cont.appendChild(btn);
+            });
+        }
+
+        function openNewProfileModal() {
+            document.getElementById('newProfileName').value = '';
+            document.getElementById('newProfileGoal').value = '';
+            document.getElementById('newProfileModal').classList.add('show');
+        }
+
+        function createProfile() {
+            const name = document.getElementById('newProfileName').value.trim();
+            const goal = document.getElementById('newProfileGoal').value;
+
+            if (!name) { alert('Digite um nome!'); return; }
+            if (profiles.includes(name)) { alert('Perfil já existe!'); return; }
+
+            profiles.push(name);
+            const newProfile = createDefaultProfile(name);
+            newProfile.goal = goal;
+
+            localStorage.setItem('fittrackProfiles', JSON.stringify(profiles));
+            localStorage.setItem(`fittrack_${name}`, JSON.stringify(newProfile));
+
+            closeModal('newProfileModal');
+            renderLoginScreen();
+            alert(`✓ Perfil "${name}" criado! Clique para usar.`);
+        }
+
+        function showProfile() {
+            document.getElementById('profileName').value = appData.name || '';
+            document.getElementById('profileGoal').value = appData.goal || '';
+            document.getElementById('profileModal').classList.add('show');
+        }
+
+        function showApp() {
+            document.getElementById('loginScreen').classList.remove('show');
+            document.getElementById('appScreen').style.display = 'block';
+            document.getElementById('profileDisplay').textContent = `👤 ${currentProfile}`;
             renderDashboard();
             renderWeekly();
             renderExercisesBank();
             renderHistory();
+            renderExercisesLogged();
         }
 
-        function saveData() {
-            localStorage.setItem('fittrackData', JSON.stringify(appData));
+        function switchProfile() {
+            localStorage.setItem(`fittrack_${currentProfile}`, JSON.stringify(appData));
+            currentProfile = null;
+            document.getElementById('appScreen').style.display = 'none';
+            document.getElementById('loginScreen').classList.add('show');
+            renderLoginScreen();
+        }
+
+        function setTheme(theme) {
+            document.body.className = `theme-${theme}`;
+            localStorage.setItem('fittrackTheme', theme);
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.theme-${theme}`).classList.add('active');
         }
 
         function switchTab(e, tab) {
@@ -650,17 +981,16 @@
         }
 
         function renderDashboard() {
-            const totalTime = appData.history.reduce((sum, h) => sum + h.duration, 0);
-            document.getElementById('totalWorkouts').textContent = appData.history.length;
+            const totalTime = appData.history ? appData.history.reduce((sum, h) => sum + (h.duration || 0), 0) : 0;
+            document.getElementById('totalWorkouts').textContent = appData.history ? appData.history.length : 0;
             document.getElementById('totalMinutes').textContent = Math.floor(totalTime / 60);
             document.getElementById('weekProgress').textContent = '75%';
             document.getElementById('streak').textContent = '5 dias';
 
             let summary = '<ul class="exercise-list">';
             Object.keys(appData.weeklyPlan).forEach(day => {
-                const done = appData.weeklyPlan[day].exercises.filter(e => appData.todayExercises.includes(e)).length;
-                const total = appData.weeklyPlan[day].exercises.length;
-                summary += `<li class="exercise-item"><span>${day}: ${done}/${total}</span></li>`;
+                const done = appData.todayExercises ? appData.todayExercises.length : 0;
+                summary += `<li class="exercise-item"><span>${day}: ${done > 0 ? done : 0}/5</span></li>`;
             });
             summary += '</ul>';
             document.getElementById('weekSummary').innerHTML = summary;
@@ -675,38 +1005,28 @@
                     <div class="day-subtitle">${plan.subtitle}</div>
                     <ul class="exercise-list">`;
                 plan.exercises.forEach(ex => {
-                    const done = appData.todayExercises.includes(ex);
-                    html += `<li class="exercise-item">
-                        <span style="flex:1;">${ex}</span>
-                        <button class="check-btn ${done ? 'done' : ''}" onclick="toggleExercise('${ex}')">${done ? '✓' : '○'}</button>
-                    </li>`;
+                    html += `<li class="exercise-item"><span>${ex}</span></li>`;
                 });
                 html += '</ul></div>';
             });
             document.getElementById('weeklyPlan').innerHTML = html;
         }
 
-        function toggleExercise(name) {
-            const idx = appData.todayExercises.indexOf(name);
-            if (idx > -1) appData.todayExercises.splice(idx, 1);
-            else appData.todayExercises.push(name);
-            saveData();
-            renderWeekly();
-            renderDashboard();
-        }
-
         function startTimer() {
-            appData.timerRunning = true;
             document.getElementById('btnStart').disabled = true;
             document.getElementById('btnStop').disabled = false;
+            let seconds = 0;
             timerInterval = setInterval(() => {
-                appData.timerSeconds++;
-                updateTimerDisplay();
+                seconds++;
+                const h = Math.floor(seconds / 3600);
+                const m = Math.floor((seconds % 3600) / 60);
+                const s = seconds % 60;
+                document.getElementById('timerDisplay').textContent =
+                    String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
             }, 1000);
         }
 
         function stopTimer() {
-            appData.timerRunning = false;
             clearInterval(timerInterval);
             document.getElementById('btnStart').disabled = false;
             document.getElementById('btnStop').disabled = true;
@@ -714,60 +1034,81 @@
 
         function resetTimer() {
             stopTimer();
-            appData.timerSeconds = 0;
-            updateTimerDisplay();
+            document.getElementById('timerDisplay').textContent = '00:00:00';
         }
 
-        function updateTimerDisplay() {
-            const h = Math.floor(appData.timerSeconds / 3600);
-            const m = Math.floor((appData.timerSeconds % 3600) / 60);
-            const s = appData.timerSeconds % 60;
-            document.getElementById('timerDisplay').textContent = 
-                String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-        }
+        document.getElementById('exerciseImage')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
         function logExercise() {
             const name = document.getElementById('exerciseName').value;
             const series = document.getElementById('exerciseSeries').value;
             const reps = document.getElementById('exerciseReps').value;
             const weight = document.getElementById('exerciseWeight').value;
+            const imageFile = document.getElementById('exerciseImage').files[0];
 
-            if (!name || !series || !reps) {
-                alert('Preencha todos os campos!');
-                return;
-            }
+            if (!name || !series || !reps) { alert('Preencha nome, séries e repetições!'); return; }
 
             if (!appData.todayExercises) appData.todayExercises = [];
-            appData.todayExercises.push({
-                name, series: parseInt(series), reps: parseInt(reps), weight: parseFloat(weight || 0)
-            });
 
+            const exercise = {
+                name, series: parseInt(series), reps: parseInt(reps), weight: parseFloat(weight || 0),
+                date: new Date().toLocaleString('pt-BR'),
+                image: null
+            };
+
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    exercise.image = event.target.result;
+                    appData.todayExercises.push(exercise);
+                    localStorage.setItem(`fittrack_${currentProfile}`, JSON.stringify(appData));
+                    resetExerciseForm();
+                    renderExercisesLogged();
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                appData.todayExercises.push(exercise);
+                localStorage.setItem(`fittrack_${currentProfile}`, JSON.stringify(appData));
+                resetExerciseForm();
+                renderExercisesLogged();
+            }
+        }
+
+        function resetExerciseForm() {
             document.getElementById('exerciseName').value = '';
             document.getElementById('exerciseSeries').value = '';
             document.getElementById('exerciseReps').value = '';
             document.getElementById('exerciseWeight').value = '';
-
-            renderExercisesLogged();
-            saveData();
+            document.getElementById('exerciseImage').value = '';
+            document.getElementById('imagePreview').innerHTML = '';
         }
 
         function renderExercisesLogged() {
             if (!appData.todayExercises || appData.todayExercises.length === 0) {
-                document.getElementById('exercisesLogged').innerHTML = '<div class="empty-state"><i class="fas fa-dumbbell"></i><p>Nenhum exercício registrado</p></div>';
+                document.getElementById('exercisesLogged').innerHTML = '<div class="empty-state"><i class="fas fa-dumbbell"></i><p>Nenhum exercício registrado hoje</p></div>';
                 return;
             }
 
             let html = '<div class="history-list">';
             appData.todayExercises.forEach((ex, idx) => {
-                if (typeof ex === 'object') {
-                    html += `<div class="history-item">
-                        <div>
-                            <strong>${ex.name}</strong><br>
-                            <small>${ex.series}x${ex.reps} - ${ex.weight || 0}kg</small>
-                        </div>
-                        <button class="btn" onclick="removeExerciseLog(${idx})">✕</button>
-                    </div>`;
+                html += `<div class="history-item">
+                    <strong>${ex.name}</strong><br>
+                    <small>${ex.series}x${ex.reps} - ${ex.weight}kg</small>
+                    <small style="display: block; margin-top: 5px; color: var(--text-muted);">${ex.date}</small>`;
+                if (ex.image) {
+                    html += `<div class="history-image"><img src="${ex.image}" alt="Exercício"></div>`;
                 }
+                html += `<button class="btn" onclick="removeExerciseLog(${idx})" style="margin-top: 10px;">✕ Remover</button></div>`;
             });
             html += '</div>';
             document.getElementById('exercisesLogged').innerHTML = html;
@@ -775,37 +1116,41 @@
 
         function removeExerciseLog(idx) {
             appData.todayExercises.splice(idx, 1);
+            localStorage.setItem(`fittrack_${currentProfile}`, JSON.stringify(appData));
             renderExercisesLogged();
-            saveData();
         }
 
         function createCustomExercise() {
             const name = document.getElementById('newExerciseName').value;
             const group = document.getElementById('newExerciseGroup').value;
             if (!name || !group) { alert('Preencha todos os campos!'); return; }
+
+            if (!appData.customExercises) appData.customExercises = [];
             appData.customExercises.push({ name, group });
+            localStorage.setItem(`fittrack_${currentProfile}`, JSON.stringify(appData));
             document.getElementById('newExerciseName').value = '';
             document.getElementById('newExerciseGroup').value = '';
             renderExercisesBank();
-            saveData();
             alert('✓ Exercício criado!');
         }
 
         function renderExercisesBank() {
+            if (!appData.customExercises || appData.customExercises.length === 0) {
+                document.getElementById('exercisesBank').innerHTML = '<div class="empty-state"><i class="fas fa-plus"></i><p>Nenhum exercício customizado. Crie um!</p></div>';
+                return;
+            }
+
             let html = '<div class="history-list">';
             appData.customExercises.forEach(ex => {
-                html += `<div class="history-item"><span>${ex.name} (${ex.group})</span></div>`;
+                html += `<div class="history-item"><strong>${ex.name}</strong><br><small>${ex.group}</small></div>`;
             });
-            if (appData.customExercises.length === 0) {
-                html += '<div class="empty-state">Nenhum exercício customizado</div>';
-            }
             html += '</div>';
             document.getElementById('exercisesBank').innerHTML = html;
         }
 
         function renderHistory() {
-            if (appData.history.length === 0) {
-                document.getElementById('historyList').innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>Nenhum treino registrado</p></div>';
+            if (!appData.history || appData.history.length === 0) {
+                document.getElementById('historyList').innerHTML = '<div class="empty-state"><i class="fas fa-history"></i><p>Nenhum treino finalizado</p></div>';
                 return;
             }
 
@@ -813,42 +1158,25 @@
             [...appData.history].reverse().forEach(h => {
                 const d = new Date(h.date);
                 html += `<div class="history-item">
-                    <div>
-                        <strong>${d.toLocaleDateString('pt-BR')}</strong><br>
-                        <small>${d.toLocaleDateString('pt-BR', {weekday:'long'})}</small>
-                    </div>
-                    <div class="history-time">⏱️ ${Math.floor(h.duration / 60)}m</div>
-                </div>`;
+                    <strong>${d.toLocaleDateString('pt-BR')}</strong><br>
+                    <small>${d.toLocaleDateString('pt-BR', {weekday:'long'})}</small>`;
+                if (h.image) {
+                    html += `<div class="history-image"><img src="${h.image}" alt="Treino"></div>`;
+                }
+                html += `<div class="history-time">⏱️ ${Math.floor(h.duration / 60)}m</div></div>`;
             });
             html += '</div>';
             document.getElementById('historyList').innerHTML = html;
-        }
-
-        function showProfile() {
-            document.getElementById('profileName').value = appData.profile.name;
-            document.getElementById('profileGoal').value = appData.profile.goal;
-            document.getElementById('profileModal').classList.add('show');
-        }
-
-        function saveProfile() {
-            appData.profile.name = document.getElementById('profileName').value;
-            appData.profile.goal = document.getElementById('profileGoal').value;
-            saveData();
-            closeModal('profileModal');
-            alert('✓ Perfil salvo!');
         }
 
         function closeModal(id) {
             document.getElementById(id).classList.remove('show');
         }
 
-        function toggleTheme() {
-            document.body.style.filter = document.body.style.filter === 'invert(1)' ? 'none' : 'invert(1)';
-        }
-
-        loadData();
-        updateTimerDisplay();
-        renderExercisesLogged();
+        // INICIALIZAR
+        const savedTheme = localStorage.getItem('fittrackTheme') || 'purple';
+        setTheme(savedTheme);
+        loadProfiles();
     </script>
 </body>
 </html>
