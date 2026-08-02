@@ -1,0 +1,2601 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IRON - Smart Workout Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --primary: #f97316;
+            --primary-light: #fb923c;
+            --primary-dark: #ea580c;
+            --accent: #fbbf24;
+            --success: #10b981;
+            --success-light: #34d399;
+            --danger: #ef4444;
+            --bg-primary: #0c0c14;
+            --bg-secondary: #141420;
+            --bg-card: rgba(20, 20, 35, 0.7);
+            --bg-card-hover: rgba(30, 30, 50, 0.8);
+            --border: rgba(255, 255, 255, 0.06);
+            --border-active: rgba(249, 115, 22, 0.3);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            --gradient-1: linear-gradient(135deg, #f97316, #fbbf24);
+            --gradient-2: linear-gradient(135deg, #0c0c14 0%, #1a1028 100%);
+            --gradient-3: linear-gradient(135deg, #f97316, #ef4444);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.4);
+            --shadow-glow: 0 0 30px rgba(249, 115, 22, 0.15);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.theme-light {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: rgba(255, 255, 255, 0.95);
+            --border: rgba(0, 0, 0, 0.08);
+            --border-active: rgba(249, 115, 22, 0.2);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
+            --shadow-glow: 0 0 30px rgba(249, 115, 22, 0.08);
+        }
+
+        /* ===== RESET ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        /* ===== LOGIN ===== */
+        .login-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-primary);
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .login-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .login-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .login-bg::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle at 30% 20%, rgba(249, 115, 22, 0.12) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(251, 191, 36, 0.08) 0%, transparent 50%);
+            animation: bgFloat 15s ease-in-out infinite;
+        }
+
+        @keyframes bgFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-3%, -2%); }
+        }
+
+        .login-particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: particleFloat 8s ease-in-out infinite;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+            50% { transform: translateY(-100px) scale(1.5); opacity: 0.1; }
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 48px 36px;
+            backdrop-filter: blur(30px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .login-logo-icon {
+            width: 72px;
+            height: 72px;
+            background: var(--gradient-1);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+            color: white;
+            box-shadow: 0 8px 30px rgba(249, 115, 22, 0.3);
+        }
+
+        .login-logo h1 {
+            font-family: var(--font-heading);
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .login-logo h1 span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-logo p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .login-profiles {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .login-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: rgba(249, 115, 22, 0.06);
+            border: 1px solid rgba(249, 115, 22, 0.12);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .login-profile-btn:hover {
+            background: rgba(249, 115, 22, 0.12);
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .login-profile-btn .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .login-profile-btn .star {
+            margin-left: auto;
+            color: var(--accent);
+        }
+
+        .login-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-login {
+            padding: 14px;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-login-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-login-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn-login-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border) !important;
+            color: var(--text-primary);
+        }
+
+        .btn-login-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* ===== APP LAYOUT ===== */
+        .app {
+            display: none;
+            min-height: 100vh;
+            padding-bottom: 90px;
+        }
+
+        .app.show {
+            display: block;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 20px;
+            backdrop-filter: blur(20px);
+        }
+
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-brand-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .header-brand h2 {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 15px;
+        }
+
+        .header-btn:hover {
+            border-color: var(--primary);
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        .header-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .header-profile:hover {
+            border-color: var(--primary);
+        }
+
+        .header-profile-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+            animation: pageIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border);
+            padding: 8px 0;
+            padding-bottom: max(8px, env(safe-area-inset-bottom));
+        }
+
+        .nav-items {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-muted);
+            text-decoration: none;
+            border: none;
+            background: none;
+            font-family: var(--font-body);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            transition: var(--transition);
+        }
+
+        .nav-item span {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active i {
+            transform: scale(1.1);
+        }
+
+        .nav-item:hover:not(.active) {
+            color: var(--text-secondary);
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            margin-bottom: 24px;
+        }
+
+        .page-header h2 {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .page-header h2 span {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* ===== GREETING ===== */
+        .greeting-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .greeting-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .greeting-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .greeting-text h3 {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .greeting-text p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .greeting-motivation {
+            margin-top: 14px;
+            padding: 10px 16px;
+            background: rgba(249, 115, 22, 0.08);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--primary);
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* ===== STATS GRID ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px 14px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .stat-card:hover::after {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 16px;
+        }
+
+        .stat-icon.fire { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .stat-icon.clock { background: rgba(14, 165, 233, 0.15); color: #0ea5e9; }
+        .stat-icon.trophy { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+        .stat-icon.bolt { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+
+        .stat-value {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        /* ===== TODAY'S WORKOUT ===== */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title h3 {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .section-title .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-primary {
+            background: rgba(249, 115, 22, 0.12);
+            color: var(--primary);
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--success);
+        }
+
+        /* ===== EXERCISE CARD ===== */
+        .exercise-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .exercise-card:hover {
+            border-color: var(--border-active);
+            transform: translateX(4px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .exercise-card.completed {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .exercise-card-inner {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            gap: 14px;
+        }
+
+        .exercise-thumb {
+            width: 64px;
+            height: 64px;
+            border-radius: 14px;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            background: #f1f5f9;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .exercise-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 4px;
+            transition: transform 0.3s;
+            background: transparent;
+        }
+
+        .exercise-card:hover .exercise-thumb img {
+            transform: scale(1.05);
+        }
+
+        .exercise-thumb-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.08), transparent);
+            pointer-events: none;
+        }
+
+        .exercise-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .exercise-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .exercise-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .exercise-check {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+            background: none;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .exercise-check:hover {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .exercise-check.done {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        /* ===== WEEK CALENDAR ===== */
+        .week-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        .week-day {
+            text-align: center;
+            padding: 10px 4px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .week-day:hover {
+            border-color: var(--primary);
+        }
+
+        .week-day.active {
+            background: rgba(249, 115, 22, 0.12);
+            border-color: var(--primary);
+        }
+
+        .week-day.done {
+            background: rgba(16, 185, 129, 0.12);
+            border-color: var(--success);
+        }
+
+        .week-day-name {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .week-day-num {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .week-day-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            margin: 4px auto 0;
+        }
+
+        .week-day-dot.done { background: var(--success); }
+        .week-day-dot.pending { background: var(--primary); opacity: 0.5; }
+
+        /* ===== DAY DETAIL CARD ===== */
+        .day-detail-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .day-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .day-detail-title {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .day-detail-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .day-detail-progress {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-size: 16px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .day-detail-progress svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .day-detail-progress circle {
+            fill: none;
+            stroke-width: 3;
+        }
+
+        .day-detail-progress .bg { stroke: var(--border); }
+        .day-detail-progress .fg {
+            stroke: var(--primary);
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.6s ease;
+        }
+
+        .day-detail-progress span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== TIMER ===== */
+        .timer-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 40px 30px;
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: var(--gradient-1);
+            border-radius: 2px;
+        }
+
+        .timer-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .timer-ring {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 24px;
+            position: relative;
+        }
+
+        .timer-ring svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .timer-ring circle {
+            fill: none;
+            stroke-width: 4;
+        }
+
+        .timer-ring .track { stroke: var(--border); }
+        .timer-ring .progress {
+            stroke: var(--primary);
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        .timer-ring-display {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timer-ring-time {
+            font-family: var(--font-heading);
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .timer-ring-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timer-btn {
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timer-btn-start {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+        }
+
+        .timer-btn-start:hover { transform: translateY(-2px); }
+        .timer-btn-start:disabled { opacity: 0.5; transform: none; }
+
+        .timer-btn-stop {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .timer-btn-stop:hover { background: rgba(239, 68, 68, 0.25); }
+
+        .timer-btn-reset {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .timer-btn-reset:hover { border-color: var(--text-secondary); }
+
+        /* ===== LOG EXERCISE ===== */
+        .log-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-field {
+            margin-bottom: 16px;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-field input,
+        .form-field select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .form-field input:focus,
+        .form-field select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 15px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.3);
+        }
+
+        /* ===== PROGRESS CHART ===== */
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-header h3 {
+            font-family: var(--font-heading);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .chart-container {
+            height: 200px;
+            position: relative;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 160px;
+            padding: 0 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chart-bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .chart-bar {
+            width: 28px;
+            border-radius: 6px 6px 0 0;
+            background: var(--gradient-1);
+            transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 4px;
+        }
+
+        .chart-bar-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .chart-bar-value {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* ===== HISTORY ===== */
+        .history-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: var(--transition);
+        }
+
+        .history-card:hover {
+            border-color: var(--border-active);
+            transform: translateX(3px);
+        }
+
+        .history-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(249, 115, 22, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .history-icon i { color: var(--primary); font-size: 18px; }
+
+        .history-info { flex: 1; min-width: 0; }
+        .history-title { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+        .history-date { font-size: 12px; color: var(--text-muted); }
+
+        .history-duration {
+            text-align: right;
+        }
+
+        .history-duration-value {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .history-duration-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* ===== EXERCISE DETAIL MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 420px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-image-container {
+            width: 100%;
+            height: 220px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            overflow: hidden;
+            padding: 10px;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-body h3 {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .modal-body .muscle-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .modal-tips {
+            margin-top: 16px;
+        }
+
+        .modal-tips h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .modal-tips ul {
+            list-style: none;
+        }
+
+        .modal-tips li {
+            padding: 6px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-tips li i {
+            color: var(--primary);
+            font-size: 10px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.6);
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .modal-close:hover { background: rgba(0, 0, 0, 0.8); }
+
+        /* ===== REST TIMER MODAL ===== */
+        .rest-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 6000;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rest-modal.show { display: flex; }
+
+        .rest-modal-content {
+            text-align: center;
+        }
+
+        .rest-modal-icon {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .rest-modal-time {
+            font-family: var(--font-heading);
+            font-size: 100px;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .rest-modal-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 12px 0 30px;
+        }
+
+        .rest-modal-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin: 0 auto 30px;
+            overflow: hidden;
+        }
+
+        .rest-modal-bar-fill {
+            height: 100%;
+            background: var(--gradient-1);
+            border-radius: 2px;
+            transition: width 1s linear;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 8000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            padding: 14px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            box-shadow: var(--shadow-md);
+            animation: toastIn 0.4s, toastOut 0.4s 2.6s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 300px;
+        }
+
+        .toast-success { background: var(--success); }
+        .toast-error { background: var(--danger); }
+        .toast-info { background: #0ea5e9; }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100px); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .week-calendar { gap: 4px; }
+            .page-header h2 { font-size: 24px; }
+            .timer-ring { width: 180px; height: 180px; }
+            .timer-ring-time { font-size: 36px; }
+            .form-row { grid-template-columns: 1fr; }
+            .rest-modal-time { font-size: 72px; }
+            .header-brand h2 { font-size: 18px; }
+        }
+
+        @media (max-width: 380px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .stat-card { padding: 14px 10px; }
+            .stat-value { font-size: 20px; }
+        }
+    </style>
+</head>
+<body class="">
+
+    <!-- ===== LOGIN SCREEN ===== -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-bg">
+            <div class="login-particles" id="particles"></div>
+        </div>
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-logo">
+                    <div class="login-logo-icon"><i class="fas fa-bolt"></i></div>
+                    <h1><span>IRON</span></h1>
+                    <p>Smart Workout Tracker</p>
+                </div>
+                <div class="login-profiles" id="loginProfiles"></div>
+                <div class="login-actions">
+                    <button class="btn-login btn-login-primary" onclick="quickStart()">
+                        <i class="fas fa-bolt"></i> Iniciar Treino Rápido
+                    </button>
+                    <button class="btn-login btn-login-secondary" onclick="openNewProfileModal()">
+                        <i class="fas fa-plus"></i> Novo Perfil
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== APP ===== -->
+    <div class="app" id="app">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-content">
+                <div class="header-brand">
+                    <div class="header-brand-icon"><i class="fas fa-bolt"></i></div>
+                    <h2>IRON</h2>
+                </div>
+                <div class="header-controls">
+                    <button class="header-btn" onclick="toggleTheme()" title="Tema">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                    <button class="header-profile" onclick="openEditProfile()">
+                        <div class="header-profile-dot"></div>
+                        <span id="headerProfileName">Eduardo</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main">
+            <!-- HOME PAGE -->
+            <div class="page active" id="pageHome">
+                <div class="page-header">
+                    <h2 id="greetingTitle">Bom dia, <span>Eduardo</span></h2>
+                    <p id="greetingDate"></p>
+                </div>
+
+                <div class="greeting-card">
+                    <div class="greeting-text">
+                        <h3 id="motivationTitle">Pronto para treinar?</h3>
+                        <p id="todayWorkoutLabel"></p>
+                        <div class="greeting-motivation" id="motivationQuote"></div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon fire"><i class="fas fa-fire"></i></div>
+                        <div class="stat-value" id="statWorkouts">0</div>
+                        <div class="stat-label">Treinos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon clock"><i class="fas fa-clock"></i></div>
+                        <div class="stat-value" id="statMinutes">0</div>
+                        <div class="stat-label">Minutos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon trophy"><i class="fas fa-trophy"></i></div>
+                        <div class="stat-value" id="statStreak">0</div>
+                        <div class="stat-label">Sequência</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bolt"><i class="fas fa-bolt"></i></div>
+                        <div class="stat-value" id="statExercises">0</div>
+                        <div class="stat-label">Exercícios</div>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <h3>Treino de Hoje</h3>
+                    <span class="badge badge-primary" id="todayBadge">0/5</span>
+                </div>
+                <div id="todayExercises"></div>
+            </div>
+
+            <!-- WEEK PAGE -->
+            <div class="page" id="pageWeek">
+                <div class="page-header">
+                    <h2>Plano <span>Semanal</span></h2>
+                    <p>Organize seus treinos da semana</p>
+                </div>
+
+                <div class="week-calendar" id="weekCalendar"></div>
+
+                <div id="weekDaysContainer"></div>
+            </div>
+
+            <!-- WORKOUT PAGE -->
+            <div class="page" id="pageWorkout">
+                <div class="page-header">
+                    <h2>Modo <span>Treino</span></h2>
+                    <p>Cronômetro e registro de exercícios</p>
+                </div>
+
+                <div class="timer-card">
+                    <div class="timer-label">Cronômetro</div>
+                    <div class="timer-ring">
+                        <svg viewBox="0 0 220 220">
+                            <circle class="track" cx="110" cy="110" r="100"/>
+                            <circle class="progress" id="timerProgress" cx="110" cy="110" r="100"
+                                stroke-dasharray="628" stroke-dashoffset="628"/>
+                        </svg>
+                        <div class="timer-ring-display">
+                            <div class="timer-ring-time" id="timerDisplay">00:00</div>
+                            <div class="timer-ring-label">Treino</div>
+                        </div>
+                    </div>
+                    <div class="timer-controls">
+                        <button class="timer-btn timer-btn-start" id="btnTimerStart" onclick="startTimer()">
+                            <i class="fas fa-play"></i> Iniciar
+                        </button>
+                        <button class="timer-btn timer-btn-stop" id="btnTimerStop" onclick="stopTimer()" disabled>
+                            <i class="fas fa-pause"></i> Pausar
+                        </button>
+                        <button class="timer-btn timer-btn-reset" onclick="resetTimer()">
+                            <i class="fas fa-rotate-right"></i> Resetar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="log-form">
+                    <div class="section-title" style="margin-bottom:16px;">
+                        <h3><i class="fas fa-plus-circle" style="color:var(--primary);margin-right:6px;"></i>Registrar Exercício</h3>
+                    </div>
+                    <div class="form-field">
+                        <label>Exercício</label>
+                        <input type="text" id="logExerciseName" placeholder="Nome do exercício" list="exerciseSuggestions">
+                        <datalist id="exerciseSuggestions"></datalist>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Séries</label>
+                            <input type="number" id="logSeries" placeholder="4" min="1">
+                        </div>
+                        <div class="form-field">
+                            <label>Repetições</label>
+                            <input type="number" id="logReps" placeholder="10" min="1">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>Peso (kg)</label>
+                            <input type="number" id="logWeight" placeholder="100" min="0" step="0.5">
+                        </div>
+                        <div class="form-field">
+                            <label>Descanso (s)</label>
+                            <input type="number" id="logRest" placeholder="60" min="0" value="60">
+                        </div>
+                    </div>
+                    <button class="btn-submit" onclick="logExercise()">
+                        <i class="fas fa-check"></i> Registrar Exercício
+                    </button>
+                </div>
+
+                <div class="section-title">
+                    <h3>Registrados Hoje</h3>
+                    <span class="badge badge-success" id="loggedCount">0</span>
+                </div>
+                <div id="loggedExercises"></div>
+            </div>
+
+            <!-- STATS PAGE -->
+            <div class="page" id="pageStats">
+                <div class="page-header">
+                    <h2>Estatísticas</h2>
+                    <p>Acompanhe sua evolução</p>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Treinos por Dia</h3>
+                        <span class="badge badge-primary" id="weekTotalLabel">Semana</span>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-bars" id="weekChart"></div>
+                    </div>
+                </div>
+
+                <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div class="stat-card">
+                        <div class="stat-icon fire"><i class="fas fa-fire-flame-curved"></i></div>
+                        <div class="stat-value" id="totalCalories">0</div>
+                        <div class="stat-label">Calorias Est.</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon bolt"><i class="fas fa-dumbbell"></i></div>
+                        <div class="stat-value" id="totalVolume">0</div>
+                        <div class="stat-label">Volume (kg)</div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Volume por Músculo</h3>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-bars" id="muscleChart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HISTORY PAGE -->
+            <div class="page" id="pageHistory">
+                <div class="page-header">
+                    <h2>Histórico</h2>
+                    <p>Seus treinos anteriores</p>
+                </div>
+                <div id="historyList"></div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <div class="bottom-nav">
+            <div class="nav-items">
+                <button class="nav-item active" onclick="navigate('Home')">
+                    <i class="fas fa-house"></i>
+                    <span>Início</span>
+                </button>
+                <button class="nav-item" onclick="navigate('Week')">
+                    <i class="fas fa-calendar-week"></i>
+                    <span>Semana</span>
+                </button>
+                <button class="nav-item" onclick="navigate('Workout')">
+                    <i class="fas fa-stopwatch"></i>
+                    <span>Treino</span>
+                </button>
+                <button class="nav-item" onclick="navigate('Stats')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Stats</span>
+                </button>
+                <button class="nav-item" onclick="navigate('History')">
+                    <i class="fas fa-clock-rotate-left"></i>
+                    <span>Histórico</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXERCISE DETAIL MODAL -->
+    <div class="modal-overlay" id="exerciseModal">
+        <button class="modal-close" onclick="closeModal('exerciseModal')">&times;</button>
+        <div class="modal-box">
+            <div class="modal-image-container">
+                <img class="modal-image" id="modalImage" src="" alt="">
+            </div>
+            <div class="modal-body">
+                <h3 id="modalTitle"></h3>
+                <span class="muscle-tag" id="modalMuscle"></span>
+                <div class="modal-tips" id="modalTips">
+                    <h4>Dicas de Execução</h4>
+                    <ul id="modalTipsList"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REST TIMER MODAL -->
+    <div class="rest-modal" id="restModal">
+        <div class="rest-modal-content">
+            <div class="rest-modal-icon"><i class="fas fa-hourglass-half"></i></div>
+            <div class="rest-modal-time" id="restTimerDisplay">60</div>
+            <div class="rest-modal-label">Descanso</div>
+            <div class="rest-modal-bar">
+                <div class="rest-modal-bar-fill" id="restBarFill" style="width:100%"></div>
+            </div>
+            <button class="timer-btn timer-btn-stop" onclick="skipRest()">
+                <i class="fas fa-forward"></i> Pular
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+    // ===== DATA & CONFIG =====
+    const EXERCISE_DB = {
+        "Abdominal Bicicleta": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2364748b%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2276.0%2C136.0%20126.0%2C150.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2276.0%2C136.0%2070.0%2C112.0%2096.0%2C90.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22126.0%2C150.0%20168.0%2C128.0%20176.0%2C166.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2256.0%22%20cy%3D%22132.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%2276.0%22%20cy%3D%22136.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22126.0%22%20cy%3D%22150.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2270.0%22%20cy%3D%22112.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22168.0%22%20cy%3D%22128.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cpolyline%20points%3D%22126.0%2C150.0%20150.0%2C110.0%20120.0%2C84.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Core', muscleClass: 'core',
+            tips: ["Deite-se e leve as mãos atrás da cabeça sem puxar o pescoço", "Eleve as pernas e simule o movimento de pedalar", "Leve o cotovelo em direção ao joelho oposto", "Alterne os lados de forma controlada", "Mantenha a lombar pressionada contra o chão"]
+        },
+        "Abdominal Infra": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2364748b%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2270.0%2C150.0%20126.0%2C150.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2270.0%2C150.0%2060.0%2C168.0%2048.0%2C182.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22126.0%2C150.0%20160.0%2C124.0%20190.0%2C104.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2250.0%22%20cy%3D%22150.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%2270.0%22%20cy%3D%22150.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22126.0%22%20cy%3D%22150.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2260.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22160.0%22%20cy%3D%22124.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Core', muscleClass: 'core',
+            tips: ["Deite-se com as pernas estendidas para cima", "Eleve o quadril do chão levando as pernas em direção ao teto", "Foque em usar o abdômen inferior, não o impulso das pernas", "Desça de forma controlada sem tocar o chão totalmente", "Mantenha a lombar sempre apoiada"]
+        },
+        "Afundo": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23a855f7%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22110.0%2C138.0%2084.0%2C176.0%2060.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22110.0%2C82.0%20110.0%2C138.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22110.0%2C82.0%20130.0%2C110.0%20140.0%2C138.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22110.0%2C138.0%20150.0%2C168.0%20168.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22110.0%22%20cy%3D%2260.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22110.0%22%20cy%3D%2282.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22110.0%22%20cy%3D%22138.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22130.0%22%20cy%3D%22110.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%22140.0%22%20y1%3D%22128.0%22%20x2%3D%22140.0%22%20y2%3D%22148.0%22%20stroke%3D%22%23a855f7%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%22134.0%22%20y%3D%22119.0%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23a855f7%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%22134.0%22%20y%3D%22139.0%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23a855f7%22%20opacity%3D%221%22%2F%3E%3Cline%20x1%3D%2280.0%22%20y1%3D%22140.0%22%20x2%3D%2280.0%22%20y2%3D%22160.0%22%20stroke%3D%22%23a855f7%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2274.0%22%20y%3D%22131.0%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23a855f7%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%2274.0%22%20y%3D%22151.0%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23a855f7%22%20opacity%3D%221%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Pernas', muscleClass: 'pernas',
+            tips: ["Dê um passo à frente mantendo o tronco ereto", "Desça até os dois joelhos formarem ~90 graus", "Não deixe o joelho da frente ultrapassar a ponta do pé", "Empurre pelo calcanhar da frente para voltar", "Alterne as pernas ou complete todas as repetições de um lado"]
+        },
+        "Agachamento com Salto": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f43f5e%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cpath%20d%3D%22M60%20200%20L70%20190%20M180%20200%20L170%20190%20M120%20210%20L120%20198%22%20stroke%3D%22%23f43f5e%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C66.0%20120.0%2C110.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C66.0%2096.0%2C90.0%2084.0%2C64.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C110.0%20140.0%2C140.0%20150.0%2C168.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2244.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2266.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22110.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2296.0%22%20cy%3D%2290.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Cardio', muscleClass: 'cardio',
+            tips: ["Comece em posição de agachamento com pés na largura dos ombros", "Desça até as coxas ficarem paralelas ao chão", "Exploda para cima saltando o mais alto possível", "Aterrisse suavemente já na posição de agachamento", "Mantenha o core ativado para proteger a lombar"]
+        },
+        "Burpee": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f43f5e%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C64.0%20120.0%2C120.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C64.0%2096.0%2C86.0%2080.0%2C58.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C120.0%20140.0%2C160.0%20150.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2240.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2264.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22120.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2296.0%22%20cy%3D%2286.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%22160.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C64.0%20146.0%2C88.0%20160.0%2C58.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Cardio', muscleClass: 'cardio',
+            tips: ["Comece em pé, agache e apoie as mãos no chão", "Jogue as pernas para trás ficando em posição de prancha", "Faça uma flexão opcional e volte os pés para perto das mãos", "Salte para cima estendendo o corpo totalmente", "Mantenha um ritmo constante durante as repetições"]
+        },
+        "Crucifixo Reto": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ef4444%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Crect%20x%3D%2258%22%20y%3D%22150%22%20width%3D%22124%22%20height%3D%2215%22%20rx%3D%226%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%3Cline%20x1%3D%2266%22%20y1%3D%22165%22%20x2%3D%2266%22%20y2%3D%22183%22%20stroke%3D%22%233a3a52%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%22174%22%20y1%3D%22165%22%20x2%3D%22174%22%20y2%3D%22183%22%20stroke%3D%22%233a3a52%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2278.0%2C140.0%20150.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2278.0%2C140.0%20112.0%2C88.0%20140.0%2C110.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22150.0%2C140.0%20178.0%2C118.0%20206.0%2C142.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2260.0%22%20cy%3D%22140.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%2278.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22112.0%22%20cy%3D%2288.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22178.0%22%20cy%3D%22118.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%22141.0%22%20y1%3D%2299.0%22%20x2%3D%22139.0%22%20y2%3D%22121.0%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%22134.95871317022423%22%20y%3D%2290.0418583209908%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23ef4444%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%22133.04128682977577%22%20y%3D%22111.9581416790092%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23ef4444%22%20opacity%3D%221%22%2F%3E%3Cline%20x1%3D%2259.0%22%20y1%3D%2287.0%22%20x2%3D%2257.0%22%20y2%3D%22109.0%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2252.95871317022424%22%20y%3D%2278.0418583209908%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23ef4444%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%2251.04128682977576%22%20y%3D%2299.9581416790092%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23ef4444%22%20opacity%3D%221%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Peito', muscleClass: 'peito',
+            tips: ["Deite no banco reto com halteres estendidos acima do peito", "Desça os braços abertos em arco, cotovelos levemente flexionados", "Desça até sentir alongamento no peito, sem exagerar", "Volte trazendo os halteres juntos por cima do peito", "Não deixe os cotovelos travarem no topo"]
+        },
+        "Desenvolvimento Arnold": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%233b82f6%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C78.0%20120.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C78.0%20140.0%2C66.0%20140.0%2C34.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C140.0%20140.0%2C168.0%20150.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2256.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2278.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%2266.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%22128.0%22%20y1%3D%2230.0%22%20x2%3D%22152.0%22%20y2%3D%2230.0%22%20stroke%3D%22%233b82f6%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%22122.0%22%20y%3D%2221.0%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%233b82f6%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%22146.0%22%20y%3D%2221.0%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%233b82f6%22%20opacity%3D%221%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Ombros', muscleClass: 'ombros',
+            tips: ["Sente-se com halteres na altura dos ombros, palmas voltadas para você", "Empurre para cima girando os punhos até as palmas ficarem para frente", "Estenda completamente os braços no topo", "Reverta o movimento na descida, voltando à posição inicial", "Mantenha o core ativado para proteger a lombar"]
+        },
+        "Elevação Pélvica": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ec4899%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%22150%22%20y%3D%22150%22%20width%3D%2250%22%20height%3D%2216%22%20rx%3D%226%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%3Cpolyline%20points%3D%2270.0%2C148.0%20120.0%2C150.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2270.0%2C148.0%2060.0%2C168.0%2050.0%2C180.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C150.0%20150.0%2C150.0%20150.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2250.0%22%20cy%3D%22150.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%2270.0%22%20cy%3D%22148.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22150.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2260.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%22150.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%2290.0%22%20y1%3D%22132.0%22%20x2%3D%22150.0%22%20y2%3D%22132.0%22%20stroke%3D%22%23ec4899%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2290.0%22%20cy%3D%22132.0%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%23ec4899%22%20stroke-width%3D%223.5%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%22132.0%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%23ec4899%22%20stroke-width%3D%223.5%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Glúteos', muscleClass: 'gluteos',
+            tips: ["Apoie as costas superiores em um banco, pés no chão", "Posicione a barra sobre o quadril", "Eleve o quadril contraindo bem os glúteos", "Forme uma linha reta entre ombros, quadril e joelhos no topo", "Desça controlando sem tocar o chão com o quadril"]
+        },
+        "Elevação de Pernas na Barra": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2364748b%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2270%22%20y1%3D%2240%22%20x2%3D%22170%22%20y2%3D%2240%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C80.0%20120.0%2C132.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C80.0%20102.0%2C58.0%2094.0%2C42.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C132.0%20150.0%2C120.0%20168.0%2C90.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2260.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2280.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22132.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22102.0%22%20cy%3D%2258.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%22120.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Core', muscleClass: 'core',
+            tips: ["Pendure-se na barra com os braços estendidos", "Mantenha o corpo estável, evitando balançar", "Eleve as pernas estendidas ou flexionadas até a altura do quadril", "Contraia o abdômen no topo do movimento", "Desça de forma controlada sem usar impulso"]
+        },
+        "Encolhimento": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%233b82f6%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C74.0%20120.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C74.0%20140.0%2C110.0%20140.0%2C150.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C140.0%20140.0%2C168.0%20150.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2254.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2274.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%22110.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%22128.0%22%20y1%3D%22150.0%22%20x2%3D%22152.0%22%20y2%3D%22150.0%22%20stroke%3D%22%233b82f6%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%22122.0%22%20y%3D%22141.0%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%233b82f6%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%22146.0%22%20y%3D%22141.0%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%233b82f6%22%20opacity%3D%221%22%2F%3E%3Cpath%20d%3D%22M100%2066%20L100%2050%20M92%2058%20L100%2048%20L108%2058%22%20stroke%3D%22%233b82f6%22%20stroke-width%3D%224%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Ombros', muscleClass: 'ombros',
+            tips: ["Fique em pé segurando halteres ou barra ao lado do corpo", "Eleve os ombros em direção às orelhas", "Segure a contração por 1 segundo no topo", "Desça de forma controlada sem girar os ombros", "Evite usar os braços para ajudar no movimento"]
+        },
+        "Face Pull": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%233b82f6%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2280%22%20y1%3D%2220%22%20x2%3D%2280%22%20y2%3D%2224%22%20stroke%3D%22%233a3a52%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2266%22%20y%3D%226%22%20width%3D%2228%22%20height%3D%2216%22%20rx%3D%224%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%3Ccircle%20cx%3D%2280.0%22%20cy%3D%2214.0%22%20r%3D%224%22%20fill%3D%22%2394a3b8%22%2F%3E%3Cpolyline%20points%3D%22146.0%2C78.0%20120.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22146.0%2C78.0%20120.0%2C86.0%20100.0%2C80.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C140.0%20140.0%2C168.0%20150.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22160.0%22%20cy%3D%2260.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22146.0%22%20cy%3D%2278.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2286.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Ombros', muscleClass: 'ombros',
+            tips: ["Ajuste a polia na altura do rosto com corda", "Puxe a corda em direção ao rosto abrindo os cotovelos", "Gire levemente os punhos para fora no final", "Foque em contrair a parte posterior do ombro", "Retorne controlando o peso"]
+        },
+        "Flexão de Braço": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ef4444%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22176.0%2C150.0%2096.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22176.0%2C150.0%20150.0%2C178.0%20150.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2296.0%2C140.0%2058.0%2C158.0%2028.0%2C196.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22195.0%22%20cy%3D%22152.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22176.0%22%20cy%3D%22150.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2296.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%22178.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2258.0%22%20cy%3D%22158.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Peito', muscleClass: 'peito',
+            tips: ["Mãos no chão um pouco mais largas que os ombros", "Mantenha o corpo reto da cabeça aos calcanhares", "Desça até o peito quase tocar o chão", "Empurre o chão para voltar à posição inicial", "Contraia o abdômen durante todo o movimento"]
+        },
+        "Glúteo 4 Apoios": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ec4899%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C118.0%20110.0%2C152.0%20104.0%2C190.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22166.0%2C116.0%20120.0%2C118.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22166.0%2C116.0%20160.0%2C136.0%20174.0%2C150.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C118.0%2096.0%2C150.0%2060.0%2C120.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22184.0%22%20cy%3D%22110.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22166.0%22%20cy%3D%22116.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22118.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22160.0%22%20cy%3D%22136.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2296.0%22%20cy%3D%22150.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Glúteos', muscleClass: 'gluteos',
+            tips: ["Fique de quatro apoios com mãos sob os ombros e joelhos sob o quadril", "Mantenha o joelho flexionado a 90 graus", "Eleve a perna para trás contraindo o glúteo", "Não deixe a lombar arquear durante o movimento", "Desça controlando sem tocar o chão"]
+        },
+        "Hack Squat": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23a855f7%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2260%22%20y%3D%2260%22%20width%3D%2220%22%20height%3D%22148%22%20rx%3D%224%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%22160%22%20y%3D%2260%22%20width%3D%2220%22%20height%3D%22148%22%20rx%3D%224%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C88.0%20120.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C88.0%20146.0%2C96.0%20160.0%2C92.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C140.0%20150.0%2C172.0%20150.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2266.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2288.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22146.0%22%20cy%3D%2296.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%22172.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Crect%20x%3D%2274%22%20y%3D%22190%22%20width%3D%2292%22%20height%3D%2216%22%20rx%3D%226%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Pernas', muscleClass: 'pernas',
+            tips: ["Posicione-se na máquina com as costas apoiadas", "Pés na largura dos ombros sobre a plataforma", "Desça controlando até 90 graus nos joelhos", "Empurre pelos calcanhares para subir", "Não trave os joelhos completamente no topo"]
+        },
+        "Levantamento Terra": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f97316%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22146.0%2C80.0%20120.0%2C128.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22146.0%2C80.0%20112.0%2C120.0%20108.0%2C178.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C128.0%20122.0%2C150.0%20120.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%2260.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22146.0%22%20cy%3D%2280.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22128.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22112.0%22%20cy%3D%22120.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22122.0%22%20cy%3D%22150.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%22108.0%22%20y1%3D%22150.0%22%20x2%3D%22108.0%22%20y2%3D%22214.0%22%20stroke%3D%22%23f97316%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22108.0%22%20cy%3D%22150.0%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%23f97316%22%20stroke-width%3D%223.5%22%2F%3E%3Ccircle%20cx%3D%22108.0%22%20cy%3D%22214.0%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%23f97316%22%20stroke-width%3D%223.5%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Costas', muscleClass: 'costas',
+            tips: ["Pés na largura do quadril, barra próxima às canelas", "Quadril para trás e peito aberto ao abaixar para pegar a barra", "Mantenha a coluna neutra durante todo o movimento", "Empurre o chão com os pés para levantar a barra", "Estenda o quadril no topo sem hiperextender a lombar"]
+        },
+        "Mergulho": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2322c55e%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2270%22%20y1%3D%2270%22%20x2%3D%2270%22%20y2%3D%22150%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%22130%22%20y1%3D%2270%22%20x2%3D%22130%22%20y2%3D%22150%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%2260%22%20y1%3D%2272%22%20x2%3D%2280%22%20y2%3D%2272%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%22120%22%20y1%3D%2272%22%20x2%3D%22140%22%20y2%3D%2272%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22100.0%2C78.0%20100.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22100.0%2C78.0%2075.0%2C100.0%2075.0%2C74.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22100.0%2C140.0%20120.0%2C168.0%20140.0%2C190.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22100.0%22%20cy%3D%2260.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22100.0%22%20cy%3D%2278.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22100.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2275.0%22%20cy%3D%22100.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Tríceps', muscleClass: 'triceps',
+            tips: ["Apoie-se nas paralelas com os braços estendidos", "Desça o corpo flexionando os cotovelos até 90 graus", "Mantenha o tronco levemente inclinado à frente", "Empurre para cima até estender os braços novamente", "Não deixe os ombros subirem até as orelhas"]
+        },
+        "Panturrilha Sentado": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2314b8a6%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Crect%20x%3D%2270%22%20y%3D%22110%22%20width%3D%2290%22%20height%3D%2220%22%20rx%3D%228%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%22150%22%20y%3D%22100%22%20width%3D%2250%22%20height%3D%2216%22%20rx%3D%226%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%3Cpolyline%20points%3D%22112.0%2C110.0%20140.0%2C120.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22112.0%2C110.0%2096.0%2C128.0%2090.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22140.0%2C120.0%20180.0%2C150.0%20190.0%2C196.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22112.0%22%20cy%3D%2288.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22112.0%22%20cy%3D%22110.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%22120.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2296.0%22%20cy%3D%22128.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22180.0%22%20cy%3D%22150.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Panturrilha', muscleClass: 'panturrilha',
+            tips: ["Sente-se na máquina com os joelhos sob o apoio", "Apoie a ponta dos pés na plataforma", "Eleve os calcanhares contraindo a panturrilha", "Segure a contração no topo por 1 segundo", "Desça controlando até alongar bem a panturrilha"]
+        },
+        "Panturrilha em Pé": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2314b8a6%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Crect%20x%3D%2296%22%20y%3D%22200%22%20width%3D%2260%22%20height%3D%228%22%20rx%3D%223%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C82.0%20120.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C82.0%20140.0%2C110.0%20148.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C140.0%20120.0%2C168.0%20126.0%2C200.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2260.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2282.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%22110.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Panturrilha', muscleClass: 'panturrilha',
+            tips: ["Fique em pé com a ponta dos pés em um step ou plataforma", "Deixe os calcanhares descerem abaixo da linha dos pés", "Suba o mais alto possível na ponta dos pés", "Segure a contração por 1 segundo no topo", "Desça de forma lenta e controlada"]
+        },
+        "Polichinelo": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f43f5e%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C74.0%20120.0%2C132.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C74.0%20150.0%2C50.0%20170.0%2C30.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C132.0%20148.0%2C168.0%20176.0%2C200.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2250.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2274.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22132.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%2250.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22148.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C74.0%2090.0%2C50.0%2070.0%2C30.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C132.0%2092.0%2C168.0%2064.0%2C200.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Cardio', muscleClass: 'cardio',
+            tips: ["Comece em pé com pés juntos e braços ao lado do corpo", "Salte abrindo as pernas e elevando os braços acima da cabeça", "Volte à posição inicial em um único movimento", "Mantenha um ritmo constante e respiração controlada", "Aterrisse suavemente para proteger os joelhos"]
+        },
+        "Prancha Lateral": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2364748b%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22172.0%2C124.0%20110.0%2C132.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22172.0%2C124.0%20150.0%2C164.0%20150.0%2C192.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22110.0%2C132.0%2060.0%2C140.0%2030.0%2C144.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22190.0%22%20cy%3D%22120.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22172.0%22%20cy%3D%22124.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22110.0%22%20cy%3D%22132.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%22164.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2260.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cpolyline%20points%3D%22172.0%2C124.0%20178.0%2C90.0%20182.0%2C64.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Core', muscleClass: 'core',
+            tips: ["Deite de lado apoiado no antebraço, cotovelo sob o ombro", "Eleve o quadril formando uma linha reta com o corpo", "Mantenha o abdômen contraído durante todo o tempo", "Não deixe o quadril cair em direção ao chão", "Respire normalmente enquanto sustenta a posição"]
+        },
+        "Pular Corda": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f43f5e%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M158%2060%20Q200%20110%20120%20132%20Q40%20110%2082%2060%22%20stroke%3D%22%23f43f5e%22%20stroke-width%3D%224%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C76.0%20120.0%2C132.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C76.0%20146.0%2C90.0%20158.0%2C60.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C132.0%20132.0%2C168.0%20140.0%2C198.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2254.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2276.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22132.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22146.0%22%20cy%3D%2290.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22132.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Cardio', muscleClass: 'cardio',
+            tips: ["Segure a corda com as mãos na altura do quadril", "Salte apenas o suficiente para a corda passar sob os pés", "Mantenha os cotovelos próximos ao corpo, girando pelos punhos", "Aterrisse na ponta dos pés de forma leve", "Mantenha um ritmo constante para melhor condicionamento"]
+        },
+        "Remada Alta": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%233b82f6%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C78.0%20120.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C78.0%20146.0%2C96.0%20132.0%2C80.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C140.0%20140.0%2C168.0%20150.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2256.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%2278.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22146.0%22%20cy%3D%2296.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%22132.0%22%20y1%3D%22127.0%22%20x2%3D%22132.0%22%20y2%3D%22173.0%22%20stroke%3D%22%233b82f6%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22132.0%22%20cy%3D%22127.0%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%233b82f6%22%20stroke-width%3D%223.5%22%2F%3E%3Ccircle%20cx%3D%22132.0%22%20cy%3D%22173.0%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%233b82f6%22%20stroke-width%3D%223.5%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Ombros', muscleClass: 'ombros',
+            tips: ["Segure a barra com pegada pronada, mãos próximas", "Eleve a barra rente ao corpo até a altura do peito", "Mantenha os cotovelos sempre acima das mãos", "Não eleve demais para proteger os ombros", "Desça de forma controlada"]
+        },
+        "Remada Cavalinho": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f97316%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22154.0%2C82.0%20118.0%2C110.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22154.0%2C82.0%20112.0%2C132.0%20108.0%2C166.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22118.0%2C110.0%20112.0%2C160.0%20126.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22168.0%22%20cy%3D%2266.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22154.0%22%20cy%3D%2282.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22118.0%22%20cy%3D%22110.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22112.0%22%20cy%3D%22132.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22112.0%22%20cy%3D%22160.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%2291.2%22%20y1%3D%22165.6%22%20x2%3D%22124.8%22%20y2%3D%22170.4%22%20stroke%3D%22%23f97316%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2285.1654428313933%22%20y%3D%22156.63405728367889%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23f97316%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%22118.8345571686067%22%20y%3D%22161.36594271632111%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23f97316%22%20opacity%3D%221%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Costas', muscleClass: 'costas',
+            tips: ["Posicione-se sobre a barra T com o peito apoiado ou tronco inclinado", "Segure firme com as duas mãos na pegada", "Puxe o peso em direção ao abdômen", "Aperte as escápulas no topo do movimento", "Controle a descida sem deixar o peso \"cair\""]
+        },
+        "Remada Curvada": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23f97316%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22154.0%2C82.0%20118.0%2C110.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22154.0%2C82.0%20112.0%2C132.0%20108.0%2C166.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22118.0%2C110.0%20112.0%2C160.0%20126.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22168.0%22%20cy%3D%2266.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22154.0%22%20cy%3D%2282.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22118.0%22%20cy%3D%22110.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22112.0%22%20cy%3D%22132.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22112.0%22%20cy%3D%22160.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%2280.2%22%20y1%3D%22165.1%22%20x2%3D%22135.8%22%20y2%3D%22170.9%22%20stroke%3D%22%23f97316%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2280.2%22%20cy%3D%22165.1%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%23f97316%22%20stroke-width%3D%223.5%22%2F%3E%3Ccircle%20cx%3D%22135.8%22%20cy%3D%22170.9%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%23f97316%22%20stroke-width%3D%223.5%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Costas', muscleClass: 'costas',
+            tips: ["Incline o tronco a ~45 graus com joelhos levemente flexionados", "Segure a barra com pegada pronada, braços estendidos", "Puxe a barra em direção ao abdômen contraindo as costas", "Mantenha os cotovelos próximos ao corpo", "Desça controlando o peso, sem arredondar as costas"]
+        },
+        "Rosca Concentrada": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23eab308%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22128.0%2C92.0%20110.0%2C120.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22128.0%2C92.0%2096.0%2C144.0%2088.0%2C104.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22110.0%2C120.0%20140.0%2C158.0%20160.0%2C196.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%2274.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22128.0%22%20cy%3D%2292.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22110.0%22%20cy%3D%22120.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2296.0%22%20cy%3D%22144.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%22158.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%2284.2%22%20y1%3D%2293.7%22%20x2%3D%2291.8%22%20y2%3D%22114.3%22%20stroke%3D%22%23eab308%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2278.23777842341764%22%20y%3D%2284.66338117135501%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23eab308%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%2285.76222157658236%22%20y%3D%22105.33661882864499%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23eab308%22%20opacity%3D%221%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Bíceps', muscleClass: 'biceps',
+            tips: ["Sente-se e apoie o cotovelo na parte interna da coxa", "Segure o halter com o braço totalmente estendido", "Flexione o cotovelo elevando o peso até o ombro", "Contraia o bíceps por um segundo no topo", "Desça controlando até estender o braço novamente"]
+        },
+        "Rosca Scott": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23eab308%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2296%22%20y%3D%22116%22%20width%3D%2254%22%20height%3D%2226%22%20rx%3D%228%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%3Cpolyline%20points%3D%22140.0%2C86.0%20112.0%2C132.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22140.0%2C86.0%20120.0%2C120.0%20112.0%2C80.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22112.0%2C132.0%20120.0%2C168.0%20134.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%2268.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22140.0%22%20cy%3D%2286.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22112.0%22%20cy%3D%22132.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22120.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%22101.1%22%20y1%3D%2274.9%22%20x2%3D%22122.9%22%20y2%3D%2277.1%22%20stroke%3D%22%23eab308%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2295.060259150949%22%20y%3D%2265.85018690405582%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23eab308%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%22116.939740849051%22%20y%3D%2268.14981309594418%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23eab308%22%20opacity%3D%221%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Bíceps', muscleClass: 'biceps',
+            tips: ["Apoie os braços no banco Scott com as axilas encostadas", "Segure a barra com pegada supinada", "Flexione os cotovelos elevando o peso", "Não estenda os braços completamente no fim para preservar a articulação", "Desça de forma lenta e controlada"]
+        },
+        "Russian Twist": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2364748b%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C132.0%20120.0%2C168.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C132.0%2096.0%2C150.0%20150.0%2C158.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C168.0%20150.0%2C182.0%20178.0%2C168.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22110.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22132.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22168.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2296.0%22%20cy%3D%22150.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%22182.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%22140.6%22%20y1%3D%22154.6%22%20x2%3D%22159.4%22%20y2%3D%22161.4%22%20stroke%3D%22%2364748b%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%22134.60307379214092%22%20y%3D%22145.5797985667433%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%2364748b%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%22153.39692620785908%22%20y%3D%22152.4202014332567%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%2364748b%22%20opacity%3D%221%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Core', muscleClass: 'core',
+            tips: ["Sente-se com os joelhos flexionados e tronco levemente inclinado", "Eleve os pés do chão para mais intensidade (opcional)", "Gire o tronco levando as mãos ou peso de um lado ao outro", "Mantenha o abdômen contraído durante toda a execução", "Controle o movimento sem usar apenas os braços"]
+        },
+        "Stiff": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23a855f7%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22146.0%2C80.0%20120.0%2C118.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22146.0%2C80.0%20112.0%2C120.0%20108.0%2C178.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C118.0%20122.0%2C150.0%20120.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%2260.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22146.0%22%20cy%3D%2280.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22118.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22112.0%22%20cy%3D%22120.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22122.0%22%20cy%3D%22150.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%22108.0%22%20y1%3D%22150.0%22%20x2%3D%22108.0%22%20y2%3D%22214.0%22%20stroke%3D%22%23a855f7%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22108.0%22%20cy%3D%22150.0%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%23a855f7%22%20stroke-width%3D%223.5%22%2F%3E%3Ccircle%20cx%3D%22108.0%22%20cy%3D%22214.0%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%23a855f7%22%20stroke-width%3D%223.5%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Pernas', muscleClass: 'pernas',
+            tips: ["Segure a barra com os joelhos levemente flexionados", "Empurre o quadril para trás mantendo a barra próxima às pernas", "Desça até sentir alongamento nos posteriores de coxa", "Mantenha a coluna neutra durante todo o movimento", "Retorne estendendo o quadril, sem arredondar as costas"]
+        },
+        "Supino com Halteres": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ef4444%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Crect%20x%3D%2258%22%20y%3D%22150%22%20width%3D%22124%22%20height%3D%2215%22%20rx%3D%226%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%3Cline%20x1%3D%2266%22%20y1%3D%22165%22%20x2%3D%2266%22%20y2%3D%22183%22%20stroke%3D%22%233a3a52%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%22174%22%20y1%3D%22165%22%20x2%3D%22174%22%20y2%3D%22183%22%20stroke%3D%22%233a3a52%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2278.0%2C140.0%20150.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2278.0%2C140.0%2096.0%2C92.0%2096.0%2C58.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22150.0%2C140.0%20178.0%2C118.0%20206.0%2C142.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2260.0%22%20cy%3D%22140.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%2278.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2296.0%22%20cy%3D%2292.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22178.0%22%20cy%3D%22118.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%2283.0%22%20y1%3D%2250.0%22%20x2%3D%22109.0%22%20y2%3D%2250.0%22%20stroke%3D%22%23ef4444%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2277.0%22%20y%3D%2241.0%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23ef4444%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%22103.0%22%20y%3D%2241.0%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%23ef4444%22%20opacity%3D%221%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Peito', muscleClass: 'peito',
+            tips: ["Deite no banco com um halter em cada mão", "Comece com os halteres na altura do peito", "Empurre os halteres para cima sem travar os cotovelos", "Desça de forma controlada até sentir alongamento no peito", "Mantenha as escápulas apoiadas no banco"]
+        },
+        "Tríceps Coice": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2322c55e%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Cline%20x1%3D%2214%22%20y1%3D%22206%22%20x2%3D%22226%22%20y2%3D%22206%22%20stroke%3D%22%232a2a3d%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22158.0%2C88.0%20120.0%2C110.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22158.0%2C88.0%2096.0%2C118.0%2060.0%2C124.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22120.0%2C110.0%20112.0%2C166.0%20126.0%2C204.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22170.0%22%20cy%3D%2274.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%22158.0%22%20cy%3D%2288.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22120.0%22%20cy%3D%22110.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2296.0%22%20cy%3D%22118.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22112.0%22%20cy%3D%22166.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%2249.1%22%20y1%3D%22122.5%22%20x2%3D%2270.9%22%20y2%3D%22125.5%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Crect%20x%3D%2243.107051243842726%22%20y%3D%22113.46909588943927%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%2322c55e%22%20opacity%3D%221%22%2F%3E%3Crect%20x%3D%2264.89294875615727%22%20y%3D%22116.53090411056073%22%20width%3D%2212%22%20height%3D%2218%22%20rx%3D%223%22%20fill%3D%22%2322c55e%22%20opacity%3D%221%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Tríceps', muscleClass: 'triceps',
+            tips: ["Incline o tronco à frente apoiando uma mão no banco", "Mantenha o braço colado ao corpo com cotovelo a 90 graus", "Estenda o antebraço para trás até ficar reto", "Contraia o tríceps no topo do movimento", "Volte controlando a descida, sem soltar o peso"]
+        },
+        "Tríceps Testa": {
+            image: 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20240%20240%22%3E%0A%3Cdefs%3E%0A%3CradialGradient%20id%3D%22g%22%20cx%3D%2250%25%22%20cy%3D%2238%25%22%20r%3D%2275%25%22%3E%0A%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%2322c55e%22%20stop-opacity%3D%220.28%22%2F%3E%0A%3Cstop%20offset%3D%2255%25%22%20stop-color%3D%22%231a1a2e%22%20stop-opacity%3D%221%22%2F%3E%0A%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23141420%22%20stop-opacity%3D%221%22%2F%3E%0A%3C%2FradialGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22240%22%20height%3D%22240%22%20rx%3D%220%22%20fill%3D%22url%28%23g%29%22%2F%3E%0A%3Crect%20x%3D%2258%22%20y%3D%22150%22%20width%3D%22124%22%20height%3D%2215%22%20rx%3D%226%22%20fill%3D%22%233a3a52%22%20opacity%3D%221%22%2F%3E%3Cline%20x1%3D%2266%22%20y1%3D%22165%22%20x2%3D%2266%22%20y2%3D%22183%22%20stroke%3D%22%233a3a52%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Cline%20x1%3D%22174%22%20y1%3D%22165%22%20x2%3D%22174%22%20y2%3D%22183%22%20stroke%3D%22%233a3a52%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2278.0%2C140.0%20150.0%2C140.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%2278.0%2C140.0%20100.0%2C90.0%2078.0%2C68.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpolyline%20points%3D%22150.0%2C140.0%20178.0%2C118.0%20206.0%2C142.0%22%20fill%3D%22none%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2260.0%22%20cy%3D%22140.0%22%20r%3D%2215%22%20fill%3D%22%23e7e9f3%22%2F%3E%3Ccircle%20cx%3D%2278.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22150.0%22%20cy%3D%22140.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22100.0%22%20cy%3D%2290.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%22178.0%22%20cy%3D%22118.0%22%20r%3D%225%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23e7e9f3%22%20stroke-width%3D%222%22%2F%3E%3Cline%20x1%3D%2255.1%22%20y1%3D%2261.6%22%20x2%3D%22100.9%22%20y2%3D%2266.4%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2255.1%22%20cy%3D%2261.6%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%223.5%22%2F%3E%3Ccircle%20cx%3D%22100.9%22%20cy%3D%2266.4%22%20r%3D%2211%22%20fill%3D%22%230f1420%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%223.5%22%2F%3E%0A%3C%2Fsvg%3E',
+            muscle: 'Tríceps', muscleClass: 'triceps',
+            tips: ["Deite no banco segurando a barra com os braços estendidos", "Flexione apenas os cotovelos, descendo a barra até a testa", "Mantenha os braços fixos e perpendiculares ao chão", "Estenda os cotovelos para voltar à posição inicial", "Controle o peso — é fácil perder a forma nesse exercício"]
+        }
+    };
+
+    const MUSCLE_COLORS = {
+        'peito': '#ef4444',
+        'costas': '#f97316',
+        'biceps': '#eab308',
+        'triceps': '#22c55e',
+        'ombros': '#3b82f6',
+        'pernas': '#a855f7',
+        'core': '#64748b',
+        'panturrilha': '#14b8a6',
+        'gluteos': '#ec4899',
+        'cardio': '#f43f5e'
+    };
+
+    const WEEKLY_PLAN = {
+        'Seg': { subtitle: 'Peito + Tríceps', exercises: ['Supino Reto', 'Supino Inclinado', 'Crucifixo Polia', 'Tríceps Corda', 'Extensão Tríceps'] },
+        'Ter': { subtitle: 'Costas + Bíceps', exercises: ['Puxada Frontal', 'Remada Barra', 'Barra Fixa', 'Rosca Direta', 'Rosca Martelo'] },
+        'Qua': { subtitle: 'Pernas (Força)', exercises: ['Agachamento', 'Leg Press', 'Extensora', 'Rosca Perna', 'Cadeira Adutora'] },
+        'Qui': { subtitle: 'Ombros + Perna Leve', exercises: ['Desenvolvimento', 'Elevação Lateral', 'Elevação Frontal', 'Leg Press', 'Extensora'] },
+        'Sex': { subtitle: 'HIIT + Core', exercises: ['Mountain Climbers', 'Prancha', 'Abdominal', 'Crunch', 'Levantamento Perna'] },
+        'Sáb': { subtitle: 'Descanso Ativo', exercises: [] },
+        'Dom': { subtitle: 'Descanso', exercises: [] }
+    };
+
+    const MOTIVATION_QUOTES = [
+        '"A dor que você sente hoje será a força que você sentirá amanhã."',
+        '"Disciplina é a ponte entre metas e conquistas."',
+        '"Seu corpo pode aguentar quase tudo. É sua mente que você precisa convencer."',
+        '"Não pare quando estiver cansado. Pare quando terminar."',
+        '"Cada repetição te aproxima do seu objetivo."',
+        '"O sucesso não é final, o fracasso não é fatal: é a coragem de continuar que conta."'
+    ];
+
+    const DAY_NAMES = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+    const DAY_FULL = { 'Seg': 'Segunda', 'Ter': 'Terça', 'Qua': 'Quarta', 'Qui': 'Quinta', 'Sex': 'Sexta', 'Sáb': 'Sábado', 'Dom': 'Domingo' };
+    const GREETINGS = { morning: 'Bom dia', afternoon: 'Boa tarde', evening: 'Boa noite' };
+
+    // ===== STATE =====
+    let profiles = [];
+    let currentProfile = null;
+    let data = {};
+    let timerInterval = null;
+    let timerSeconds = 0;
+    let timerRunning = false;
+    let restInterval = null;
+
+    // ===== UTILS =====
+    function today() {
+        return new Date().toISOString().split('T')[0];
+    }
+
+    function todayDay() {
+        const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+        return days[new Date().getDay()];
+    }
+
+    function getHour() { return new Date().getHours(); }
+
+    function getGreeting() {
+        const h = getHour();
+        if (h < 12) return 'morning';
+        if (h < 18) return 'afternoon';
+        return 'evening';
+    }
+
+    function randomQuote() {
+        return MOTIVATION_QUOTES[Math.floor(Math.random() * MOTIVATION_QUOTES.length)];
+    }
+
+    function getExerciseImage(name) {
+        if (EXERCISE_DB[name]) return EXERCISE_DB[name].image;
+        return 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=200&h=200&fit=crop';
+    }
+
+    function getExerciseData(name) {
+        return EXERCISE_DB[name] || { image: getExerciseImage(name), muscle: 'Outro', muscleClass: 'core', tips: ['Execute com controle', 'Mantenha boa postura', 'Respire corretamente'] };
+    }
+
+    // ===== PERSISTENCE =====
+    function loadProfiles() {
+        profiles = JSON.parse(localStorage.getItem('ironProfiles') || '["Eduardo"]');
+        renderLoginProfiles();
+    }
+
+    function loadProfile(name) {
+        currentProfile = name;
+        const saved = localStorage.getItem(`iron_${name}`);
+        data = saved ? JSON.parse(saved) : createDefaultData(name);
+        localStorage.setItem('ironCurrent', name);
+        enterApp();
+    }
+
+    function saveData() {
+        localStorage.setItem(`iron_${currentProfile}`, JSON.stringify(data));
+    }
+
+    function createDefaultData(name) {
+        const plan = {};
+        DAY_NAMES.forEach(d => { plan[d] = JSON.parse(JSON.stringify(WEEKLY_PLAN[d])); });
+        return {
+            name, goal: '',
+            weeklyPlan: plan,
+            history: [],
+            checked: {},
+            loggedToday: [],
+            customExercises: [],
+            lastReset: today()
+        };
+    }
+
+    // ===== LOGIN =====
+    function renderLoginProfiles() {
+        const cont = document.getElementById('loginProfiles');
+        cont.innerHTML = profiles.map(p => `
+            <button class="login-profile-btn" onclick="loadProfile('${p}')">
+                <div class="avatar">${p.charAt(0).toUpperCase()}</div>
+                <span>${p}</span>
+                ${p === 'Eduardo' ? '<i class="fas fa-star star"></i>' : ''}
+            </button>
+        `).join('');
+    }
+
+    function openNewProfileModal() {
+        const name = prompt('Nome do novo perfil:');
+        if (!name || !name.trim()) return;
+        if (profiles.includes(name.trim())) { toast('Perfil já existe!', 'error'); return; }
+        profiles.push(name.trim());
+        localStorage.setItem('ironProfiles', JSON.stringify(profiles));
+        renderLoginProfiles();
+        toast('Perfil criado!', 'success');
+    }
+
+    function quickStart() {
+        const name = localStorage.getItem('ironCurrent') || profiles[0] || 'Eduardo';
+        loadProfile(name);
+        setTimeout(() => navigate('Workout'), 300);
+    }
+
+    // ===== APP INIT =====
+    function enterApp() {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('app').classList.add('show');
+        document.getElementById('headerProfileName').textContent = data.name || currentProfile;
+        renderAll();
+    }
+
+    function renderAll() {
+        checkDailyReset();
+        renderHome();
+        renderWeek();
+        renderWorkout();
+        renderStats();
+        renderHistory();
+    }
+
+    function checkDailyReset() {
+        if (data.lastReset !== today()) {
+            // Move today's logged to history
+            if (data.loggedToday && data.loggedToday.length > 0) {
+                data.history.push({
+                    date: data.lastReset,
+                    exercises: [...data.loggedToday],
+                    duration: 0
+                });
+            }
+            data.loggedToday = [];
+            data.checked = {};
+            data.lastReset = today();
+            saveData();
+        }
+    }
+
+    // ===== NAVIGATION =====
+    function navigate(page) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(`page${page}`).classList.add('active');
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = ['Home', 'Week', 'Workout', 'Stats', 'History'];
+        const idx = pages.indexOf(page);
+        if (idx >= 0) navItems[idx].classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Re-render on navigate
+        if (page === 'Home') renderHome();
+        if (page === 'Week') renderWeek();
+        if (page === 'Stats') renderStats();
+        if (page === 'History') renderHistory();
+        if (page === 'Workout') renderWorkout();
+    }
+
+    // ===== HOME =====
+    function renderHome() {
+        const g = getGreeting();
+        const greeting = GREETINGS[g];
+        const name = data.name || currentProfile;
+        document.getElementById('greetingTitle').innerHTML = `${greeting}, <span>${name}</span>`;
+        
+        const now = new Date();
+        document.getElementById('greetingDate').textContent = now.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+        document.getElementById('motivationTitle').textContent = g === 'morning' ? 'Bora treinar!' : 'Continue forte!';
+        document.getElementById('todayWorkoutLabel').textContent = `Treino de ${DAY_FULL[todayDay()] || todayDay()}: ${data.weeklyPlan[todayDay()]?.subtitle || 'Descanso'}`;
+        document.getElementById('motivationQuote').textContent = randomQuote();
+
+        // Stats
+        const totalWorkouts = data.history.length + (data.loggedToday.length > 0 ? 1 : 0);
+        const totalMin = data.history.reduce((s, h) => s + (h.duration || 0), 0);
+        document.getElementById('statWorkouts').textContent = totalWorkouts;
+        document.getElementById('statMinutes').textContent = Math.floor(totalMin / 60);
+        document.getElementById('statStreak').textContent = '🔥 5';
+        document.getElementById('statExercises').textContent = data.loggedToday.length;
+
+        // Today exercises
+        const day = todayDay();
+        const plan = data.weeklyPlan[day] || { exercises: [], subtitle: 'Descanso' };
+        document.getElementById('todayBadge').textContent = `${Object.keys(data.checked).filter(k => k.startsWith(day)).length}/${plan.exercises.length}`;
+
+        if (plan.exercises.length === 0) {
+            document.getElementById('todayExercises').innerHTML = `
+                <div style="text-align:center;padding:40px;color:var(--text-muted);">
+                    <i class="fas fa-mug-hot" style="font-size:36px;margin-bottom:12px;display:block;color:var(--text-muted);opacity:0.5;"></i>
+                    <p>Dia de descanso! Descanse e recupere.</p>
+                </div>`;
+            return;
+        }
+
+        let html = '';
+        plan.exercises.forEach((ex, idx) => {
+            const key = `${day}-${idx}`;
+            const done = data.checked[key];
+            const exData = getExerciseData(ex);
+            html += `
+            <div class="exercise-card ${done ? 'completed' : ''}" onclick="openExerciseModal('${ex.replace(/'/g, "\\'")}')">
+                <div class="exercise-card-inner">
+                    <div class="exercise-thumb">
+                        <img src="${exData.image}" alt="${ex}" loading="lazy" onerror="this.style.display='none'">
+                        <div class="exercise-thumb-overlay"></div>
+                    </div>
+                    <div class="exercise-info">
+                        <div class="exercise-name">${ex}</div>
+                        <div class="exercise-meta">
+                            <span><i class="fas fa-dumbbell" style="font-size:10px;"></i> ${exData.muscle}</span>
+                        </div>
+                    </div>
+                    <button class="exercise-check ${done ? 'done' : ''}" onclick="event.stopPropagation();toggleCheck('${key}')">
+                        ${done ? '<i class="fas fa-check" style="font-size:12px;"></i>' : ''}
+                    </button>
+                </div>
+            </div>`;
+        });
+        document.getElementById('todayExercises').innerHTML = html;
+    }
+
+    function toggleCheck(key) {
+        if (data.checked[key]) {
+            delete data.checked[key];
+        } else {
+            data.checked[key] = true;
+            const restTime = 60;
+            startRestTimer(restTime);
+        }
+        saveData();
+        renderHome();
+    }
+
+    // ===== WEEK =====
+    function renderWeek() {
+        // Calendar
+        const now = new Date();
+        const monday = new Date(now);
+        const dayOfWeek = now.getDay() === 0 ? 6 : now.getDay() - 1;
+        monday.setDate(now.getDate() - dayOfWeek);
+
+        let calHtml = '';
+        const weekDays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+        weekDays.forEach((d, i) => {
+            const date = new Date(monday);
+            date.setDate(monday.getDate() + i);
+            const isToday = date.toDateString() === now.toDateString();
+            const done = Object.keys(data.checked).filter(k => k.startsWith(d)).length;
+            const total = (data.weeklyPlan[d]?.exercises || []).length;
+            const allDone = total > 0 && done === total;
+            
+            calHtml += `
+            <div class="week-day ${isToday ? 'active' : ''} ${allDone ? 'done' : ''}" onclick="scrollToDay('${d}')">
+                <div class="week-day-name">${d.substring(0,2)}</div>
+                <div class="week-day-num">${date.getDate()}</div>
+                <div class="week-day-dot ${allDone ? 'done' : (total > 0 ? 'pending' : '')}"></div>
+            </div>`;
+        });
+        document.getElementById('weekCalendar').innerHTML = calHtml;
+
+        // Day cards
+        let daysHtml = '';
+        weekDays.forEach((d, dayIdx) => {
+            const plan = data.weeklyPlan[d] || { subtitle: 'Descanso', exercises: [] };
+            const done = Object.keys(data.checked).filter(k => k.startsWith(d)).length;
+            const total = plan.exercises.length;
+            const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+            const circumference = 2 * Math.PI * 25;
+            const offset = circumference - (pct / 100) * circumference;
+
+            daysHtml += `
+            <div class="day-detail-card" id="day-${d}">
+                <div class="day-detail-header">
+                    <div>
+                        <div class="day-detail-title">${DAY_FULL[d]}</div>
+                        <div class="day-detail-subtitle">${plan.subtitle}</div>
+                    </div>
+                    <div class="day-detail-progress">
+                        <svg viewBox="0 0 60 60">
+                            <circle class="bg" cx="30" cy="30" r="25"/>
+                            <circle class="fg" cx="30" cy="30" r="25" stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/>
+                        </svg>
+                        <span>${pct}%</span>
+                    </div>
+                </div>
+                ${plan.exercises.length === 0 ? '<p style="color:var(--text-muted);font-size:13px;text-align:center;padding:10px;">Dia de descanso</p>' : ''}
+            </div>`;
+
+            if (plan.exercises.length > 0) {
+                plan.exercises.forEach((ex, exIdx) => {
+                    const key = `${dayIdx}-${exIdx}`;
+                    const isDone = data.checked[key];
+                    const exData = getExerciseData(ex);
+                    daysHtml += `
+                    <div class="exercise-card ${isDone ? 'completed' : ''}" onclick="openExerciseModal('${ex.replace(/'/g, "\\'")}')">
+                        <div class="exercise-card-inner">
+                            <div class="exercise-thumb">
+                                <img src="${exData.image}" alt="${ex}" loading="lazy" onerror="this.style.display='none'">
+                                <div class="exercise-thumb-overlay"></div>
+                            </div>
+                            <div class="exercise-info">
+                                <div class="exercise-name">${ex}</div>
+                                <div class="exercise-meta">
+                                    <span style="color:${MUSCLE_COLORS[exData.muscleClass] || '#64748b'}"><i class="fas fa-circle" style="font-size:7px;"></i> ${exData.muscle}</span>
+                                </div>
+                            </div>
+                            <button class="exercise-check ${isDone ? 'done' : ''}" onclick="event.stopPropagation();toggleCheck('${d}-${exIdx}')">
+                                ${isDone ? '<i class="fas fa-check" style="font-size:12px;"></i>' : ''}
+                            </button>
+                        </div>
+                    </div>`;
+                });
+            }
+        });
+        document.getElementById('weekDaysContainer').innerHTML = daysHtml;
+    }
+
+    function scrollToDay(d) {
+        const el = document.getElementById(`day-${d}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ===== WORKOUT =====
+    function renderWorkout() {
+        // Timer ring animation
+        const circumference = 2 * Math.PI * 100;
+        const progress = document.getElementById('timerProgress');
+        if (timerRunning) {
+            const elapsed = timerSeconds % 600; // 10 min cycle
+            const offset = circumference - (elapsed / 600) * circumference;
+            progress.style.strokeDashoffset = offset;
+        } else {
+            progress.style.strokeDashoffset = circumference;
+        }
+
+        // Logged exercises
+        const logged = data.loggedToday || [];
+        document.getElementById('loggedCount').textContent = logged.length;
+
+        if (logged.length === 0) {
+            document.getElementById('loggedExercises').innerHTML = `
+                <div style="text-align:center;padding:30px;color:var(--text-muted);">
+                    <i class="fas fa-dumbbell" style="font-size:32px;margin-bottom:10px;display:block;opacity:0.4;"></i>
+                    <p style="font-size:13px;">Nenhum exercício registrado hoje</p>
+                </div>`;
+            return;
+        }
+
+        let html = '';
+        logged.forEach((ex, idx) => {
+            html += `
+            <div class="history-card">
+                <div class="history-icon"><i class="fas fa-dumbbell"></i></div>
+                <div class="history-info">
+                    <div class="history-title">${ex.name}</div>
+                    <div class="history-date">${ex.series}x${ex.reps} - ${ex.weight}kg</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span class="history-duration-value" style="font-size:13px;">${ex.date}</span>
+                    <button class="header-btn" style="width:32px;height:32px;color:var(--danger);" onclick="removeLogged(${idx})">
+                        <i class="fas fa-trash" style="font-size:12px;"></i>
+                    </button>
+                </div>
+            </div>`;
+        });
+        document.getElementById('loggedExercises').innerHTML = html;
+
+        // Exercise suggestions
+        const allExercises = [...Object.keys(EXERCISE_DB)];
+        document.getElementById('exerciseSuggestions').innerHTML = allExercises.map(e => `<option value="${e}">`).join('');
+    }
+
+    function startTimer() {
+        timerRunning = true;
+        document.getElementById('btnTimerStart').disabled = true;
+        document.getElementById('btnTimerStop').disabled = false;
+        timerInterval = setInterval(() => {
+            timerSeconds++;
+            updateTimerDisplay();
+        }, 1000);
+    }
+
+    function stopTimer() {
+        timerRunning = false;
+        clearInterval(timerInterval);
+        document.getElementById('btnTimerStart').disabled = false;
+        document.getElementById('btnTimerStop').disabled = true;
+    }
+
+    function resetTimer() {
+        stopTimer();
+        timerSeconds = 0;
+        updateTimerDisplay();
+        document.getElementById('timerProgress').style.strokeDashoffset = 628;
+    }
+
+    function updateTimerDisplay() {
+        const m = Math.floor(timerSeconds / 60);
+        const s = timerSeconds % 60;
+        document.getElementById('timerDisplay').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+        // Update ring
+        const circumference = 2 * Math.PI * 100;
+        const elapsed = timerSeconds % 600;
+        const offset = circumference - (elapsed / 600) * circumference;
+        document.getElementById('timerProgress').style.strokeDashoffset = offset;
+    }
+
+    function logExercise() {
+        const name = document.getElementById('logExerciseName').value.trim();
+        const series = parseInt(document.getElementById('logSeries').value);
+        const reps = parseInt(document.getElementById('logReps').value);
+        const weight = parseFloat(document.getElementById('logWeight').value) || 0;
+        const restTime = parseInt(document.getElementById('logRest').value) || 60;
+
+        if (!name) { toast('Digite o nome do exercício!', 'error'); return; }
+        if (!series || !reps) { toast('Preencha séries e repetições!', 'error'); return; }
+
+        if (!data.loggedToday) data.loggedToday = [];
+        data.loggedToday.push({
+            name, series, reps, weight,
+            date: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+            rest: restTime
+        });
+        saveData();
+
+        document.getElementById('logExerciseName').value = '';
+        document.getElementById('logSeries').value = '';
+        document.getElementById('logReps').value = '';
+        document.getElementById('logWeight').value = '';
+
+        toast('Exercício registrado!', 'success');
+        renderWorkout();
+
+        // Start rest timer
+        if (restTime > 0) {
+            startRestTimer(restTime);
+        }
+    }
+
+    function removeLogged(idx) {
+        data.loggedToday.splice(idx, 1);
+        saveData();
+        renderWorkout();
+        toast('Exercício removido', 'info');
+    }
+
+    // ===== REST TIMER =====
+    function startRestTimer(seconds) {
+        let remaining = seconds;
+        const total = seconds;
+        document.getElementById('restModal').classList.add('show');
+        document.getElementById('restTimerDisplay').textContent = remaining;
+        document.getElementById('restBarFill').style.width = '100%';
+
+        clearInterval(restInterval);
+        restInterval = setInterval(() => {
+            remaining--;
+            document.getElementById('restTimerDisplay').textContent = remaining;
+            document.getElementById('restBarFill').style.width = `${(remaining / total) * 100}%`;
+            if (remaining <= 0) {
+                clearInterval(restInterval);
+                document.getElementById('restModal').classList.remove('show');
+            }
+        }, 1000);
+    }
+
+    function skipRest() {
+        clearInterval(restInterval);
+        document.getElementById('restModal').classList.remove('show');
+    }
+
+    // ===== STATS =====
+    function renderStats() {
+        // Week chart
+        const weekDays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+        const weekData = weekDays.map(d => {
+            const plan = data.weeklyPlan[d] || { exercises: [] };
+            const done = Object.keys(data.checked).filter(k => k.startsWith(d)).length;
+            return { day: d, count: done };
+        });
+
+        const maxCount = Math.max(...weekData.map(d => d.count), 1);
+        let chartHtml = '';
+        weekData.forEach(d => {
+            const height = Math.max((d.count / maxCount) * 140, 4);
+            chartHtml += `
+            <div class="chart-bar-wrapper">
+                <div class="chart-bar-value">${d.count}</div>
+                <div class="chart-bar" style="height:${height}px;"></div>
+                <div class="chart-bar-label">${d.day}</div>
+            </div>`;
+        });
+        document.getElementById('weekChart').innerHTML = chartHtml;
+
+        // Muscle volume chart
+        const muscleVolume = {};
+        data.loggedToday.forEach(ex => {
+            const exData = getExerciseData(ex.name);
+            const key = exData.muscleClass;
+            muscleVolume[key] = (muscleVolume[key] || 0) + (ex.series * ex.reps * ex.weight);
+        });
+
+        // Add from history
+        data.history.forEach(h => {
+            (h.exercises || []).forEach(ex => {
+                const exData = getExerciseData(ex.name);
+                const key = exData.muscleClass;
+                muscleVolume[key] = (muscleVolume[key] || 0) + (ex.series * ex.reps * ex.weight);
+            });
+        });
+
+        const muscleNames = { 'peito': 'Peito', 'costas': 'Costas', 'biceps': 'Bíceps', 'triceps': 'Tríceps', 'ombros': 'Ombros', 'pernas': 'Pernas', 'core': 'Core' };
+        const muscleData = Object.entries(muscleNames).map(([key, name]) => ({
+            name, key, value: muscleVolume[key] || 0
+        }));
+
+        const maxVol = Math.max(...muscleData.map(m => m.value), 1);
+        let muscleChartHtml = '';
+        muscleData.forEach(m => {
+            const height = Math.max((m.value / maxVol) * 140, 4);
+            const color = MUSCLE_COLORS[m.key] || '#64748b';
+            muscleChartHtml += `
+            <div class="chart-bar-wrapper">
+                <div class="chart-bar-value">${m.value > 0 ? Math.round(m.value) : 0}</div>
+                <div class="chart-bar" style="height:${height}px;background:${color};"></div>
+                <div class="chart-bar-label">${m.name}</div>
+            </div>`;
+        });
+        document.getElementById('muscleChart').innerHTML = muscleChartHtml;
+
+        // Total stats
+        let totalCal = 0;
+        let totalVol = 0;
+        data.loggedToday.forEach(ex => {
+            totalCal += ex.series * ex.reps * 3;
+            totalVol += ex.series * ex.reps * ex.weight;
+        });
+        data.history.forEach(h => {
+            (h.exercises || []).forEach(ex => {
+                totalCal += ex.series * ex.reps * 3;
+                totalVol += ex.series * ex.reps * ex.weight;
+            });
+        });
+        document.getElementById('totalCalories').textContent = Math.round(totalCal);
+        document.getElementById('totalVolume').textContent = Math.round(totalVol).toLocaleString();
+    }
+
+    // ===== HISTORY =====
+    function renderHistory() {
+        const allHistory = [...(data.history || [])];
+        if (data.loggedToday && data.loggedToday.length > 0) {
+            allHistory.push({ date: today(), exercises: data.loggedToday, duration: timerSeconds * 60 });
+        }
+        allHistory.reverse();
+
+        if (allHistory.length === 0) {
+            document.getElementById('historyList').innerHTML = `
+                <div style="text-align:center;padding:50px;color:var(--text-muted);">
+                    <i class="fas fa-clock-rotate-left" style="font-size:40px;margin-bottom:14px;display:block;opacity:0.4;"></i>
+                    <p style="font-size:14px;">Nenhum treino finalizado ainda.</p>
+                    <p style="font-size:13px;margin-top:6px;">Comece a registrar seus exercícios!</p>
+                </div>`;
+            return;
+        }
+
+        let html = '';
+        allHistory.forEach(h => {
+            const d = new Date(h.date + 'T12:00:00');
+            const duration = h.duration ? Math.floor(h.duration / 60) : Math.floor(timerSeconds / 60);
+            const exCount = (h.exercises || []).length;
+            html += `
+            <div class="history-card">
+                <div class="history-icon"><i class="fas fa-fire"></i></div>
+                <div class="history-info">
+                    <div class="history-title">${d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+                    <div class="history-date">${exCount} exercícios registrados</div>
+                </div>
+                <div class="history-duration">
+                    <div class="history-duration-value">${duration}m</div>
+                    <div class="history-duration-label">duração</div>
+                </div>
+            </div>`;
+
+            // Show exercises
+            (h.exercises || []).forEach(ex => {
+                html += `
+                <div style="padding:8px 0 8px 58px;display:flex;align-items:center;gap:10px;">
+                    <div style="width:6px;height:6px;border-radius:50%;background:var(--primary);flex-shrink:0;"></div>
+                    <div style="flex:1;">
+                        <span style="font-size:13px;font-weight:500;">${ex.name}</span>
+                        <span style="font-size:11px;color:var(--text-muted);margin-left:8px;">${ex.series}x${ex.reps} - ${ex.weight}kg</span>
+                    </div>
+                </div>`;
+            });
+        });
+        document.getElementById('historyList').innerHTML = html;
+    }
+
+    // ===== MODAL =====
+    function openExerciseModal(name) {
+        const exData = getExerciseData(name);
+        document.getElementById('modalImage').src = exData.image;
+        document.getElementById('modalTitle').textContent = name;
+        const tag = document.getElementById('modalMuscle');
+        tag.textContent = exData.muscle;
+        tag.style.background = `${MUSCLE_COLORS[exData.muscleClass] || '#64748b'}20`;
+        tag.style.color = MUSCLE_COLORS[exData.muscleClass] || '#64748b';
+
+        const tipsList = document.getElementById('modalTipsList');
+        tipsList.innerHTML = exData.tips.map(t => `<li><i class="fas fa-circle"></i> ${t}</li>`).join('');
+        document.getElementById('exerciseModal').classList.add('show');
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('show');
+    }
+
+    // ===== PROFILE =====
+    function openEditProfile() {
+        const name = prompt('Editar nome:', data.name || currentProfile);
+        if (name && name.trim()) {
+            data.name = name.trim();
+            saveData();
+            document.getElementById('headerProfileName').textContent = name.trim();
+            toast('Perfil atualizado!', 'success');
+        }
+    }
+
+    // ===== THEME =====
+    function toggleTheme() {
+        const isLight = document.body.classList.contains('theme-light');
+        document.body.classList.toggle('theme-light', !isLight);
+        document.getElementById('themeIcon').className = isLight ? 'fas fa-moon' : 'fas fa-sun';
+        localStorage.setItem('ironTheme', isLight ? 'dark' : 'light');
+    }
+
+    // ===== TOAST =====
+    function toast(msg, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const el = document.createElement('div');
+        el.className = `toast toast-${type}`;
+        el.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'xmark' : 'info-circle'}"></i> ${msg}`;
+        container.appendChild(el);
+        setTimeout(() => el.remove(), 3000);
+    }
+
+    // ===== PARTICLES =====
+    function createParticles() {
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = `${Math.random() * 100}%`;
+            p.style.top = `${Math.random() * 100}%`;
+            p.style.animationDelay = `${Math.random() * 5}s`;
+            p.style.animationDuration = `${6 + Math.random() * 6}s`;
+            container.appendChild(p);
+        }
+    }
+
+    // ===== INIT =====
+    createParticles();
+    const savedTheme = localStorage.getItem('ironTheme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('theme-light');
+        document.getElementById('themeIcon').className = 'fas fa-sun';
+    }
+    loadProfiles();
+
+    // Close modal on backdrop click
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+        m.addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('show');
+        });
+    });
+    </script>
+</body>
+</html>
+
