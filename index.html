@@ -681,13 +681,18 @@
             overflow: hidden;
             flex-shrink: 0;
             position: relative;
+            background: #f1f5f9;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .exercise-thumb img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            padding: 4px;
             transition: transform 0.3s;
+            background: transparent;
         }
 
         .exercise-card:hover .exercise-thumb img {
@@ -697,7 +702,8 @@
         .exercise-thumb-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), transparent);
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.08), transparent);
+            pointer-events: none;
         }
 
         .exercise-info {
@@ -1224,11 +1230,23 @@
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
         }
 
+        .modal-image-container {
+            width: 100%;
+            height: 220px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            overflow: hidden;
+            padding: 10px;
+        }
+
         .modal-image {
             width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
         }
 
         .modal-body {
@@ -1678,7 +1696,9 @@
     <div class="modal-overlay" id="exerciseModal">
         <button class="modal-close" onclick="closeModal('exerciseModal')">&times;</button>
         <div class="modal-box">
-            <img class="modal-image" id="modalImage" src="" alt="">
+            <div class="modal-image-container">
+                <img class="modal-image" id="modalImage" src="" alt="">
+            </div>
             <div class="modal-body">
                 <h3 id="modalTitle"></h3>
                 <span class="muscle-tag" id="modalMuscle"></span>
@@ -1712,117 +1732,117 @@
     // ===== DATA & CONFIG =====
     const EXERCISE_DB = {
         'Supino Reto': {
-            image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/192/Bench-press-1.png.400x400_q85.png',
             muscle: 'Peito', muscleClass: 'peito',
             tips: ['Deite na bancada com os pés apoiados no chão', 'Pegue a barra com pegada um pouco mais larga que os ombros', 'Desça a barra até tocar levemente o peito', 'Empurre para cima de forma controlada', 'Mantenha as escápulas retraídas durante todo o movimento']
         },
         'Supino Inclinado': {
-            image: 'https://images.unsplash.com/photo-1534368786749-b63e05c90863?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/41/Incline-bench-press-1.png.400x400_q85.jpg',
             muscle: 'Peito', muscleClass: 'peito',
             tips: ['Ajuste a bancada entre 30-45 graus', 'Desça a barra de forma controlada', 'Foque em contrair o peitoral superior', 'Não arqueie excessivamente a lombar', 'Respire: expire ao empurrar']
         },
         'Crucifixo Polia': {
-            image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/71/Cable-crossover-2.png.400x400_q85.jpg',
             muscle: 'Peito', muscleClass: 'peito',
             tips: ['Fique no centro da polia com os cabos na altura do peito', 'Incline o tronco levemente para frente', 'Abra os braços formando um "V"', 'Traga os cabos juntos à frente do corpo', 'Mantenha uma leve flexão nos cotovelos']
         },
         'Tríceps Corda': {
-            image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/88/Narrow-grip-bench-press-1.png.400x400_q85.png',
             muscle: 'Tríceps', muscleClass: 'triceps',
             tips: ['Fique de frente para a polia alta', 'Mantenha os cotovelos fixos ao lado do corpo', 'Estenda completamente os braços para baixo', 'Abra a corda no final do movimento', 'Controle a subida de forma lenta']
         },
         'Extensão Tríceps': {
-            image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/84/Lying-close-grip-triceps-press-to-chin-1.png.400x400_q85.png',
             muscle: 'Tríceps', muscleClass: 'triceps',
             tips: ['Deite na bancada segurando o halter atrás da cabeça', 'Mantenha os cotovelos apontados para o teto', 'Estenda os braços sem mover os cotovelos', 'Desça o peso de forma controlada', 'Trabalhe a amplitude completa do movimento']
         },
         'Puxada Frontal': {
-            image: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/958/947ac249-475d-44ed-bed3-8dc433374f59.png',
             muscle: 'Costas', muscleClass: 'costas',
             tips: ['Sente-se na máquina com as coxas fixadas', 'Pegue a barra com pegada pronada larga', 'Puxe a barra até a altura do queixo', 'Contraia as escápulas no final do movimento', 'Retorne de forma controlada sem perder a tensão']
         },
         'Remada Barra': {
-            image: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/109/Barbell-rear-delt-row-1.png.400x400_q85.jpg',
             muscle: 'Costas', muscleClass: 'costas',
             tips: ['Incline o tronco a ~45 graus', 'Pegue a barra com pegada pronada', 'Puxe a barra em direção ao abdômen', 'Mantenha o core ativado durante todo o movimento', 'Não use impulso do corpo para levantar']
         },
         'Barra Fixa': {
-            image: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1275/0652d306-93eb-42f0-b564-7c3261ea809a.png',
             muscle: 'Costas', muscleClass: 'costas',
             tips: ['Pegue a barra com pegada pronada um pouco mais larga que os ombros', 'Puxe o corpo até o queixo ultrapassar a barra', 'Controle a descida de forma lenta', 'Não balance o corpo', 'Se necessário, use banda elástica de assistência']
         },
         'Rosca Direta': {
-            image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/81/Biceps-curl-1.png.400x400_q85.png',
             muscle: 'Bíceps', muscleClass: 'biceps',
             tips: ['Fique em pé com os pés na largura dos ombros', 'Segure a barra com pegada supinada', 'Flexione os cotovelos sem mover os braços', 'Contraia o bíceps no topo do movimento', 'Desça o peso de forma controlada']
         },
         'Rosca Martelo': {
-            image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/86/Bicep-hammer-curl-1.png.400x400_q85.png',
             muscle: 'Bíceps', muscleClass: 'biceps',
             tips: ['Segure os halteres com pegada neutra (palmas voltadas uma para a outra)', 'Mantenha os cotovelos fixos ao lado do corpo', 'Flexione os braços de forma controlada', 'Trabalhe o braquial e braquiorradial', 'Não balance o corpo para ajudar']
         },
         'Agachamento': {
-            image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1188/43e714e4-b736-4f3a-8ab4-97821fdff86a.jpg.400x400_q85.jpg',
             muscle: 'Pernas', muscleClass: 'pernas',
             tips: ['Posicione a barra no trapézio', 'Pés na largura dos ombros, pontas levemente para fora', 'Desça até as coxas ficarem paralelas ao chão', 'Mantenha o peito aberto e as costas retas', 'Empurre pelo calcanhar para subir']
         },
         'Leg Press': {
-            image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/456/3b681e59-377b-40db-9113-ca5873ce084b.jpg.400x400_q85.jpg',
             muscle: 'Pernas', muscleClass: 'pernas',
             tips: ['Posicione os pés na plataforma na largura dos ombros', 'Desça a plataforma até ~90 graus nos joelhos', 'Não estenda completamente os joelhos no topo', 'Empurre de forma controlada', 'Mantenha o quadril apoiado no assento']
         },
         'Extensora': {
-            image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1239/5026373a-a7b4-4e26-a0aa-c46634205196.jpg.400x400_q85.jpg',
             muscle: 'Pernas', muscleClass: 'pernas',
             tips: ['Ajuste a máquina para que o eixo fique alinhado com o joelho', 'Estenda as pernas de forma controlada', 'Segure no topo por 1 segundo', 'Desça lentamente até a posição inicial', 'Mantenha o core ativado']
         },
         'Rosca Perna': {
-            image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1274/bcffdf52-3c36-4b0c-b787-fb84f20bf82d.png.400x400_q85.png',
             muscle: 'Pernas', muscleClass: 'pernas',
             tips: ['Deite-se de bruços na máquina', 'Posicione o rolo logo acima dos calcanhares', 'Flexione os joelhos puxando o rolo', 'Controle a descida de forma lenta', 'Não arqueie a lombar']
         },
         'Cadeira Adutora': {
-            image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1233/d7d6f9e1-7834-4cca-bd3b-f9def33ff44d.png',
             muscle: 'Pernas', muscleClass: 'pernas',
             tips: ['Sente-se com as costas apoiadas', 'Posicione os joelhos nos suportes', 'Aperte as pernas uma contra a outra', 'Segure no topo por 1 segundo', 'Abra de forma controlada']
         },
         'Desenvolvimento': {
-            image: 'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1217/590e65db-de60-4727-b7eb-55f80af56043.png.400x400_q85.png',
             muscle: 'Ombros', muscleClass: 'ombros',
             tips: ['Sente-se na bancada com apoio nas costas', 'Segure os halteres na altura dos ombros', 'Empurre os pesos para cima até estender os braços', 'Não bloqueie completamente os cotovelos', 'Desça de forma controlada']
         },
         'Elevação Lateral': {
-            image: 'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1243/53d4fabe-c994-4907-873f-8d82813a9832.png',
             muscle: 'Ombros', muscleClass: 'ombros',
             tips: ['Fique em pé com os halteres ao lado do corpo', 'Levante os braços lateralmente até a altura dos ombros', 'Mantenha uma leve flexão nos cotovelos', 'Controle a descida', 'Não use impulso do corpo']
         },
         'Elevação Frontal': {
-            image: 'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1232/2b6de046-5806-49e3-bf36-b6fae16af021.png',
             muscle: 'Ombros', muscleClass: 'ombros',
             tips: ['Fique em pé com os halteres à frente das coxas', 'Levante os braços à frente até a altura dos ombros', 'Alterne entre os braços para melhor controle', 'Mantenha o core ativado', 'Desça de forma lenta e controlada']
         },
         'Mountain Climbers': {
-            image: 'https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1193/70ca5d80-3847-4a8c-8882-c6e9e485e29e.png.400x400_q85.png',
             muscle: 'Core', muscleClass: 'core',
             tips: ['Comece na posição de prancha alta', 'Traga um joelho em direção ao peito', 'Alterne rapidamente entre as pernas', 'Mantenha o quadril baixo e estável', 'Mantenha um ritmo constante']
         },
         'Prancha': {
-            image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1194/074e1766-4208-4a67-a211-9721772d99b0.png.400x400_q85.png',
             muscle: 'Core', muscleClass: 'core',
             tips: ['Apoie-se nos antebraços e pontas dos pés', 'Mantenha o corpo em linha reta da cabeça aos calcanhares', 'Contraia o abdômen e glúteos', 'Não deixe o quadril subir ou cair', 'Respire normalmente durante a execução']
         },
         'Abdominal': {
-            image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1290/c05818bf-1c81-46df-9f24-42e354265388.png',
             muscle: 'Core', muscleClass: 'core',
             tips: ['Deite-se com os joelhos flexionados', 'Coloque as mãos atrás da cabeça (sem puxar)', 'Eleve o tronco contraindo o abdômen', 'Não use impulso', 'Exhale ao subir, inspire ao descer']
         },
         'Crunch': {
-            image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/91/Crunches-1.png.400x400_q85.png',
             muscle: 'Core', muscleClass: 'core',
             tips: ['Deite-se com os joelhos flexionados e pés no chão', 'Coloque as mãos ao lado das orelhas', 'Eleve os ombros do chão contraindo o abdômen', 'Não puxe o pescoço com as mãos', 'Controle a descida']
         },
         'Levantamento Perna': {
-            image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop',
+            image: 'https://wger.de/media/exercise-images/1298/ec4b83ec-5a8f-4303-9050-99ec4389bc2a.png',
             muscle: 'Core', muscleClass: 'core',
             tips: ['Deite-se com as pernas estendidas', 'Levante as pernas até formar ~90 graus', 'Desça de forma controlada sem tocar o chão', 'Mantenha a lombar pressionada contra o solo', 'Contraia o abdômen inferior durante todo o movimento']
         }
@@ -2059,7 +2079,7 @@
             <div class="exercise-card ${done ? 'completed' : ''}" onclick="openExerciseModal('${ex.replace(/'/g, "\\'")}')">
                 <div class="exercise-card-inner">
                     <div class="exercise-thumb">
-                        <img src="${exData.image}" alt="${ex}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=100&h=100&fit=crop'">
+                        <img src="${exData.image}" alt="${ex}" loading="lazy" onerror="this.style.display='none'">
                         <div class="exercise-thumb-overlay"></div>
                     </div>
                     <div class="exercise-info">
@@ -2153,7 +2173,7 @@
                     <div class="exercise-card ${isDone ? 'completed' : ''}" onclick="openExerciseModal('${ex.replace(/'/g, "\\'")}')">
                         <div class="exercise-card-inner">
                             <div class="exercise-thumb">
-                                <img src="${exData.image}" alt="${ex}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=100&h=100&fit=crop'">
+                                <img src="${exData.image}" alt="${ex}" loading="lazy" onerror="this.style.display='none'">
                                 <div class="exercise-thumb-overlay"></div>
                             </div>
                             <div class="exercise-info">
