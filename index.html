@@ -1,226 +1,384 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRON - Smart Workout Tracker</title>
-    <style>
-        *{margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif;}
-        body{background:#121212; color:#fff; padding:20px; max-width:900px; margin:0 auto;}
-        header{text-align:center; margin-bottom:25px;}
-        h1{font-size:28px; color:#f5a623;}
-        .cronometro{background:#1e1e1e; padding:20px; border-radius:12px; text-align:center; margin-bottom:25px; border:2px solid #f5a623;}
-        .tempo{font-size:42px; font-weight:bold; font-family:monospace; color:#4cd964; margin:10px 0;}
-        .status{font-size:14px; color:#aaa;}
-        .resumo{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:20px 0;}
-        .card{background:#1e1e1e; padding:12px; border-radius:8px; text-align:center;}
-        .card span{font-size:22px; font-weight:bold; color:#f5a623;}
-        .dia{background:#1e1e1e; border-radius:12px; padding:18px; margin-bottom:18px;}
-        .dia h2{color:#4cd964; margin-bottom:15px; font-size:18px;}
-        .exercicio{display:flex; align-items:center; gap:15px; padding:12px 0; border-bottom:1px solid #333; flex-wrap:wrap;}
-        .exercicio:last-child{border-bottom:none;}
-        .exercicio img{width:160px; height:110px; object-fit:cover; border-radius:8px; border:2px solid #444;}
-        .info{flex:1; min-width:220px;}
-        .info p{margin:4px 0; color:#ddd;}
-        .check{width:24px; height:24px; border:2px solid #666; border-radius:50%; cursor:pointer; transition:all .2s; flex-shrink:0;}
-        .check.feito{background:#4cd964; border-color:#4cd964;}
-        .progresso{margin-top:10px; height:8px; background:#333; border-radius:4px; overflow:hidden;}
-        .barra{height:100%; background:linear-gradient(90deg,#f5a623,#4cd964); width:0; transition:.3s;}
-    </style>
-</head>
-<body>
+<!-- ==============================================
+             SEGUNDA-FEIRA — PEITO + TRÍCEPS
+     ============================================== -->
+<div class="dia-treino">
+    <h3>Segunda — Peito e Tríceps</h3>
 
-<header>
-    <h1>IRON</h1>
-    <p>Smart Workout Tracker — Eduardo</p>
-</header>
-
-<!-- ⏱️ CRONÔMETRO GERAL -->
-<div class="cronometro">
-    <h3>Tempo Total do Treino</h3>
-    <div class="tempo" id="cronometro">00:00:00</div>
-    <p class="status" id="status">Aguardando iniciar o primeiro exercício...</p>
-    <div class="progresso"><div class="barra" id="barra"></div></div>
-</div>
-
-<!-- 📊 RESUMO -->
-<div class="resumo">
-    <div class="card"><span id="qtdFeitos">0</span><p>Concluídos</p></div>
-    <div class="card"><span id="qtdTotal">0</span><p>Exercícios</p></div>
-    <div class="card"><span id="perc">0%</span><p>Progresso</p></div>
-    <div class="card"><span id="tempoDecorrido">00:00:00</span><p>Decorrido</p></div>
-</div>
-
-<!-- 📅 TREINOS SEMANAIS -->
-<h2 style="margin:25px 0 15px; color:#f5a623;">📅 Plano Semanal</h2>
-
-<!-- SEGUNDA -->
-<div class="dia" data-dia="segunda">
-    <h2>Segunda-feira — Peito e Tríceps</h2>
-    <div class="exercicio" data-exercicio>
-        <div class="check" onclick="marcar(this)"></div>
-        <div class="info">
-            <p><strong>1. Supino Reto com Barra</strong></p>
-            <p>4 séries de 12 repetições</p>
+    <!-- 1 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-supino-reto-com-barra-academia-forma-correta-foco-peito-foto-realista" alt="Supino Reto com Barra">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Supino Reto com Barra</h4>
+                <p>4 x 8–10 rep • Descanso 90s</p>
+            </div>
         </div>
-        <img src="https://image.pollinations.ai/prompt/homem-fazendo-supino-reto-com-barra-na-academia-forma-correta-foto-realista" alt="Supino Reto com Barra">
     </div>
-    <div class="exercicio" data-exercicio>
-        <div class="check" onclick="marcar(this)"></div>
-        <div class="info">
-            <p><strong>2. Flexão de Braço no Chão</strong></p>
-            <p>3 séries de 15 repetições</p>
+
+    <!-- 2 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-supino-inclinado-com-halteres-academia-forma-correta-foto-realista" alt="Supino Inclinado com Halteres">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Supino Inclinado com Halteres</h4>
+                <p>4 x 8–12 rep • Descanso 90s</p>
+            </div>
         </div>
-        <img src="https://image.pollinations.ai/prompt/homem-fazendo-flexao-de-bracos-no-chao-forma-correta-academia" alt="Flexão de Braço">
     </div>
-    <div class="exercicio" data-exercicio>
-        <div class="check" onclick="marcar(this)"></div>
-        <div class="info">
-            <p><strong>3. Tríceps na Barra Paralela</strong></p>
-            <p>3 séries de 12 repetições</p>
+
+    <!-- 3 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-crucifixo-na-maquina-academia-forma-correta-foto-realista" alt="Crucifixo na Máquina">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Crucifixo na Máquina</h4>
+                <p>3 x 10–12 rep • Descanso 60s</p>
+            </div>
         </div>
-        <img src="https://image.pollinations.ai/prompt/homem-fazendo-triceps-em-barra-paralela-forma-correta" alt="Tríceps Paralela">
+    </div>
+
+    <!-- 4 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-triceps-em-barra-paralela-academia-forma-correta-foto-realista" alt="Tríceps na Barra Paralela">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Tríceps na Barra Paralela</h4>
+                <p>3 x 10–12 rep • Descanso 60s</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-triceps-pulley-corda-academia-forma-correta-foto-realista" alt="Tríceps Pulley com Corda">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Tríceps Pulley (Corda)</h4>
+                <p>3 x 12–15 rep • Descanso 60s</p>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- TERÇA -->
-<div class="dia" data-dia="terca">
-    <h2>Terça-feira — Costas e Bíceps</h2>
-    <div class="exercicio" data-exercicio>
-        <div class="check" onclick="marcar(this)"></div>
-        <div class="info">
-            <p><strong>1. Puxada na Barra Fixa</strong></p>
-            <p>4 séries de 10 repetições</p>
-        </div>
-        <img src="https://image.pollinations.ai/prompt/homem-fazendo-puxada-na-barra-fixa-academia-forma-correta-costas" alt="Puxada na Barra Fixa">
-    </div>
-    <div class="exercicio" data-exercicio>
-        <div class="check" onclick="marcar(this)"></div>
-        <div class="info">
-            <p><strong>2. Remada Curvada com Barra</strong></p>
-            <p>4 séries de 12 repetições</p>
-        </div>
-        <img src="https://image.pollinations.ai/prompt/homem-fazendo-remada-curvada-com-barra-academia-forma-correta-costas" alt="Remada Curvada">
-    </div>
-</div>
+<!-- ==============================================
+             TERÇA-FEIRA — COSTAS + BÍCEPS
+     ============================================== -->
+<div class="dia-treino">
+    <h3>Terça — Costas e Bíceps</h3>
 
-<!-- QUARTA -->
-<div class="dia" data-dia="quarta">
-    <h2>Quarta-feira — Pernas</h2>
-    <div class="exercicio" data-exercicio>
-        <div class="check" onclick="marcar(this)"></div>
-        <div class="info">
-            <p><strong>1. Agachamento Livre com Barra</strong></p>
-            <p>4 séries de 12 repetições</p>
+    <!-- 1 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-puxada-na-barra-fixa-academia-forma-correta-costas-foto-realista" alt="Puxada na Barra Fixa">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Puxada na Barra Fixa</h4>
+                <p>4 x 8–10 rep • Descanso 90s</p>
+            </div>
         </div>
-        <img src="https://image.pollinations.ai/prompt/homem-fazendo-agachamento-livre-com-barra-nas-costas-academia-forma-correta" alt="Agachamento Livre">
     </div>
-    <div class="exercicio" data-exercicio>
-        <div class="check" onclick="marcar(this)"></div>
-        <div class="info">
-            <p><strong>2. Cadeira Extensora</strong></p>
-            <p>3 séries de 15 repetições</p>
-        </div>
-        <img src="https://image.pollinations.ai/prompt/homem-fazendo-exercicio-na-cadeira-extensora-pernas-academia-forma-correta" alt="Cadeira Extensora">
-    </div>
-</div>
 
-<!-- QUINTA -->
-<div class="dia" data-dia="quinta">
-    <h2>Quinta-feira — Ombro e Tríceps</h2>
-    <div class="exercicio" data-exercicio>
-        <div class="check" onclick="marcar(this)"></div>
-        <div class="info">
-            <p><strong>1. Desenvolvimento com Barra</strong></p>
-            <p>4 séries de 10 repetições</p>
+    <!-- 2 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-remada-curvada-com-barra-academia-forma-correta-costas-foto-realista" alt="Remada Curvada com Barra">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Remada Curvada com Barra</h4>
+                <p>4 x 8–10 rep • Descanso 90s</p>
+            </div>
         </div>
-        <img src="https://image.pollinations.ai/prompt/homem-fazendo-desenvolvimento-com-barra-ombros-academia-forma-correta" alt="Desenvolvimento com Barra">
     </div>
-    <div class="exercicio" data-exercicio>
-        <div class="check" onclick="marcar(this)"></div>
-        <div class="info">
-            <p><strong>2. Elevação Lateral com Halteres</strong></p>
-            <p>3 séries de 15 repetições</p>
-        </div>
-        <img src="https://image.pollinations.ai/prompt/homem-fazendo-elevacao-lateral-com-halteres-ombros-academia-forma-correta" alt="Elevação Lateral">
-    </div>
-</div>
 
-<!-- SEXTA -->
-<div class="dia" data-dia="sexta">
-    <h2>Sexta-feira — Corpo Inteiro / Funcional</h2>
-    <div class="exercicio" data-exercicio>
-        <div class="check" onclick="marcar(this)"></div>
-        <div class="info">
-            <p><strong>1. Levantamento Terra</strong></p>
-            <p>4 séries de 8 repetições</p>
+    <!-- 3 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-puxada-pulley-frente-academia-forma-correta-foto-realista" alt="Puxada Pulley Frente">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Puxada Pulley Frente</h4>
+                <p>3 x 10–12 rep • Descanso 75s</p>
+            </div>
         </div>
-        <img src="https://image.pollinations.ai/prompt/homem-fazendo-levantamento-terra-com-barra-academia-forma-correta-costas-pernas" alt="Levantamento Terra">
     </div>
-    <div class="exercicio" data-exercicio>
-        <div class="check" onclick="marcar(this)"></div>
-        <div class="info">
-            <p><strong>2. Prancha Abdominal</strong></p>
-            <p>3 séries de 40 segundos</p>
+
+    <!-- 4 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-curl-barra-em-pe-academia-biceps-forma-correta-foto-realista" alt="Curl de Barra em Pé">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Curl de Barra em Pé</h4>
+                <p>3 x 8–12 rep • Descanso 60s</p>
+            </div>
         </div>
-        <img src="https://image.pollinations.ai/prompt/homem-fazendo-prancha-abdominal-no-chao-forma-correta-academia" alt="Prancha Abdominal">
+    </div>
+
+    <!-- 5 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-curl-halter-banco-inclinado-academia-biceps-forma-correta-foto-realista" alt="Curl Halteres Banco Inclinado">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Curl com Halteres (Banco Incl.)</h4>
+                <p>3 x 10–12 rep • Descanso 60s</p>
+            </div>
+        </div>
     </div>
 </div>
 
-<script>
-    const todosExercicios = document.querySelectorAll('[data-exercicio]');
-    const qtdTotal = todosExercicios.length;
-    document.getElementById('qtdTotal').textContent = qtdTotal;
+<!-- ==============================================
+             QUARTA-FEIRA — PERNAS
+     ============================================== -->
+<div class="dia-treino">
+    <h3>Quarta — Pernas</h3>
 
-    let iniciado = false, finalizado = false;
-    let tempoInicio = 0, tempoPausa = 0;
-    let intervalo;
-    let concluidos = 0;
+    <!-- 1 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-agachamento-livre-com-barra-academia-forma-correta-foto-realista" alt="Agachamento Livre com Barra">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Agachamento Livre com Barra</h4>
+                <p>4 x 6–10 rep • Descanso 90–120s</p>
+            </div>
+        </div>
+    </div>
 
-    function formatar(segundos) {
-        const h = Math.floor(segundos / 3600);
-        const m = Math.floor((segundos % 3600) / 60);
-        const s = Math.floor(segundos % 60);
-        return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-    }
+    <!-- 2 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-levantamento-terra-academia-forma-correta-foto-realista" alt="Levantamento Terra">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Levantamento Terra</h4>
+                <p>4 x 6–8 rep • Descanso 120s</p>
+            </div>
+        </div>
+    </div>
 
-    function atualizarCronometro() {
-        const agora = Date.now();
-        const decorrido = Math.floor((agora - tempoInicio) / 1000);
-        document.getElementById('cronometro').textContent = formatar(decorrido);
-        document.getElementById('tempoDecorrido').textContent = formatar(decorrido);
-    }
+    <!-- 3 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-cadeira-extensora-academia-forma-correta-foto-realista" alt="Cadeira Extensora">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Cadeira Extensora</h4>
+                <p>3 x 10–12 rep • Descanso 60s</p>
+            </div>
+        </div>
+    </div>
 
-    function marcar(checkbox) {
-        if(finalizado) return;
+    <!-- 4 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-cadeira-flexora-academia-forma-correta-foto-realista" alt="Cadeira Flexora">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Cadeira Flexora</h4>
+                <p>3 x 10–12 rep • Descanso 60s</p>
+            </div>
+        </div>
+    </div>
 
-        const exercicio = checkbox.parentElement;
-        const primeiroNaoFeito = !iniciado && !exercicio.classList.contains('feito');
+    <!-- 5 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-gemeos-em-pe-na-maquina-academia-forma-correta-foto-realista" alt="Gêmeos em Pé na Máquina">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Gêmeos em Pé na Máquina</h4>
+                <p>4 x 12–15 rep • Descanso 60s</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-        checkbox.classList.toggle('feito');
-        exercicio.classList.toggle('feito');
+<!-- ==============================================
+             QUINTA-FEIRA — OMBROS + TRÍCEPS
+     ============================================== -->
+<div class="dia-treino">
+    <h3>Quinta — Ombros e Tríceps</h3>
 
-        concluidos = document.querySelectorAll('.check.feito').length;
-        const perc = Math.round((concluidos / qtdTotal) * 100);
-        document.getElementById('qtdFeitos').textContent = concluidos;
-        document.getElementById('perc').textContent = perc + '%';
-        document.getElementById('barra').style.width = perc + '%';
+    <!-- 1 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-desenvolvimento-com-barra-em-pe-academia-forma-correta-foto-realista" alt="Desenvolvimento com Barra">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Desenvolvimento com Barra</h4>
+                <p>4 x 8–10 rep • Descanso 90s</p>
+            </div>
+        </div>
+    </div>
 
-        // ⏱️ INICIA AO MARCAR O PRIMEIRO EXERCÍCIO
-        if(primeiroNaoFeito) {
-            iniciado = true;
-            tempoInicio = Date.now();
-            document.getElementById('status').textContent = '✅ Treino em andamento...';
-            intervalo = setInterval(atualizarCronometro, 1000);
-        }
+    <!-- 2 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-elevacao-lateral-com-halteres-academia-forma-correta-foto-realista" alt="Elevação Lateral com Halteres">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Elevação Lateral com Halteres</h4>
+                <p>4 x 10–12 rep • Descanso 60s</p>
+            </div>
+        </div>
+    </div>
 
-        // ⏹️ ENCERRA AO MARCAR O ÚLTIMO
-        if(concluidos === qtdTotal && iniciado) {
-            finalizado = true;
-            clearInterval(intervalo);
-            document.getElementById('status').textContent = '🏆 TREINO FINALIZADO! Tempo registrado!';
-        }
-    }
-</script>
-</body>
-</html>
+    <!-- 3 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-elevacao-frontal-com-barra-academia-forma-correta-foto-realista" alt="Elevação Frontal com Barra">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Elevação Frontal com Barra</h4>
+                <p>3 x 10–12 rep • Descanso 60s</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-triceps-testa-com-barra-academia-forma-correta-foto-realista" alt="Tríceps Testa com Barra">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Tríceps Testa com Barra</h4>
+                <p>3 x 8–12 rep • Descanso 60s</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-triceps-no-pulley-barra-reta-academia-forma-correta-foto-realista" alt="Tríceps Pulley Barra Reta">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Tríceps Pulley (Barra Reta)</h4>
+                <p>3 x 10–12 rep • Descanso 60s</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==============================================
+             SEXTA-FEIRA — COSTAS + PERNAS POSTERIOR
+     ============================================== -->
+<div class="dia-treino">
+    <h3>Sexta — Costas e Pernas Posteriores</h3>
+
+    <!-- 1 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-remada-unilateral-com-halteres-academia-forma-correta-foto-realista" alt="Remada Unilateral com Halter">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Remada Unilateral com Halter</h4>
+                <p>4 x 8–10 rep • Descanso 75s</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-puxada-pulley-pegada-aberta-academia-forma-correta-foto-realista" alt="Puxada Pulley Pegada Aberta">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Puxada Pulley (Pegada Aberta)</h4>
+                <p>4 x 10–12 rep • Descanso 75s</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-stiff-com-barra-academia-forma-correta-foto-realista" alt="Stiff com Barra">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Stiff com Barra</h4>
+                <p>4 x 8–10 rep • Descanso 90s</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-mesa-flexora-pernas-academia-forma-correta-foto-realista" alt="Mesa Flexora">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Mesa Flexora</h4>
+                <p>3 x 10–12 rep • Descanso 60s</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="exercise-card">
+        <div class="exercise-card-inner">
+            <div class="exercise-thumb">
+                <img src="https://image.pollinations.ai/prompt/homem-fazendo-gemeos-sentado-na-maquina-academia-forma-correta-foto-realista" alt="Gêmeos Sentado na Máquina">
+                <div class="exercise-thumb-overlay"></div>
+            </div>
+            <div class="exercise-info">
+                <h4>Gêmeos Sentado na Máquina</h4>
+                <p>4 x 12–15 rep • Descanso 60s</p>
+            </div>
+        </div>
+    </div>
+</div>
